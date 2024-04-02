@@ -33,6 +33,15 @@
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
+      },
+      "nginx revproxy": {
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "launchBrowser": false,
+        "applicationUrl": "http://localhost:6969",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "nginx"
+        }
       }
     }
   }

@@ -3,38 +3,34 @@ using SnailbirdWeb.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// part of the revproxy
-// builder.Services.AddAuthentication();
-
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
 
-// app.UseForwardedHeaders(new ForwardedHeadersOptions
-// {
-//     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-// });
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-// app.UseHttpsRedirection();
-
+app.UseDeveloperExceptionPage();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-// app.UseAuthentication();
+// if environment is nginx configure the reverse proxy middleware
+if (app.Environment.IsEnvironment("nginx")) 
+{
+    app.UseForwardedHeaders(new ForwardedHeadersOptions
+                            {
+                                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                            });
+}
+else // Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+    app.UseHttpsRedirection();
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+}
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-// app.MapGet("/", () => "Hello ForwardedHeadersOptions!");
 
 app.Run();
