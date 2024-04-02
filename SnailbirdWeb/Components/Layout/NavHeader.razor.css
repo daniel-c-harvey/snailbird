@@ -1,0 +1,71 @@
+﻿
+#header {
+    width: 100%;
+    margin: 0;
+/*    padding: auto;*/
+    background-image: none;
+    background-color: #1f292e;
+}
+
+#banner {
+    width: 50%;
+    min-width: 40em;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#login {
+    float: right;
+    font-size: 1.2em;
+    color: #D4142B;
+    text-decoration: none;
+}
+
+#banner img {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    padding-top: 5px;
+    clear: both;
+}
+
+#navbar {
+    margin: 0;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    position: relative;
+    background: linear-gradient(#ac82fa, #d148b8); /* Standard syntax (must be last) */
+    text-align: center;
+}
+
+#menu .menuitem {
+    display: inline;
+    font-size: 1.7em;
+    color: #666699;
+    position: relative;
+}
+
+#menu .menuitem .menulink {
+    font-family: ImpactLabel;
+    font-size: inherit;
+    font-weight: 300;
+    color: #002348;
+    text-decoration: none;
+    margin: 0;
+    margin-left: 3%;
+    margin-right: 3%;
+    transition: color 0.25s, text-shadow 0.25s;
+    -webkit-transition: color 0.25s, text-shadow 0.25s;
+}
+
+#menu .menuitem .menulink:hover {
+    color: #8000ff;
+    text-shadow: 0 0 7px #b56aff;
+}
+
+@font-face {
+    font-family: ImpactLabel;
+    src: url('../font/Impact_Label_Reversed.ttf');
+}
