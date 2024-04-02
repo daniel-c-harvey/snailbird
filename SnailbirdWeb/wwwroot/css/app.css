@@ -1,0 +1,261 @@
+/*html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}*/
+
+/*a, .btn-link {
+    color: #006bb7;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.content {
+    padding-top: 1.1rem;
+}*/
+
+h1:focus {
+    outline: none;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid #e50000;
+}
+
+.validation-message {
+    color: #e50000;
+}
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+.blazor-error-boundary::after {
+    content: "An error has occurred."
+}
+
+.darker-border-checkbox.form-check-input {
+    border-color: #929292;
+}
+
+/* Mine */
+
+body {
+    background-image: url('../images/photos/bf-22-schematic-background.png');
+    background-color: #1f292e;
+    font-family: Quicksand;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    font-size: 1.0em;
+}
+
+#navheader {
+    width: 100%;
+}
+
+p {
+    line-height: 1.5em;
+    color: #bababa;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    text-align: justify;
+}
+
+.header {
+    text-align: justify;
+    font-family: Titillium;
+}
+
+.pink {
+    color: #ca3875;
+}
+
+.aqua {
+    color: #12caca;
+}
+
+.gold {
+    color: #98930A;
+}
+
+.teal {
+    color: #00b69e;
+}
+
+.lavender {
+    color: #7A68AE;
+}
+
+.green {
+    color: #3bb662;
+}
+
+a {
+    color: #c45ccf;
+    text-decoration: none;
+}
+/*  */
+h2 {
+    font-weight: 700;
+}
+
+br {
+    clear: both;
+}
+
+#contentstrip {
+    background-color: #10181d;
+    width: 75%;
+    min-width: 564px;
+    max-width: 1180px;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+#main {
+    background-color: #2b2b2b;
+    position: relative;
+    width: 100%;
+    border: 0;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 0;
+    padding-top: 15px;
+    padding-bottom: 20px;
+}
+
+.post {
+    font-size: 0.9em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    padding-top: 16px;
+    padding-bottom: 10px;
+    mask-image: none;
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    mask-position: 0% 0%;
+}
+
+.centeredimage {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+    .centeredimage img {
+        margin: 0px;
+        padding: 0px;
+        padding-bottom: 2%;
+        border: 0px;
+        width: 100%;
+    }
+
+.youtubeframe {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bandcampplayer {
+    border: 0;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+}
+
+.morecontent {
+    padding: 8px;
+    margin-left: auto;
+    width: 60px;
+}
+
+.morecontent * {
+    margin: auto;
+    float: right;
+}
+
+.morecontent .expandpost {
+    width: 55px;
+    padding: 2px;
+    color: #c45ccf;
+    background-color: #10181d;
+    border: 0;
+    border-radius: 10px;
+    font-family: Titillium;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.morecontent .expandpost:hover {
+    font-weight: bold;
+    padding: 3px;
+}
+
+.mediaflow {
+    width: 100%;
+    display: flex;
+    align-items: start;
+}
+
+    .mediaflow > * {
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+.pblock > p {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.songdetails {
+    color: #bababa;
+    list-style-type: katakana;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8em;
+}
+
+    .songdetails .instrument {
+        color: #3bb662;
+    }
+
+@font-face {
+    font-family: Quicksand;
+    src: url('../font/Quicksand-Regular.otf');
+}
+
+@font-face {
+    font-family: Titillium;
+    src: url('../font/Titillium-Regular.otf');
+}
+
+@font-face {
+    font-family: Asap;
+    src: url('../font/Asap-Regular.otf');
+}
+
+@font-face {
+    font-family: Capsuula;
+    src: url('../font/Capsuula.ttf');
+}
