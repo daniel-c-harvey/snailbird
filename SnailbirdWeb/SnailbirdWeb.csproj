@@ -23,4 +23,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Posts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
+  </ItemGroup>
+
 </Project>

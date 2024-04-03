@@ -1,0 +1,33 @@
+{
+  "Preamble": "Making heavy industrial drums and bass sounds is something I've struggled with for a long time despite loving the style. \r\n This was a test of some ideas for a heavier rhythm section. The synth and drum parts are inspired by stamping plants, \r\n emergency alarms, and a sense of urgency and panic. I ended up loving the simple acid ostinato in 5/16 and the \r\n polymetric modulation that occurs as a result. I hope you enjoy too.",
+  "VideoURL": "https://www.youtube.com/embed/_Vm64ueALkE?si=V8LU9I1cPMeClJcU",
+  "Instruments": [
+    {
+      "Name": "Title",
+      "Description": "Flint Metal Center"
+    },
+    {
+      "Name": "Drums",
+      "Description": "TR-8S, kit is custom samples synthesized in Vital/Serum/Phase Plant, and the 909 ACB Ride, smashed by the mixer preamp on high gain."
+    },
+    {
+      "Name": "Rumble Sub Bass",
+      "Description": "Hydrasynth -> TR-8S ext side chain for pumping compression"
+    },
+    {
+      "Name": "Acid",
+      "Description": "TD-3 -> GE-7 -> Badwater -> MS-60B -> QuadraVerb"
+    },
+    {
+      "Name": "Procedural Arp Lead",
+      "Description": "Neutron -> MS70-CDR -> QuadraVerb"
+    },
+    {
+      "Name": "Swarm Cluster Lead",
+      "Description": "Minilogue XD (internal FX)"
+    }
+  ],
+  "Id": 7,
+  "Title": "Live Session March 27",
+  "PostDate": "2024-03-27T00:00:00"
+}

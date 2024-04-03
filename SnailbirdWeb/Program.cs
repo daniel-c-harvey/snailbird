@@ -1,11 +1,16 @@
 using Microsoft.AspNetCore.HttpOverrides;
+using SnailbirdData.Providers;
 using SnailbirdWeb.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
+builder.Services
+    .AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services
+    .AddSingleton<IPostProvider, PostEmbeddedResourceProvider>();
 
 var app = builder.Build();
 
