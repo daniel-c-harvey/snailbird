@@ -13,7 +13,7 @@
 
     protected override void OnInitialized()
     {
-        int[] postIds = { 7 };// todo source the available posts somewhere else
+        @* int[] postIds = { 7 };// todo source the available posts somewhere else
         var posts = new List<SnailbirdData.Models.LiveJamPost>(postIds.Count());
 
         foreach(int id in postIds) 
@@ -21,6 +21,8 @@
             posts.Add(PostProvider.GetPost<SnailbirdData.Models.LiveJamPost>(id));
         }
 
-        Posts = posts;
+        Posts = posts; *@
+
+        Posts = PostProvider.GetRecentPosts<SnailbirdData.Models.LiveJamPost>(0, 25);
     }
 }

@@ -9,5 +9,6 @@ namespace SnailbirdData.Providers
     public interface IPostProvider
     {
         TPost GetPost<TPost>(int id) where TPost : Models.Post;
+        IEnumerable<TPost> GetRecentPosts<TPost>(int pageIndex, int pageLength) where TPost : Models.Post;
     }
 }

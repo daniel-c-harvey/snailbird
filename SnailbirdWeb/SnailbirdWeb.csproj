@@ -5,14 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="wwwroot\NewFolder\**" />
-    <Content Remove="wwwroot\NewFolder\**" />
-    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
-    <None Remove="wwwroot\NewFolder\**" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <_WebToolingArtifacts Remove="properties\publishprofiles\dch5-deploy.sh" />
   </ItemGroup>
