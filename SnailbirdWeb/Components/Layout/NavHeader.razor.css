@@ -40,6 +40,11 @@
     text-align: center;
 }
 
+#menu {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
 #menu .menuitem {
     display: inline;
     font-size: 1.7em;
