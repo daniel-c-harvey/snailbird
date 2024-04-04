@@ -5,9 +5,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <_WebToolingArtifacts Remove="properties\publishprofiles\dch5-deploy.sh" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include=".secrets\connections.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +26,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
+    <ProjectReference Include="C:\lib\snailbird-web\Core\Core.csproj" />
+    <ProjectReference Include="C:\lib\snailbird-web\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

@@ -108,7 +108,7 @@ a {
     color: #c45ccf;
     text-decoration: none;
 }
-/*  */
+  
 h2 {
     font-weight: 700;
 }
@@ -171,7 +171,6 @@ br {
     }
 
 .youtubeframe {
-/*    display: block;*/
     aspect-ratio: 1.7777778;
     width: 100%;
     align-content: center;
