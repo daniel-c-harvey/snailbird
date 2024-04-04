@@ -22,8 +22,8 @@ namespace SnailbirdData.Providers
             
             foreach(string name in postNames)
             {
-                Match matchID = Regex.Match(name, @"SnailbirdData[.]Data[.]Posts[.]post(\d+)[.]json");
-                if (int.TryParse(matchID.Captures.FirstOrDefault()?.Value, out int postID))
+                Match matchID = Regex.Match(name, @"SnailbirdData[.]Data[.]Posts[.]post(?<ID>\d+)[.]json");
+                if (matchID.Groups.ContainsKey("ID") && int.TryParse(matchID.Groups["ID"].Value, out int postID))
                 {
                     posts.Add(GetPost<TPost>(postID));
                 }

@@ -10,8 +10,14 @@ builder.Services
     .AddInteractiveServerComponents();
 
 builder.Services
-    .AddSingleton<IPostProvider, PostDatabaseProvider>(provider => new PostDatabaseProvider(builder.Configuration.GetConnectionString("mongodb-snailbird-dev")));
-    // .AddSingleton<IPostProvider, PostEmbeddedResourceProvider>();
+     .AddSingleton<IPostProvider, PostDatabaseProvider>(provider =>
+     {
+         return new PostDatabaseProvider(
+             Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird-dev")
+                 .ConnectionString
+         );
+     });
+//.AddSingleton<IPostProvider, PostEmbeddedResourceProvider>();
 
 var app = builder.Build();
 
