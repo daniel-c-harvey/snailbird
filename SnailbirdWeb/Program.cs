@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using SnailbirdData.Providers;
 using SnailbirdWeb.Components;
+using DataAccess;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +12,13 @@ builder.Services
     .AddInteractiveServerComponents();
 
 builder.Services
-     .AddSingleton<IPostProvider, PostDatabaseProvider>(provider =>
+     .AddSingleton<IPostProvider, PostMongoProvider>
+     (provider =>
      {
-         return new PostDatabaseProvider(
+         return new PostMongoProvider(
              Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird-dev")
-                 .ConnectionString
+                 .ConnectionString,
+             "snailbird-dev"
          );
      });
 //.AddSingleton<IPostProvider, PostEmbeddedResourceProvider>();
