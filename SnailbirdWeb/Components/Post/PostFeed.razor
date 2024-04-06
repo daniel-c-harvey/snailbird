@@ -1,6 +1,6 @@
 ﻿@using SnailbirdData.Providers;
 
-@inject IPostProvider PostProvider
+@inject IPostProvider<SnailbirdData.Models.LiveJamPost> PostProvider
 
 @foreach(SnailbirdData.Models.LiveJamPost post in Posts)
 {
@@ -23,6 +23,6 @@
 
         Posts = posts; *@
 
-        Posts = PostProvider.GetRecentPosts<SnailbirdData.Models.LiveJamPost>(0, 25);
+        Posts = PostProvider.GetRecentPosts(0, 25);
     }
 }
