@@ -3,8 +3,27 @@ using SnailbirdData.Providers;
 using SnailbirdWeb.Components;
 using DataAccess;
 using MongoDB.Driver;
+using SnailbirdData;
+using SnailbirdData.DataAdapters;
+using SnailbirdData.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
+    (
+        new MongoDataAccess(
+            Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird")
+                .ConnectionString,
+                "snailbird-dev"
+            ),
+        new MongoQueryBuilder()
+);
+
+//MongoAdapterFactory postAdapterFacotry = new MongoAdapterFactory();
+MongoAdapter<LiveJamPost> postAdapter = new MongoAdapter<LiveJamPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("posts"));
 
 // Add services to the container.
 builder.Services
@@ -12,15 +31,13 @@ builder.Services
     .AddInteractiveServerComponents();
 
 builder.Services
-     .AddSingleton<IPostProvider, PostMongoProvider>
-     (provider =>
-     {
-         return new PostMongoProvider(
-             Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird-dev")
-                 .ConnectionString,
-             "snailbird-dev"
-         );
-     });
+    .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>
+    (provider => {
+        return postAdapter;
+    })
+    .AddSingleton<IPostProvider<LiveJamPost>, PostMongoProvider>
+    (provider => new PostMongoProvider(postAdapter));
+    
 //.AddSingleton<IPostProvider, PostEmbeddedResourceProvider>();
 
 var app = builder.Build();

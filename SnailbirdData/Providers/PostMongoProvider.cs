@@ -1,5 +1,7 @@
 ﻿using DataAccess;
 using MongoDB.Driver;
+using SnailbirdData.DataAdapters;
+using SnailbirdData.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace SnailbirdData.Providers
 {
-    public class PostMongoProvider : PostDatabaseProvider<MongoDataAccess, IMongoDatabase, MongoQueryBuilder>
+    public class PostMongoProvider : PostDatabaseProvider<MongoAdapter<LiveJamPost>, LiveJamPost>
     {
-        public PostMongoProvider(string connectionString, string databaseName) 
-        : base(connectionString, databaseName) { }
+        public PostMongoProvider(MongoAdapter<LiveJamPost> dataAdapter) 
+        : base(dataAdapter) { }
     }
 }

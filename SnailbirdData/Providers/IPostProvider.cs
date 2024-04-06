@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SnailbirdData.Providers
 {
-    public interface IPostProvider
+    public interface IPostProvider<TPost>
+        where TPost : Models.Post
     {
-        TPost GetPost<TPost>(int id) where TPost : Models.Post;
-        IEnumerable<TPost> GetRecentPosts<TPost>(int pageIndex, int pageLength) where TPost : Models.Post;
+        TPost GetPost(int id);
+        IEnumerable<TPost> GetRecentPosts(int pageIndex, int pageLength);
     }
 }

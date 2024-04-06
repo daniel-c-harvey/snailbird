@@ -1,36 +1,35 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccess;
+using SnailbirdData;
+using SnailbirdData.DataAdapters;
 using SnailbirdData.Models;
 
 namespace SnailbirdData.Providers
 {
-    public abstract class PostDatabaseProvider<TDataAccess, TDatabase, TQueryBuilder> : IPostProvider 
-        where TDataAccess : IDataAccess<TDatabase>, new()
-        where TDatabase : class
-        where TQueryBuilder : IQueryBuilder<TDatabase>, new()
+    public abstract class PostDatabaseProvider<TDataAdapter, TPost> : IPostProvider<TPost>
+        where TDataAdapter : IDataAdapter<TPost>
+        where TPost : Post
     {
-        protected TDataAccess DataAccess;
-        protected TQueryBuilder QueryBuilder;
+        TDataAdapter DataAdapter { get; set; }
 
-        public PostDatabaseProvider(string connectionString, string databaseName)
+        public PostDatabaseProvider(TDataAdapter dataAdapter)
         {
-            DataAccess = new TDataAccess();
-            QueryBuilder = new TQueryBuilder();
-            DataAccess.OpenConnection(connectionString, databaseName);
+            DataAdapter = dataAdapter;
         }
 
-        public TPost GetPost<TPost>(int id) where TPost : Post
+        public TPost GetPost(int id)
         {
-            throw new NotImplementedException();
+            var results = DataAdapter.GetByID(id);
+            return results.Value;
         }
 
-        public IEnumerable<TPost> GetRecentPosts<TPost>(int pageIndex, int pageLength) where TPost : Post
+        public IEnumerable<TPost> GetRecentPosts(int pageIndex, int pageLength)
         {
-            return DataAccess.ExecQuery<TPost>(QueryBuilder.BuildQuery<TPost>("posts"));
+            var results = DataAdapter.GetPage(pageIndex, pageLength);
+            return results.Value;
         }
     }
 }
