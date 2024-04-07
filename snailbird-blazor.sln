@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "C:\lib\snailbird-we
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "C:\lib\snailbird-web\DataAccess\DataAccess.csproj", "{B61C6845-7508-4CC8-AEFC-8575E674BB0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdAdmin", "SnailbirdAdmin\SnailbirdAdmin.csproj", "{510EA036-5C8A-4DDD-8190-05D270BF9751}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B61C6845-7508-4CC8-AEFC-8575E674BB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B61C6845-7508-4CC8-AEFC-8575E674BB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B61C6845-7508-4CC8-AEFC-8575E674BB0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{510EA036-5C8A-4DDD-8190-05D270BF9751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{510EA036-5C8A-4DDD-8190-05D270BF9751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{510EA036-5C8A-4DDD-8190-05D270BF9751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{510EA036-5C8A-4DDD-8190-05D270BF9751}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
