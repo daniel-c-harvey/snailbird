@@ -1,0 +1,43 @@
+﻿@using SnailbirdData.Providers;
+@inject IPostProvider<SnailbirdData.Models.LiveJamPost> PostProvider
+
+@page "/posts"
+@rendermode InteractiveServer
+
+<PageTitle>Posts</PageTitle>
+
+<h3>Posts</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Title</th>
+    </tr>
+    </thead>
+    <tbody>
+        @code { int count = 1; }
+        @foreach(SnailbirdData.Models.LiveJamPost post in _posts)
+        {
+            <tr>
+                <th scope="row">@count</th>
+                <td>@post.ID</td>
+                <td>@post.Title</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <NavLink type="button" class="btn btn-primary" href="newpost">Add</NavLink>
+</div>
+
+
+@code {
+    public IEnumerable<SnailbirdData.Models.LiveJamPost> _posts = new SnailbirdData.Models.LiveJamPost[] { };
+
+    protected override void OnInitialized()
+    {
+        _posts = PostProvider.GetRecentPosts(0, 25);
+    }
+}
