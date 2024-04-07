@@ -32,12 +32,12 @@ namespace SnailbirdData.DataAdapters
             throw new NotImplementedException();
         }
 
-        public ResultContainer<IEnumerable<TModel>> GetPage(int page, int pageSize)
+        public ResultContainer<IEnumerable<TModel>> GetPage(int pageIndex, int pageSize)
         {
             var modelResults = new ResultContainer<IEnumerable<TModel>>();
             try
             {
-                IEnumerable<TModel> models = DataAccess.ExecQuery(QueryBuilder.BuildRetrieve<TModel>(Schema.Collection));
+                IEnumerable<TModel> models = DataAccess.ExecQuery(QueryBuilder.BuildRetrieve<TModel>(Schema.Collection, pageIndex, pageSize));
                 modelResults.Value = models;
                 return modelResults;
             }
@@ -55,7 +55,12 @@ namespace SnailbirdData.DataAdapters
 
         public Result Insert(TModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DataAccess.ExecNonQuery(QueryBuilder.BuildInsert(Schema.Collection, model));
+            }
+            catch (Exception e) { return Result.CreateFailResult($"Database error: {e.Message}"); }
+            return Result.CreatePassResult();
         }
 
         public Result Insert(IEnumerable<TModel> models)
