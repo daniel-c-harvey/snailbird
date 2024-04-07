@@ -8,7 +8,7 @@ namespace SnailbirdData.Models
 {
     public abstract class Post
     {
-        public int test { get; set; } = default!;
+        public int ID { get; set; } = default!;
         public string Title { get; set; } = default!;
         public DateTime PostDate { get; set; } = default!;
     }

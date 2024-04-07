@@ -16,6 +16,6 @@ namespace SnailbirdData.Models
     {
         public string Preamble { get; set; } = default!;
         public string VideoURL { get; set; } = default!;
-        public IEnumerable<LiveJamPostInstrument> Instruments { get; set; } = default!;
+        public IEnumerable<LiveJamPostInstrument> Instruments { get; set; } = new List<LiveJamPostInstrument>();
     }
 }
