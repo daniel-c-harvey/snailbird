@@ -1,0 +1,58 @@
+﻿@using SnailbirdData.DataAdapters;
+@using SnailbirdData.Models;
+
+
+
+@page "/newpost"
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+<div class="new-post">
+    <span>Title:</span> <input type="text" @bind="Post.Title"/>
+    <span>Date:</span> <input type="date" @bind="Post.PostDate"/>
+    <br/>
+    <span>Preamble:</span>  <input class="paragraph" type="text" @bind="Post.Preamble"/>
+    <br/>
+    <span>Video Link:</span> <input type="url" @bind="Post.VideoURL"/>
+    <br/>
+    <h5>Intruments:</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Delete</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (InstrumentRow row in Instruments)
+            {
+                <tr>
+                    <td>
+                        @if (!row.IsNew)
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="@(e => RemoveInstrument(row.Instrument))">
+                                <span class="bi bi-trash"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary" @onclick="@(e => AddNewInstrument())">
+                                <span class="bi bi-plus-circle"></span>
+                            </button>
+                        }
+                    </td>
+                    <td><input type="text" @bind="row.Instrument.Name"/></td>
+                    <td><input type="text" @bind="row.Instrument.Description"/></td>
+                </tr>
+            }
+        </tbody>
+    </table>    
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="@(e => CommitPost())">
+            <span class="bi bi-floppy"></span>
+        </button>
+    </div>
+
+</div>
+
