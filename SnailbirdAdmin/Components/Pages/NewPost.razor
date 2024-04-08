@@ -2,21 +2,21 @@
 @using SnailbirdData.Models;
 
 
+@page "/newpost/{SuggestedID:int?}"
 
-@page "/newpost"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
 <div class="new-post">
-    <span>ID:</span> <input type="number" @bind="Post.ID"/>
+    <span>ID:</span> <input class="form-control" type="number" @bind="Post.ID"/>
     <br/>
-    <span>Title:</span> <input type="text" @bind="Post.Title"/>
+    <span>Title:</span> <input class="form-control" type="text" @bind="Post.Title" />
     <br/>
-    <span>Date:</span> <input type="date" @bind="Post.PostDate"/>
+    <span>Date:</span> <input class="form-control" type="date" @bind="Post.PostDate" />
     <br/>
-    <span>Preamble:</span>  <input class="paragraph" type="text" @bind="Post.Preamble"/>
+    <span>Preamble:</span>  <textarea class="form-control" type="text" @bind="Post.Preamble" />
     <br/>
-    <span>Video Link:</span> <input type="url" @bind="Post.VideoURL"/>
+    <span>Video Link:</span> <input class="form-control" type="url" @bind="Post.VideoURL" />
     <br/>
     <h5>Intruments:</h5>
     <table class="table">
@@ -36,11 +36,11 @@
                             <span class="bi bi-trash"></span>
                         </button>
                     </td>
-                    <td><input type="text" @bind="instrument.Name"/></td>
-                    <td><input type="text" @bind="instrument.Description"/></td>
+                    <td><input class="form-control" type="text" @bind="instrument.Name"/></td>
+                    <td><input class="form-control" type="text" @bind="instrument.Description"/></td>
                 </tr>
             }
-            @* New Row  *@
+            @* New Row *@
             <tr>
                 <td>
                     <button type="button" class="btn btn-primary" @onclick="@(e => AddNewInstrument())">

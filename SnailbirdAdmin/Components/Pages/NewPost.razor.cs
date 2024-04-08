@@ -10,10 +10,19 @@ namespace SnailbirdAdmin.Components.Pages
         [Inject]
         IDataAdapter<LiveJamPost> PostAdapter { get; set; } = default!;
 
+        [Parameter]
+        public int SuggestedID { get; set; } = 0;
+
         private LiveJamPost Post { get; } = new LiveJamPost();
 
         private List<LiveJamPostInstrument> _instruments = new List<LiveJamPostInstrument>();
         private IEnumerable<LiveJamPostInstrument> Instruments => _instruments;
+
+        protected override void OnInitialized()
+        {
+            Post.ID = SuggestedID;
+            Post.PostDate = DateTime.Today;
+        }
 
         private void AddNewInstrument()
         {
