@@ -31,12 +31,13 @@
 </table>
 
 <div>
-    <NavLink type="button" class="btn btn-primary" href="newpost">Add</NavLink>
+    <NavLink type="button" class="btn btn-primary" href="@AddNewPostLink">Add</NavLink>
 </div>
 
 
 @code {
-    public IEnumerable<SnailbirdData.Models.LiveJamPost> _posts = new SnailbirdData.Models.LiveJamPost[] { };
+    private IEnumerable<SnailbirdData.Models.LiveJamPost> _posts = new SnailbirdData.Models.LiveJamPost[] { };
+    private string AddNewPostLink => $"newpost/{_posts.Count()}";
 
     protected override void OnInitialized()
     {
