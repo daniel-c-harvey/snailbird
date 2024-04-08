@@ -1,7 +1,8 @@
-﻿@using SnailbirdData.Providers;
+﻿@using SnailbirdData.DataAdapters;
 @using SnailbirdData.Models;
 @using Core;
-@inject IPostProvider<SnailbirdData.Models.LiveJamPost> PostProvider
+
+@inject IDataAdapter<SnailbirdData.Models.LiveJamPost> PostAdapter
 
 @page "/posts"
 @rendermode InteractiveServer
@@ -16,6 +17,7 @@
             <th scope="col">#</th>
             <th scope="col">ID</th>
             <th scope="col">Title</th>
+            <th scope="col">Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +27,11 @@
                 <th scope="row">@post.Count</th>
                 <td>@post.Entity.ID</td>
                 <td>@post.Entity.Title</td>
+                <td>
+                    <button type="button" class="btn btn-primary" @onclick="@(e => DeletePost(post.Entity))">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
@@ -41,6 +48,15 @@
 
     protected override void OnInitialized()
     {
-        _posts = PostProvider.GetRecentPosts(0, 25);
+        var results = PostAdapter.GetPage(0, 25);
+        if (results.Success)
+        {
+            _posts = results.Value;
+        }
+    }
+
+    protected void DeletePost(LiveJamPost post)
+    {
+        var results = PostAdapter.Delete(post);
     }
 }
