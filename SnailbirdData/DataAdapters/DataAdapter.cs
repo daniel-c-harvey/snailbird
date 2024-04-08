@@ -14,7 +14,7 @@ namespace SnailbirdData.DataAdapters
         where TDatabase : class
         where TDataAccess : IDataAccess<TDatabase>
         where TQueryBuilder : IQueryBuilder<TDatabase>
-        where TModel : class
+        where TModel : IModel
     {
         protected TDataAccess DataAccess;
         protected TQueryBuilder QueryBuilder;
@@ -37,8 +37,7 @@ namespace SnailbirdData.DataAdapters
             var modelResults = new ResultContainer<IEnumerable<TModel>>();
             try
             {
-                IEnumerable<TModel> models = DataAccess.ExecQuery(QueryBuilder.BuildRetrieve<TModel>(Schema.Collection, pageIndex, pageSize));
-                modelResults.Value = models;
+                modelResults = DataAccess.ExecQuery(QueryBuilder.BuildRetrieve<TModel>(Schema.Collection, pageIndex, pageSize));
                 return modelResults;
             }
             catch (Exception ex) 
@@ -47,9 +46,9 @@ namespace SnailbirdData.DataAdapters
             }
         }
 
-        public Result Delete(int id)
+        public Result Delete(TModel model)
         {
-            throw new NotImplementedException();
+            return DataAccess.ExecNonQuery(QueryBuilder.BuildDelete(Schema.Collection, model));
         }
 
 
