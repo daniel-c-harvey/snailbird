@@ -8,7 +8,10 @@
 @rendermode InteractiveServer
 
 <div class="new-post">
+    <span>ID:</span> <input type="number" @bind="Post.ID"/>
+    <br/>
     <span>Title:</span> <input type="text" @bind="Post.Title"/>
+    <br/>
     <span>Date:</span> <input type="date" @bind="Post.PostDate"/>
     <br/>
     <span>Preamble:</span>  <input class="paragraph" type="text" @bind="Post.Preamble"/>
@@ -25,27 +28,29 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (InstrumentRow row in Instruments)
+            @foreach (LiveJamPostInstrument instrument in Instruments)
             {
                 <tr>
                     <td>
-                        @if (!row.IsNew)
-                        {
-                            <button type="button" class="btn btn-primary" @onclick="@(e => RemoveInstrument(row.Instrument))">
-                                <span class="bi bi-trash"></span>
-                            </button>
-                        }
-                        else
-                        {
-                            <button type="button" class="btn btn-primary" @onclick="@(e => AddNewInstrument())">
-                                <span class="bi bi-plus-circle"></span>
-                            </button>
-                        }
+                        <button type="button" class="btn btn-primary" @onclick="@(e => RemoveInstrument(instrument))">
+                            <span class="bi bi-trash"></span>
+                        </button>
                     </td>
-                    <td><input type="text" @bind="row.Instrument.Name"/></td>
-                    <td><input type="text" @bind="row.Instrument.Description"/></td>
+                    <td><input type="text" @bind="instrument.Name"/></td>
+                    <td><input type="text" @bind="instrument.Description"/></td>
                 </tr>
             }
+            @* New Row  *@
+            <tr>
+                <td>
+                    <button type="button" class="btn btn-primary" @onclick="@(e => AddNewInstrument())">
+                        <span class="bi bi-plus-circle"></span>
+                    </button>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
         </tbody>
     </table>    
     <div>
