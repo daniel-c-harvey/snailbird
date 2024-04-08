@@ -1,4 +1,6 @@
 ﻿@using SnailbirdData.Providers;
+@using SnailbirdData.Models;
+@using Core;
 @inject IPostProvider<SnailbirdData.Models.LiveJamPost> PostProvider
 
 @page "/posts"
@@ -11,18 +13,18 @@
 <table class="table">
     <thead>
         <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Title</th>
-    </tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+        </tr>
     </thead>
     <tbody>
-        @code { int count = 1; }
-        @foreach(SnailbirdData.Models.LiveJamPost post in _posts)
+        @foreach(Counted<LiveJamPost> post in _posts.ZipCounted())
         {
             <tr>
-                <th scope="row">@count</th>
-                <td>@post.ID</td>
-                <td>@post.Title</td>
+                <th scope="row">@post.Count</th>
+                <td>@post.Entity.ID</td>
+                <td>@post.Entity.Title</td>
             </tr>
         }
     </tbody>
