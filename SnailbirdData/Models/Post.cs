@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SnailbirdData.Models
 {
-    public abstract class Post
+    public abstract class Post : DataAccess.IModel
     {
         public int ID { get; set; } = default!;
         public string Title { get; set; } = default!;
