@@ -1,69 +1,88 @@
 ﻿@using System.Linq.Expressions;
 @using Core;
 
-@typeparam TModel
+@typeparam TModel where TModel : class, new()
 
-@attribute [StreamRendering]
+@* @attribute [StreamRendering] *@
 
-
-@if (ModelTable is null || Add is null || Delete is null)
+@if (models is null || columnMap is null)
 {
     <div>Loading...</div>
 }
 else
 {   
-<table class="table">
-    <thead>
-        <tr>
-            @foreach(string caption in ModelTable.Captions)
-            {
-                <th scope="col">@caption</th>                
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (TModel model in ModelTable.Models)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                @foreach (ModelColumn<TModel> column in ModelTable.Columns)
+                <th scope="col">#</th>
+                @foreach(string caption in Captions)
                 {
-                    @if (column.IsHeader)
-                    {
-                        <th scope="row">@column.Binding(model)</th>
-                    }
-                    else
-                    {
-                        <td>
-                            <input type="text" class="form-control" @onchange="e => column.Binding(model)" />
-                        </td>
-                    }
+                <th scope="col">@caption</th>                
                 }
-                <td>
-                    <button type="button" class="btn btn-primary" @onclick="@(e => Delete(model))">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
             </tr>
-        }
-        @* New Row *@
-        <tr>
-            <td>
-                <button type="button" class="btn btn-primary" @onclick="@(e => Add())">
-                    <i class="bi bi-plus-circle"></i>
-                </button>
-            </td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (Counted<TModel> model in Models)
+            {
+                <tr>
+                    <th scope="row">@model.Count</th>
+                    @foreach (ModelColumn<Counted<TModel>> column in Columns)
+                    {
+                    <td>
+                        @if(column.Editable)
+                        {
+                            <input type="text" class="form-control" @onchange="e => column.Binding(model)" value="@column.Binding(model)">
+                        }else{
+                            <span>@column.Binding(model)</span>
+                        }
+                    </td>
+                    }
+                    <td>
+                        <button type="button" class="btn btn-primary" @onclick="@(e => Delete(model))">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="@(e => Add())">
+            <i class="bi bi-plus-circle"></i>
+        </button>
+    </div>
 }
 
-@code {
+@code { 
     [Parameter]
-    public ModelTable<TModel>? ModelTable { get; set; }
+    public IEnumerable<TModel>? models { private get; set; }
     [Parameter]
-    public Action? Add { get; set; }
-    [Parameter]
-    public Action<TModel>? Delete { get; set; }
+    public IDictionary<string, ModelColumn<Counted<TModel>>>? columnMap { private get; set; }
+
+    private IList<Counted<TModel>> _models = new List<Counted<TModel>>();
+    private IDictionary<string, ModelColumn<Counted<TModel>>> _columnMap = new Dictionary<string, ModelColumn<Counted<TModel>>>();
+    
+    public IEnumerable<Counted<TModel>> Models => _models;
+    public IEnumerable<string> Captions => _columnMap.Keys;
+    public IEnumerable<ModelColumn<Counted<TModel>>> Columns => _columnMap.Values;
+
+    protected override void OnInitialized()
+    {
+        if (models is null) throw new ArgumentNullException(nameof(models));
+        if (columnMap is null) throw new ArgumentNullException(nameof(columnMap));
+
+        _models = models.ZipCounted().ToList();
+        _columnMap = columnMap;
+    }
+
+    protected void Add()
+    {
+        _models.Add(new Counted<TModel> {Count = _models.Count() + 1, Entity = new TModel()});
+    }
+
+    protected void Delete(Counted<TModel> model)
+    {
+        _models.SkipWhile(m => m != model).Select(m => --m.Count);
+        _models.Remove(model);
+    }
 }

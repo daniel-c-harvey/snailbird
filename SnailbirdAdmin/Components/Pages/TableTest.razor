@@ -3,44 +3,28 @@
 
 @page "/tabletest"
 
+@rendermode InteractiveServer
+@* @attribute [StreamRendering] *@
+
 <PageTitle>Table Test</PageTitle>
 
 <div>
-    <NewRowTable 
-        TModel="Counted<Model>" 
-        ModelTable="table"
-        Add="_Controller.Add"
-        Delete="_Controller.Delete"/>
+    <NewRowTable TModel="Cash" models="@coins" columnMap="@coinMap"/>
 </div>
 
 @code{
-    private class Model
+    private class Cash
     {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int Dubloons { get; set; }
+        public int Bones { get; set; }
+        public int Clams { get; set; }
     }
-
-    private class TableController
-    {
-        public void Add() { /* Add new item */}
-        public void Delete(Counted<Model> model) { /* Delete me */ }
-    }
-
-    private TableController _Controller = new TableController();
-
-    private IEnumerable<Counted<Model>> models = new[] { new Model { X = 1, Y = 2 }, new Model { X = 3, Y = 4 } }.ZipCounted();
-
-    private ModelTable<Counted<Model>> table;
-    
-    public TableTest()
-    {
-        table = new ModelTable<Counted<Model>>(models, new Dictionary<string, ModelColumn<Counted<Model>>>
+    private IEnumerable<Cash> coins = new[] { new Cash { Dubloons = 1, Bones = 2 }, 
+                                              new Cash { Dubloons = 3, Bones = 4 } };
+    private IDictionary<string, ModelColumn<Counted<Cash>>> coinMap = new Dictionary<string, ModelColumn<Counted<Cash>>>
         {
-            { "#",  new ModelColumn<Counted<Model>>(m => m.Count)},
-            { "X",  new ModelColumn<Counted<Model>>(m => m.Entity.X)},
-            { "Y",  new ModelColumn<Counted<Model>>(m => m.Entity.Y)},
-        });
-    }
-
-    
+            { $"{nameof(Cash.Dubloons)} Caption",  new ModelColumn<Counted<Cash>>(m => m.Entity.Dubloons)},
+            { $"My Fancy {nameof(Cash.Bones)} Caption",  new ModelColumn<Counted<Cash>>(m => m.Entity.Bones)},
+            { $"Editable {nameof(Cash.Clams)} Caption", new ModelColumn<Counted<Cash>>(m => m.Entity.Clams, editable:true)}
+        };    
 }
