@@ -1,0 +1,72 @@
+@using Core;
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Connection String</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Counted<Connection> connection in Connections.ZipCounted())
+        {
+            <tr>
+                <th scope="row">@connection.Count</th>
+                <td><input type="text" class="form-control" @bind="connection.Entity.Name"/></td>
+                <td><input type="text" class="form-control" @bind="connection.Entity.ConnectionString"/></td>
+                <td>
+                    <button type="button" class="btn btn-primary" @onclick="@(e => Delete(connection.Entity))">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+        @* New Row *@
+            <tr>
+                <td>
+                    <button type="button" class="btn btn-primary" @onclick="@(e => Add())">
+                        <i class="bi bi-plus-circle"></i>
+                    </button>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+    </tbody>
+</table>
+<div>
+    <button type="button" class="btn btn-primary" @onclick="@(e => SaveConnections())">
+        <i class="bi bi-floppy"></i>
+    </button>
+</div>
+
+@code {
+    private IList<Connection> Connections { get; }
+
+    public ConnectionManager()
+    {
+        var connections = ConnectionStringTools.LoadFromFile("./.secrets/connections.json");
+        
+        Connections = connections?.ConnectionStrings.ToList() ?? new List<Connection>();
+    }
+
+    private void Delete(Connection connection)
+    {
+        Connections.Remove(connection);
+    }
+
+    private void Add()
+    {
+        Connections.Add(new Connection());
+    }
+
+    private void SaveConnections()
+    {
+        Connections connections = new Connections {ConnectionStrings = Connections};
+        ConnectionStringTools.SaveToFile("./.secrets/connections.json", connections);
+    }
+
+}
