@@ -1,0 +1,46 @@
+﻿@using Core;
+@using RazorCore;
+
+@page "/tabletest"
+
+<PageTitle>Table Test</PageTitle>
+
+<div>
+    <NewRowTable 
+        TModel="Counted<Model>" 
+        ModelTable="table"
+        Add="_Controller.Add"
+        Delete="_Controller.Delete"/>
+</div>
+
+@code{
+    private class Model
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
+    private class TableController
+    {
+        public void Add() { /* Add new item */}
+        public void Delete(Counted<Model> model) { /* Delete me */ }
+    }
+
+    private TableController _Controller = new TableController();
+
+    private IEnumerable<Counted<Model>> models = new[] { new Model { X = 1, Y = 2 }, new Model { X = 3, Y = 4 } }.ZipCounted();
+
+    private ModelTable<Counted<Model>> table;
+    
+    public TableTest()
+    {
+        table = new ModelTable<Counted<Model>>(models, new Dictionary<string, ModelColumn<Counted<Model>>>
+        {
+            { "#",  new ModelColumn<Counted<Model>>(m => m.Count)},
+            { "X",  new ModelColumn<Counted<Model>>(m => m.Entity.X)},
+            { "Y",  new ModelColumn<Counted<Model>>(m => m.Entity.Y)},
+        });
+    }
+
+    
+}
