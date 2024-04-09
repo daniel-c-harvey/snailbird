@@ -12,6 +12,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\RazorCore\RazorCore.csproj" />
     <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
     <ProjectReference Include="C:\lib\snailbird-web\DataAccess\DataAccess.csproj" />
   </ItemGroup>

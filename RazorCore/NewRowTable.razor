@@ -1,0 +1,69 @@
+﻿@using System.Linq.Expressions;
+@using Core;
+
+@typeparam TModel
+
+@attribute [StreamRendering]
+
+
+@if (ModelTable is null || Add is null || Delete is null)
+{
+    <div>Loading...</div>
+}
+else
+{   
+<table class="table">
+    <thead>
+        <tr>
+            @foreach(string caption in ModelTable.Captions)
+            {
+                <th scope="col">@caption</th>                
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (TModel model in ModelTable.Models)
+        {
+            <tr>
+                @foreach (ModelColumn<TModel> column in ModelTable.Columns)
+                {
+                    @if (column.IsHeader)
+                    {
+                        <th scope="row">@column.Binding(model)</th>
+                    }
+                    else
+                    {
+                        <td>
+                            <input type="text" class="form-control" @onchange="e => column.Binding(model)" />
+                        </td>
+                    }
+                }
+                <td>
+                    <button type="button" class="btn btn-primary" @onclick="@(e => Delete(model))">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+        @* New Row *@
+        <tr>
+            <td>
+                <button type="button" class="btn btn-primary" @onclick="@(e => Add())">
+                    <i class="bi bi-plus-circle"></i>
+                </button>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+}
+
+@code {
+    [Parameter]
+    public ModelTable<TModel>? ModelTable { get; set; }
+    [Parameter]
+    public Action? Add { get; set; }
+    [Parameter]
+    public Action<TModel>? Delete { get; set; }
+}
