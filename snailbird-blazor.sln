@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "C:\lib\snailb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnailbirdAdmin", "SnailbirdAdmin\SnailbirdAdmin.csproj", "{510EA036-5C8A-4DDD-8190-05D270BF9751}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorCore", "RazorCore\RazorCore.csproj", "{A6C75C56-9441-462A-89C1-476289FB2907}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorCore", "RazorCore\RazorCore.csproj", "{A6C75C56-9441-462A-89C1-476289FB2907}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -15,7 +15,7 @@
         @foreach(Counted<Connection> connection in Connections.ZipCounted())
         {
             <tr>
-                <th scope="row">@connection.Count</th>
+                <th scope="row">@connection.Ordinal</th>
                 <td><input type="text" class="form-control" @bind="connection.Entity.Name"/></td>
                 <td><input type="text" class="form-control" @bind="connection.Entity.ConnectionString"/></td>
                 <td>

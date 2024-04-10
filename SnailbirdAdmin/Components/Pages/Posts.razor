@@ -24,7 +24,7 @@
         @foreach(Counted<LiveJamPost> post in _posts.ZipCounted())
         {
             <tr>
-                <th scope="row">@post.Count</th>
+                <th scope="row">@post.Ordinal</th>
                 <td>@post.Entity.ID</td>
                 <td>@post.Entity.Title</td>
                 <td>

@@ -3,7 +3,7 @@
 
 @typeparam TModel where TModel : class, new()
 
-@* @attribute [StreamRendering] *@
+@attribute [StreamRendering]
 
 @if (models is null || columnMap is null)
 {
@@ -25,15 +25,15 @@ else
             @foreach (Counted<TModel> model in Models)
             {
                 <tr>
-                    <th scope="row">@model.Count</th>
-                    @foreach (ModelColumn<Counted<TModel>> column in Columns)
+                    <th scope="row">@model.Ordinal</th>
+                    @foreach (ModelColumn<Object> column in Columns)
                     {
                     <td>
                         @if(column.Editable)
                         {
-                            <input type="text" class="form-control" @onchange="e => column.Binding(model)" value="@column.Binding(model)">
+                            <input type="text" class="form-control" @bind:get="column.Getter()" @bind:set="(value) => column.Setter(value)">
                         }else{
-                            <span>@column.Binding(model)</span>
+                            <span>@column.Getter()</span>
                         }
                     </td>
                     }
@@ -53,18 +53,18 @@ else
     </div>
 }
 
-@code { 
+@code {
     [Parameter]
     public IEnumerable<TModel>? models { private get; set; }
     [Parameter]
-    public IDictionary<string, ModelColumn<Counted<TModel>>>? columnMap { private get; set; }
+    public IDictionary<string, ModelColumn<Object>>? columnMap { private get; set; }
 
     private IList<Counted<TModel>> _models = new List<Counted<TModel>>();
-    private IDictionary<string, ModelColumn<Counted<TModel>>> _columnMap = new Dictionary<string, ModelColumn<Counted<TModel>>>();
-    
+    private IDictionary<string, ModelColumn<Object>> _columnMap = new Dictionary<string, ModelColumn<Object>>();
+
     public IEnumerable<Counted<TModel>> Models => _models;
     public IEnumerable<string> Captions => _columnMap.Keys;
-    public IEnumerable<ModelColumn<Counted<TModel>>> Columns => _columnMap.Values;
+    public IEnumerable<ModelColumn<Object>> Columns => _columnMap.Values;
 
     protected override void OnInitialized()
     {
@@ -77,12 +77,13 @@ else
 
     protected void Add()
     {
-        _models.Add(new Counted<TModel> {Count = _models.Count() + 1, Entity = new TModel()});
+        _models.Add(new Counted<TModel> {Ordinal = _models.Count() + 1, Entity = new TModel()});
     }
 
     protected void Delete(Counted<TModel> model)
     {
-        _models.SkipWhile(m => m != model).Select(m => --m.Count);
+        // renumber all the elements after the one being removed
+        _models.Skip(model.Ordinal).Apply(m => --m.Ordinal);
         _models.Remove(model);
     }
 }
