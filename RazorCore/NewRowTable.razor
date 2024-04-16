@@ -27,9 +27,10 @@ else
             {
                 <tr>
                     <th scope="row">@model.Ordinal</th>
-                    @foreach (ModelColumnBase<Counted<TModel>> column in Columns)
+                    @foreach (ModelColumnBase<Counted<TModel>> columnBase in Columns)
                     {
-                    <td>
+                        ModelColumn<Counted<TModel>, int> column = GetColumn<int>(columnBase);
+                        <td>
                         @if(column.Editable)
                         {
                             <input type="text" class="form-control" @bind:get="column.Getter(model)" @bind:set="(value) => column.Setter(model, value)">
@@ -55,17 +56,20 @@ else
 }
 
 @code {
+    #region Parameters
     [Parameter]
     public IEnumerable<TModel>? models { private get; set; }
     [Parameter]
-    public IDictionary<string, ModelColumnBase<Counted<TModel>>>? columnMap { private get; set; }
+    public IColumnMap<Counted<TModel>>? columnMap { private get; set; }
+    #endregion
 
     private IList<Counted<TModel>> _models = new List<Counted<TModel>>();
-    private IDictionary<string, ModelColumnBase<Counted<TModel>>> _columnMap = new Dictionary<string, ModelColumnBase<Counted<TModel>>>();
+    private IColumnMap<Counted<TModel>> _columnMap = new ColumnMap<Counted<TModel>>();
+
 
     public IEnumerable<Counted<TModel>> Models => _models;
-    public IEnumerable<string> Captions => _columnMap.Keys;
-    public IEnumerable<ModelColumnBase<Counted<TModel>>> Columns => _columnMap.Values;
+    public IEnumerable<string> Captions => _columnMap.Captions;
+    public IEnumerable<ModelColumnBase<Counted<TModel>>> Columns => _columnMap.Columns;
 
     protected override void OnInitialized()
     {
@@ -86,5 +90,10 @@ else
         // renumber all the elements after the one being removed
         _models.Skip(model.Ordinal).Apply(m => --m.Ordinal);
         _models.Remove(model);
+    }
+
+    private ModelColumn<Counted<TModel>, T> GetColumn<T>(ModelColumnBase<Counted<TModel>> c)
+    {
+        return new ModelColumn<Counted<TModel>, T>(c);
     }
 }
