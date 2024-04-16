@@ -21,10 +21,10 @@
     }
     private IEnumerable<Cash> coins = new[] { new Cash { Dubloons = 1, Bones = 2 }, 
                                               new Cash { Dubloons = 3, Bones = 4 } };
-    private IDictionary<string, ModelColumn<Counted<Cash, int>>> coinMap = new Dictionary<string, ModelColumn<Counted<Cash, int>>>
+    private IDictionary<string, ModelColumn<Counted<Cash>, int>> coinMap = new Dictionary<string, ModelColumn<Counted<Cash>, int>>
         {
-            { $"{nameof(Cash.Dubloons)} Caption",  new ModelColumn<Counted<Cash, int>>(m => m.Entity.Dubloons, (m,s) => m.Entity.Dubloons = int.TryParse(s))},
-            { $"My Fancy {nameof(Cash.Bones)} Caption",  new ModelColumn<Counted<Cash, int>>(m => m.Entity.Bones, (m,s) => m.Entity.Bones = int.TryParse(s))},
-            { $"Editable {nameof(Cash.Clams)} Caption", new ModelColumn<Counted<Cash, int>>(m => m.Entity.Clams, (m,s) => m.Entity.Clams = int.TryParse(s), editable:true)}
+            { $"{nameof(Cash.Dubloons)} Caption",  new ModelColumn<Counted<Cash>, int>(m => m.Entity.Dubloons, (m,s) => m.Entity.Dubloons = s)},
+            { $"My Fancy {nameof(Cash.Bones)} Caption",  new ModelColumn<Counted<Cash>, int>(m => m.Entity.Bones, (m,s) => m.Entity.Bones = s)},
+            { $"Editable {nameof(Cash.Clams)} Caption", new ModelColumn<Counted<Cash>, int>(m => m.Entity.Clams, (m,s) => m.Entity.Clams = s, editable:true)}
         };    
 }

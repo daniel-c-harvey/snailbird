@@ -1,5 +1,6 @@
 ﻿@using System.Linq.Expressions;
 @using Core;
+@using RazorCore
 
 @typeparam TModel where TModel : class, new()
 
@@ -26,14 +27,14 @@ else
             {
                 <tr>
                     <th scope="row">@model.Ordinal</th>
-                    @foreach (ModelColumn<Object> column in Columns)
+                    @foreach (ModelColumnBase<Counted<TModel>> column in Columns)
                     {
                     <td>
                         @if(column.Editable)
                         {
-                            <input type="text" class="form-control" @bind:get="column.Getter()" @bind:set="(value) => column.Setter(value)">
+                            <input type="text" class="form-control" @bind:get="column.Getter(model)" @bind:set="(value) => column.Setter(model, value)">
                         }else{
-                            <span>@column.Getter()</span>
+                            <span>@column.Getter(model)</span>
                         }
                     </td>
                     }
@@ -57,14 +58,14 @@ else
     [Parameter]
     public IEnumerable<TModel>? models { private get; set; }
     [Parameter]
-    public IDictionary<string, ModelColumn<Object>>? columnMap { private get; set; }
+    public IDictionary<string, ModelColumnBase<Counted<TModel>>>? columnMap { private get; set; }
 
     private IList<Counted<TModel>> _models = new List<Counted<TModel>>();
-    private IDictionary<string, ModelColumn<Object>> _columnMap = new Dictionary<string, ModelColumn<Object>>();
+    private IDictionary<string, ModelColumnBase<Counted<TModel>>> _columnMap = new Dictionary<string, ModelColumnBase<Counted<TModel>>>();
 
     public IEnumerable<Counted<TModel>> Models => _models;
     public IEnumerable<string> Captions => _columnMap.Keys;
-    public IEnumerable<ModelColumn<Object>> Columns => _columnMap.Values;
+    public IEnumerable<ModelColumnBase<Counted<TModel>>> Columns => _columnMap.Values;
 
     protected override void OnInitialized()
     {
