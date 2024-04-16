@@ -9,7 +9,7 @@
 <PageTitle>Table Test</PageTitle>
 
 <div>
-    <NewRowTable TModel="Cash" models="@coins" columnMap="@coinMap" @bind=""/>
+    <NewRowTable TModel="Cash" models="@coins" columnMap="@coinMap"/>
 </div>
 
 @code{
@@ -21,10 +21,16 @@
     }
     private IEnumerable<Cash> coins = new[] { new Cash { Dubloons = 1, Bones = 2 }, 
                                               new Cash { Dubloons = 3, Bones = 4 } };
-    private IDictionary<string, ModelColumn<Counted<Cash>, int>> coinMap = new Dictionary<string, ModelColumn<Counted<Cash>, int>>
-        {
-            { $"{nameof(Cash.Dubloons)} Caption",  new ModelColumn<Counted<Cash>, int>(m => m.Entity.Dubloons, (m,s) => m.Entity.Dubloons = s)},
-            { $"My Fancy {nameof(Cash.Bones)} Caption",  new ModelColumn<Counted<Cash>, int>(m => m.Entity.Bones, (m,s) => m.Entity.Bones = s)},
-            { $"Editable {nameof(Cash.Clams)} Caption", new ModelColumn<Counted<Cash>, int>(m => m.Entity.Clams, (m,s) => m.Entity.Clams = s, editable:true)}
-        };    
+    private IColumnMap<Counted<Cash>> coinMap = new ColumnMap<Counted<Cash>>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        coinMap
+            .AddColumn($"{nameof(Cash.Dubloons)} Caption", new ModelColumn<Counted<Cash>, int>(m => m.Entity.Dubloons, (m, s) => m.Entity.Dubloons = s))
+            .AddColumn($"My Fancy {nameof(Cash.Bones)} Caption", new ModelColumn<Counted<Cash>, int>(m => m.Entity.Bones, (m, s) => m.Entity.Bones = s))
+            .AddColumn($"Editable {nameof(Cash.Clams)} Caption", new ModelColumn<Counted<Cash>, int>(m => m.Entity.Clams, (m, s) => m.Entity.Clams = s, editable: true));
+
+    }
 }
