@@ -1,9 +1,11 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #bababa;
+    background-color: #2b2b2b;
 }
 
 a, .btn-link {
-    color: #006bb7;
+    color: #c45ccf;
 }
 
 .btn-primary {
@@ -48,4 +50,10 @@ h1:focus {
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
+}
+
+
+@font-face {
+    font-family: ImpactLabel;
+    src: url('../font/Impact_Label_Reversed.ttf');
 }
