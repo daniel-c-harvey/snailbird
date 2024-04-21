@@ -1,4 +1,5 @@
 ﻿@using Core;
+@using Core.Converters;
 @using RazorCore;
 
 @page "/tabletest"
@@ -28,9 +29,19 @@
         base.OnInitialized();
         
         coinMap
-            .AddColumn($"{nameof(Cash.Dubloons)} Caption", new ModelColumn<Counted<Cash>, int>(m => m.Entity.Dubloons, (m, s) => m.Entity.Dubloons = s))
-            .AddColumn($"My Fancy {nameof(Cash.Bones)} Caption", new ModelColumn<Counted<Cash>, int>(m => m.Entity.Bones, (m, s) => m.Entity.Bones = s))
-            .AddColumn($"Editable {nameof(Cash.Clams)} Caption", new ModelColumn<Counted<Cash>, int>(m => m.Entity.Clams, (m, s) => m.Entity.Clams = s, editable: true));
+            .AddColumn($"{nameof(Cash.Dubloons)} Caption", 
+                new ModelColumn<Counted<Cash>>(
+                    m => IntConverter.ToString(m.Entity.Dubloons), 
+                    (m, s) => m.Entity.Dubloons = IntConverter.FromString(s)))
+            .AddColumn($"My Fancy {nameof(Cash.Bones)} Caption",
+                new ModelColumn<Counted<Cash>>(
+                    m => IntConverter.ToString(m.Entity.Bones), 
+                    (m, s) => m.Entity.Bones = IntConverter.FromString(s)))
+            .AddColumn($"Editable {nameof(Cash.Clams)} Caption", 
+                new ModelColumn<Counted<Cash>>(
+                    m => IntConverter.ToString(m.Entity.Clams), 
+                    (m, s) => m.Entity.Clams = IntConverter.FromString(s), 
+                    editable: true));
 
     }
 }
