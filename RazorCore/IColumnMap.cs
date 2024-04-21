@@ -4,8 +4,8 @@ namespace RazorCore
     public interface IColumnMap<TModel>
     {
         IEnumerable<string> Captions { get; }
-        IEnumerable<ModelColumnBase<TModel>> Columns { get; }
+        IEnumerable<IModelColumn<TModel>> Columns { get; }
 
-        ColumnMap<TModel> AddColumn(string caption, ModelColumnBase<TModel> column);
+        IColumnMap<TModel> AddColumn(string caption, IModelColumn<TModel> column);
     }
 }
