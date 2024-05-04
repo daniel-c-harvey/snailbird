@@ -1,8 +1,5 @@
-﻿@using SnailbirdData.DataAdapters;
-@using SnailbirdData.Models;
-@using Core;
-
-@inject IDataAdapter<SnailbirdData.Models.LiveJamPost> PostAdapter
+﻿@using SnailbirdData.Models;
+@using RazorCore
 
 @page "/posts"
 @rendermode InteractiveServer
@@ -11,52 +8,19 @@
 
 <h3>Posts</h3>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">ID</th>
-            <th scope="col">Title</th>
-            <th scope="col">Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(Counted<LiveJamPost> post in _posts.ZipCounted())
-        {
-            <tr>
-                <th scope="row">@post.Ordinal</th>
-                <td>@post.Entity.ID</td>
-                <td>@post.Entity.Title</td>
-                <td>
-                    <button type="button" class="btn btn-primary" @onclick="@(e => DeletePost(post.Entity))">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if (CurrentMode == Mode.View)
+{
+    <NewRowTable TModel="LiveJamPost"
+                 models="_posts"
+                 columnMap="columns"
+                 OnAdd="p => AddPost(p)"
+                 OnDelete="p => DeletePost(p)" />
 
-<div>
-    <NavLink type="button" class="btn btn-primary" href="@AddNewPostLink">Add</NavLink>
-</div>
-
-
-@code {
-    private IEnumerable<SnailbirdData.Models.LiveJamPost> _posts = new SnailbirdData.Models.LiveJamPost[] { };
-    private string AddNewPostLink => $"newpost/{_posts.Count()}";
-
-    protected override void OnInitialized()
-    {
-        var results = PostAdapter.GetPage(0, 25);
-        if (results.Success)
-        {
-            _posts = results.Value;
-        }
-    }
-
-    protected void DeletePost(LiveJamPost post)
-    {
-        var results = PostAdapter.Delete(post);
-    }
+} else if (CurrentMode == Mode.Add)
+{
+    <NewPost Post="NewPost"
+             OnCommitPost="p => SaveNewPost(p)"/>
+} else if (CurrentMode == Mode.Edit)
+{
+    @* todo *@
 }

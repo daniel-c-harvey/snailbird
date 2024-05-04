@@ -1,42 +1,16 @@
 @using Core;
+@using RazorCore;
+
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Connection String</th>
-            <th scope="col">Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(Counted<Connection> connection in Connections.ZipCounted())
-        {
-            <tr>
-                <th scope="row">@connection.Ordinal</th>
-                <td><input type="text" class="form-control" @bind="connection.Entity.Name"/></td>
-                <td><input type="text" class="form-control" @bind="connection.Entity.ConnectionString"/></td>
-                <td>
-                    <button type="button" class="btn btn-primary" @onclick="@(e => Delete(connection.Entity))">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        }
-        @* New Row *@
-            <tr>
-                <td>
-                    <button type="button" class="btn btn-primary" @onclick="@(e => Add())">
-                        <i class="bi bi-plus-circle"></i>
-                    </button>
-                </td>
-                <td></td>
-                <td></td>
-            </tr>
-    </tbody>
-</table>
+<NewRowTable 
+    TModel="Connection" 
+    models="Connections" 
+    columnMap="columns" 
+    OnDelete="c => Delete(c)" 
+    OnAdd="c => Add(c)"/> 
+
 <div>
     <button type="button" class="btn btn-primary" @onclick="@(e => SaveConnections())">
         <i class="bi bi-floppy"></i>
@@ -44,6 +18,18 @@
 </div>
 
 @code {
+    private static IColumnMap<Connection> columns = new ColumnMap<Connection>()
+        .AddColumn("Name", 
+            new ModelColumn<Connection>(
+                (c) => c.Name, 
+                (c, name) => c.Name = name,
+                editable:true))
+        .AddColumn("Connection String", 
+            new ModelColumn<Connection>(
+                (c) => c.ConnectionString, 
+                (c, connctionString) => c.ConnectionString = connctionString,
+                editable:true));
+
     private IList<Connection> Connections { get; }
 
     public ConnectionManager()
@@ -58,9 +44,9 @@
         Connections.Remove(connection);
     }
 
-    private void Add()
+    private void Add(Connection connection)
     {
-        Connections.Add(new Connection());
+        Connections.Add(connection);
     }
 
     private void SaveConnections()
