@@ -1,0 +1,36 @@
+﻿@using SnailbirdData.DataAdapters;
+@using SnailbirdData.Models;
+@using RazorCore;
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+<div class="new-post">
+    <span>ID:</span> <input class="form-control" type="number" @bind="Post.ID"/>
+    <br/>
+    <span>Title:</span> <input class="form-control" type="text" @bind="Post.Title" />
+    <br/>
+    <span>Date:</span> <input class="form-control" type="date" @bind="Post.PostDate" />
+    <br/>
+    <span>Preamble:</span>  <textarea class="form-control" type="text" @bind="Post.Preamble" />
+    <br/>
+    <span>Video Link:</span> <input class="form-control" type="url" @bind="Post.VideoURL" />
+    <br/>
+    <h5>Intruments:</h5>
+
+    <NewRowTable
+        TModel="LiveJamPostInstrument"
+        models="Instruments"
+        columnMap="InstrumentColumns"
+        OnAdd="i => AddNewInstrument(i)"
+        OnDelete="i => RemoveInstrument(i)" />
+
+    <hr />
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="@(e => CommitPost())">
+            <span class="bi bi-floppy"></span>
+        </button>
+    </div>
+
+</div>
+
