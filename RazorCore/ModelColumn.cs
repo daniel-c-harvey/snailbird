@@ -28,11 +28,14 @@ namespace RazorCore
 
         public bool Editable { get; }
 
-        public ModelColumn(Func<TModel, string> getter, Action<TModel, string> setter, bool editable = false)
+        public IEnumerable<string>? Choices { get; }
+
+        public ModelColumn(Func<TModel, string> getter, Action<TModel, string> setter, bool editable = false, IEnumerable<string>? choices = null)
         {
             Getter = getter;
             Setter = setter;
             Editable = editable;
+            Choices = choices;
         }
     }
 

@@ -28,14 +28,26 @@ else
             {
                 <tr>
                     <th scope="row">@model.Ordinal</th>
-                    @foreach (IModelColumn<Counted<TModel>> column in Columns)
+                    @foreach (IModelColumn<TModel> column in Columns)
                     {
                     <td>
                         @if(column.Editable)
                         {
-                            <input type="text" class="form-control" @bind:get="column.Getter(model)" @bind:set="(value) => column.Setter(model, value)">
+                            @if(column.Choices is null)
+                            {
+                            <input type="text" class="form-control" @bind:get="column.Getter(model.Entity)" @bind:set="(value) => column.Setter(model.Entity, value)">
+                            }
+                            else
+                            {
+                            <select @bind:get="column.Getter(model.Entity)" @bind:set="(value) => column.Setter(model.Entity, value)">
+                                @foreach(string choice in column.Choices)
+                                {
+                                <option value="@choice">@choice</option>
+                                }
+                            </select>               
+                            }
                         }else{
-                            <span>@column.Getter(model)</span>
+                            <span>@column.Getter(model.Entity)</span>
                         }
                     </td>
                     }
@@ -60,16 +72,20 @@ else
     [Parameter]
     public IEnumerable<TModel>? models { private get; set; }
     [Parameter]
-    public IColumnMap<Counted<TModel>>? columnMap { private get; set; }
+    public IColumnMap<TModel>? columnMap { private get; set; }
+    [Parameter]
+    public Action<TModel>? OnDelete { private get; set; }
+    [Parameter]
+    public Action<TModel>? OnAdd { private get; set; }
     #endregion
 
     private IList<Counted<TModel>> _models = new List<Counted<TModel>>();
-    private IColumnMap<Counted<TModel>> _columnMap = new ColumnMap<Counted<TModel>>();
+    private IColumnMap<TModel> _columnMap = new ColumnMap<TModel>();
 
 
     public IEnumerable<Counted<TModel>> Models => _models;
     public IEnumerable<string> Captions => _columnMap.Captions;
-    public IEnumerable<IModelColumn<Counted<TModel>>> Columns => _columnMap.Columns;
+    public IEnumerable<IModelColumn<TModel>> Columns => _columnMap.Columns;
 
     protected override void OnInitialized()
     {
@@ -82,7 +98,9 @@ else
 
     protected void Add()
     {
-        _models.Add(new Counted<TModel> {Ordinal = _models.Count() + 1, Entity = new TModel()});
+        var model = new TModel();
+        _models.Add(new Counted<TModel> {Ordinal = _models.Count() + 1, Entity = model});
+        if (OnAdd != null) OnAdd(model);
     }
 
     protected void Delete(Counted<TModel> model)
@@ -90,5 +108,7 @@ else
         // renumber all the elements after the one being removed
         _models.Skip(model.Ordinal).Apply(m => --m.Ordinal);
         _models.Remove(model);
+        
+        if (OnDelete != null) OnDelete(model.Entity);
     }
 }

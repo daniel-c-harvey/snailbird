@@ -17,4 +17,9 @@
     <ProjectReference Include="C:\lib\snailbird-web\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <PackageReference Include="Radzen.Blazor" Version="4.29.8" />
+  </ItemGroup>
+
 </Project>
