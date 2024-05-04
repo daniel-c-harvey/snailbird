@@ -22,13 +22,13 @@ namespace SnailbirdAdmin.Components.Pages
             .AddColumn("ID",
                 new ModelColumn<LiveJamPost>(
                     (p) => IntConverter.ToString(p.ID),
-                    (p, id) => p.ID = IntConverter.FromString(id),
-                    editable: true))
+                    (p, id) => p.ID = IntConverter.FromString(id))
+                .MakeEditable())
             .AddColumn("Title",
                 new ModelColumn<LiveJamPost>(
                     (p) => p.Title,
-                    (p, title) => p.Title = title,
-                    editable: true));
+                    (p, title) => p.Title = title)
+                .MakeEditable());
 
         private Mode _currentMode = Mode.View;
         private Mode CurrentMode
