@@ -20,13 +20,13 @@ namespace SnailbirdAdmin.Components.Elements
             .AddColumn("Name",
                 new ModelColumn<LiveJamPostInstrument>(
                     inst => inst.Name,
-                    (inst, name) => inst.Name = name,
-                    editable: true))
+                    (inst, name) => inst.Name = name)
+                .MakeEditable())
             .AddColumn("Description",
                 new ModelColumn<LiveJamPostInstrument>(
                     inst => inst.Description,
-                    (inst, desc) => inst.Description = desc,
-                    editable: true));
+                    (inst, desc) => inst.Description = desc)
+                .MakeEditable());
 
         private void AddNewInstrument(LiveJamPostInstrument instrument)
         {

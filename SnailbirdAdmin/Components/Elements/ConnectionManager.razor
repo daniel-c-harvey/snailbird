@@ -22,13 +22,13 @@
         .AddColumn("Name", 
             new ModelColumn<Connection>(
                 (c) => c.Name, 
-                (c, name) => c.Name = name,
-                editable:true))
+                (c, name) => c.Name = name)
+            .MakeEditable())
         .AddColumn("Connection String", 
             new ModelColumn<Connection>(
                 (c) => c.ConnectionString, 
-                (c, connctionString) => c.ConnectionString = connctionString,
-                editable:true));
+                (c, connctionString) => c.ConnectionString = connctionString)
+            .MakeEditable());
 
     private IList<Connection> Connections { get; }
 

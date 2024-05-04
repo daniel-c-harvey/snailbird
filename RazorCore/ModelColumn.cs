@@ -3,39 +3,34 @@ using Core;
 
 namespace RazorCore
 {
-    //public abstract class ModelColumnBase<TModel> : IModelColumn<TModel>
-    //{
-    //    protected Type Type { get; set; }
-    //    public Action<TModel, string> Setter { get; }
-    //    public Func<TModel, string> Getter { get; }
-
-    //    public bool Editable { get; }
-
-    //    protected ModelColumnBase(Type type, Func<TModel, string> getter, Action<TModel, string> setter, bool editable = false)
-    //    {
-    //        Type = type;
-    //        Getter = getter;
-    //        Setter = setter;
-    //        Editable = editable;
-    //    }
-    //}
-
 
     public class ModelColumn<TModel> : IModelColumn<TModel>
     {
         public Action<TModel, string> Setter { get; }
         public Func<TModel, string> Getter { get; }
 
-        public bool Editable { get; }
+        public bool Editable { get; private set; }
 
-        public IEnumerable<string>? Choices { get; }
+        public IEnumerable<string>? Choices { get; private set; }
 
-        public ModelColumn(Func<TModel, string> getter, Action<TModel, string> setter, bool editable = false, IEnumerable<string>? choices = null)
+        public ModelColumn(Func<TModel, string> getter, Action<TModel, string> setter)
         {
             Getter = getter;
             Setter = setter;
-            Editable = editable;
+            Editable = false;
+            Choices = null;
+        }
+
+        public ModelColumn<TModel> MakeEditable()
+        {
+            Editable = true;
+            return this;
+        }
+
+        public ModelColumn<TModel> MakeChoosable(IEnumerable<string>? choices)
+        {
             Choices = choices;
+            return this;
         }
     }
 

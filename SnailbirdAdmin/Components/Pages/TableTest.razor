@@ -45,14 +45,14 @@
             .AddColumn($"Editable {nameof(Cash.Clams)} Caption",
                 new ModelColumn<Cash>(
                     m => IntConverter.ToString(m.Clams),
-                    (m, s) => m.Clams = IntConverter.FromString(s),
-                    editable: true))
+                    (m, s) => m.Clams = IntConverter.FromString(s))
+                .MakeEditable())
             .AddColumn("Currency",
                 new ModelColumn<Cash>(
                     model => model.Currency,
-                    (model, value) => model.Currency = value,
-                    editable:true,
-                    choices:currencies));
+                    (model, value) => model.Currency = value)
+                .MakeEditable()
+                .MakeChoosable(choices:currencies));
 
     }
 
