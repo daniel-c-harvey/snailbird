@@ -1,4 +1,5 @@
 @using Core;
+@using Core.Converters;
 @using RazorCore;
 
 @rendermode InteractiveServer
@@ -19,6 +20,11 @@
 
 @code {
     private static IColumnMap<Connection> columns = new ColumnMap<Connection>()
+        .AddColumn("ID",
+            new ModelColumn<Connection>(
+                (c) => LongConverter.ToString(c.ID),
+                (c, id) => c.ID = LongConverter.FromString(id))
+            .MakeEditable())
         .AddColumn("Name", 
             new ModelColumn<Connection>(
                 (c) => c.Name, 

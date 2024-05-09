@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
+    <ProjectReference Include="C:\lib\snailbird-web\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

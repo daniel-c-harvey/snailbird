@@ -13,38 +13,33 @@ namespace RazorCore
 
         public IEnumerable<string>? Choices { get; private set; }
 
+        public Action<TModel>? ClickAction { get; private set; }
+
         public ModelColumn(Func<TModel, string> getter, Action<TModel, string> setter)
         {
             Getter = getter;
             Setter = setter;
             Editable = false;
             Choices = null;
+            ClickAction = null;
         }
 
-        public ModelColumn<TModel> MakeEditable()
+        public IModelColumn<TModel> MakeEditable()
         {
             Editable = true;
             return this;
         }
 
-        public ModelColumn<TModel> MakeChoosable(IEnumerable<string>? choices)
+        public IModelColumn<TModel> MakeChoosable(IEnumerable<string>? choices)
         {
             Choices = choices;
             return this;
         }
+
+        public IModelColumn<TModel> MakeClickable(Action<TModel> action)
+        {
+            ClickAction = action;
+            return this;
+        }
     }
-
-
-    //public class ModelColumn<TModel, TType> : ModelColumnBase<TModel>
-    //{ 
-    //    public ModelColumn(Func<TModel, TType> getter, Action<TModel, TType> setter, bool editable = false)
-    //        : base(typeof(TType), (model) => getter(model), (model, value) => setter(model, (TType)value), editable) { }
-
-    //    public ModelColumn(ModelColumnBase<TModel> c)
-    //        : base(typeof(TType), (model) => c.Getter(model), (model, value) => c.Setter(model, (TType)value), c.Editable) { }
-
-    //    public new Action<TModel, TType> Setter => (model, value) => base.Setter(model, value);
-    //    public new Func<TModel, TType> Getter => (model) => (TType)base.Getter(model);
-
-    //}
 }
