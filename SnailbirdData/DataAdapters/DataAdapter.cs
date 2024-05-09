@@ -70,7 +70,12 @@ namespace SnailbirdData.DataAdapters
         
         public Result Update(TModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DataAccess.ExecNonQuery(QueryBuilder.BuildReplace(Schema.Collection, model));
+            }
+            catch (Exception e) { return Result.CreateFailResult($"Database error: {e.Message}"); }
+            return Result.CreatePassResult();
         }
 
         

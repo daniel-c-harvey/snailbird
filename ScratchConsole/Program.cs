@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DataAccess;
+using Newtonsoft.Json;
 using SnailbirdData.Models;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,8 @@ namespace ScratchConsole
             //JsonSerializer serializer = new JsonSerializer() { Formatting = Formatting.Indented };
             //serializer.Serialize(x);
             //Console.WriteLine(JsonConvert.SerializeObject(x));
+
+            var x = new MongoObject<LiveJamPost>() { Document = new LiveJamPost() { ID = 12345678} };
         }
     }
 }

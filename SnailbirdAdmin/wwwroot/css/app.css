@@ -6,6 +6,11 @@ html, body {
 
 a, .btn-link {
     color: #c45ccf;
+    text-decoration: none;
+}
+
+a:hover, .btn-link:hover {
+    cursor: pointer;
 }
 
 .btn-primary {

@@ -13,14 +13,16 @@
     <NewRowTable TModel="LiveJamPost"
                  models="_posts"
                  columnMap="columns"
-                 OnAdd="p => AddPost(p)"
-                 OnDelete="p => DeletePost(p)" />
-
-} else if (CurrentMode == Mode.Add)
+                 OnAdd="AddPost"
+                 OnDelete="DeletePost" />
+} 
+else if (CurrentMode == Mode.Add)
 {
-    <NewPost Post="NewPost"
-             OnCommitPost="p => SaveNewPost(p)"/>
-} else if (CurrentMode == Mode.Edit)
+    <EditPost Post="Post"
+              OnCommitPost="SaveNewPost" />
+} 
+else if (CurrentMode == Mode.Edit)
 {
-    @* todo *@
+    <EditPost Post="Post"
+              OnCommitPost="SavePost" />
 }

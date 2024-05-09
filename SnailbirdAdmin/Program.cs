@@ -4,6 +4,7 @@ using SnailbirdData;
 using SnailbirdData.DataAdapters;
 using SnailbirdData.Models;
 using SnailbirdData.Providers;
+using MongoDB.Driver;
 
 namespace SnailbirdAdmin
 {
@@ -40,28 +41,28 @@ namespace SnailbirdAdmin
             app.Run();
         }
 
-        private static void AddGlobalServices(IServiceCollection col)
+        private static void AddGlobalServices(IServiceCollection services)
         {
-            var dataResources = new DataResources<MongoDB.Driver.IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
+            var dataAccess = new MongoDataAccess
             (
-                new MongoDataAccess(
-                    Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird")
-                        .ConnectionString,
-                        "snailbird-dev"
-                    ),
-                new MongoQueryBuilder()
+                Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird").ConnectionString,
+                "snailbird-dev"
             );
 
-            MongoAdapter<LiveJamPost> postAdapter = new MongoAdapter<LiveJamPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("posts"));
+            var queryBuilder = new MongoQueryBuilder();
 
-            col
-            .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>
-            (provider =>
-            {
-                return postAdapter;
-            })
-            .AddSingleton<IPostProvider<LiveJamPost>, PostMongoProvider>
-            (provider => new PostMongoProvider(postAdapter));
+            var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
+            (
+                dataAccess,
+                queryBuilder
+            );
+
+            MongoAdapter<LiveJamPost> postAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("posts"));
+
+            services
+            .AddSingleton<IDataAccess<IMongoDatabase>,MongoDataAccess>(provider => dataAccess)
+            .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>(provider => postAdapter)
+            .AddSingleton<IPostProvider<LiveJamPost>, PostMongoProvider>(provider => new PostMongoProvider(postAdapter));
 
         }
     }

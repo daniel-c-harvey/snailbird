@@ -37,7 +37,8 @@
             .AddColumn($"{nameof(Cash.Dubloons)} Caption",
                 new ModelColumn<Cash>(
                     m => IntConverter.ToString(m.Dubloons),
-                    (m, s) => m.Dubloons = IntConverter.FromString(s)))
+                    (m, s) => m.Dubloons = IntConverter.FromString(s))
+                .MakeClickable(m => m.Dubloons++))
             .AddColumn($"My Fancy {nameof(Cash.Bones)} Caption",
                 new ModelColumn<Cash>(
                     m => IntConverter.ToString(m.Bones),

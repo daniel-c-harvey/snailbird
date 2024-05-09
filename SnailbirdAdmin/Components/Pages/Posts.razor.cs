@@ -1,8 +1,8 @@
-﻿using SnailbirdData.DataAdapters;
-using SnailbirdData.Models;
-using RazorCore;
+﻿using Microsoft.AspNetCore.Components;
 using Core.Converters;
-using Microsoft.AspNetCore.Components;
+using RazorCore;
+using SnailbirdData.DataAdapters;
+using SnailbirdData.Models;
 
 namespace SnailbirdAdmin.Components.Pages
 {
@@ -11,27 +11,17 @@ namespace SnailbirdAdmin.Components.Pages
         [Inject]
         IDataAdapter<LiveJamPost> PostAdapter { get; set; } = default!;
 
-        private enum Mode
+        protected enum Mode
         {
             View,
             Add,
             Edit
         }
 
-        private static IColumnMap<LiveJamPost> columns = new ColumnMap<LiveJamPost>()
-            .AddColumn("ID",
-                new ModelColumn<LiveJamPost>(
-                    (p) => IntConverter.ToString(p.ID),
-                    (p, id) => p.ID = IntConverter.FromString(id))
-                .MakeEditable())
-            .AddColumn("Title",
-                new ModelColumn<LiveJamPost>(
-                    (p) => p.Title,
-                    (p, title) => p.Title = title)
-                .MakeEditable());
+        private IColumnMap<LiveJamPost> columns = default!;
 
         private Mode _currentMode = Mode.View;
-        private Mode CurrentMode
+        protected Mode CurrentMode
         {
             get { return _currentMode; }
             set
@@ -40,11 +30,26 @@ namespace SnailbirdAdmin.Components.Pages
                 StateHasChanged();
             }
         }
-        private LiveJamPost? NewPost = null;
-        private IEnumerable<SnailbirdData.Models.LiveJamPost> _posts = new SnailbirdData.Models.LiveJamPost[] { };
+        private LiveJamPost? Post = null;
+        private IEnumerable<LiveJamPost>? _posts = null;
 
         protected override void OnInitialized()
         {
+            columns = new ColumnMap<LiveJamPost>()
+                .AddColumn("ID",
+                    new ModelColumn<LiveJamPost>(
+                        (p) => LongConverter.ToString(p.ID),
+                        (p, id) => p.ID = LongConverter.FromString(id)))
+                .AddColumn("Title",
+                    new ModelColumn<LiveJamPost>(
+                        (p) => p.Title,
+                        (p, title) => p.Title = title)
+                    .MakeClickable(EditPost))
+                .AddColumn("Date",
+                    new ModelColumn<LiveJamPost>(
+                        (p) => DateTimeConverter.ToShortDate(p.PostDate),
+                        (p, date) => p.PostDate = DateTimeConverter.FromString(date)));
+
             var results = PostAdapter.GetPage(0, 25);
             if (results.Success)
             {
@@ -54,10 +59,15 @@ namespace SnailbirdAdmin.Components.Pages
 
         protected void AddPost(LiveJamPost post)
         {
-            NewPost = post;
-            NewPost.ID = _posts.Count();
+            Post = post;
+            Post.ID = _posts.Count();
             CurrentMode = Mode.Add;
-            //StateHasChanged();
+        }
+
+        protected void EditPost(LiveJamPost post)
+        {
+            Post = post;
+            CurrentMode = Mode.Edit;
         }
 
         protected void DeletePost(LiveJamPost post)

@@ -5,11 +5,11 @@ using SnailbirdData.Models;
 
 namespace SnailbirdAdmin.Components.Elements
 {
-    public partial class NewPost : ComponentBase
+    public partial class EditPost
     {
         [Parameter]
         public Action<LiveJamPost> OnCommitPost { get; set; } = default!;
-
+        
         [Parameter]
         public LiveJamPost Post { get; set; }
 
@@ -27,6 +27,12 @@ namespace SnailbirdAdmin.Components.Elements
                     inst => inst.Description,
                     (inst, desc) => inst.Description = desc)
                 .MakeEditable());
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            _instruments = Post.Instruments.ToList();
+        }
 
         private void AddNewInstrument(LiveJamPostInstrument instrument)
         {

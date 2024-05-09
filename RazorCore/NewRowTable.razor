@@ -31,23 +31,36 @@ else
                     @foreach (IModelColumn<TModel> column in Columns)
                     {
                     <td>
-                        @if(column.Editable)
+                        @if (column.ClickAction is not null)
                         {
-                            @if(column.Choices is null)
+                            <span class="btn-link" @onclick="_ => column.ClickAction(model.Entity)">@column.Getter(model.Entity)</span>
+                        }
+                        else
+                        {
+                            @if(column.Editable)
                             {
-                            <input type="text" class="form-control" @bind:get="column.Getter(model.Entity)" @bind:set="(value) => column.Setter(model.Entity, value)">
-                            }
-                            else
-                            {
-                            <select @bind:get="column.Getter(model.Entity)" @bind:set="(value) => column.Setter(model.Entity, value)">
-                                @foreach(string choice in column.Choices)
-                                {
-                                <option value="@choice">@choice</option>
+                                @if(column.Choices is null)
+                                {                                
+                                <input type="text" 
+                                       class="form-control" 
+                                       @bind:get="column.Getter(model.Entity)" 
+                                       @bind:set="(value) => column.Setter(model.Entity, value)">
                                 }
-                            </select>               
-                            }
-                        }else{
+                                else
+                                {
+                                <select @bind:get="column.Getter(model.Entity)" 
+                                        @bind:set="(value) => column.Setter(model.Entity, value)">
+
+                                    @foreach(string choice in column.Choices)
+                                    {
+                                    <option value="@choice">@choice</option>
+                                    }
+
+                                </select>               
+                                }
+                            }else{
                             <span>@column.Getter(model.Entity)</span>
+                            }
                         }
                     </td>
                     }
