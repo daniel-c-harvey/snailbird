@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RazorCore;
-using SnailbirdData.DataAdapters;
 using SnailbirdData.Models;
 
-namespace SnailbirdAdmin.Components.Elements
+namespace SnailbirdAdmin.Views
 {
     public partial class EditPost
     {
         [Parameter]
         public Action<LiveJamPost> OnCommitPost { get; set; } = default!;
-        
+
         [Parameter]
         public LiveJamPost Post { get; set; }
 
