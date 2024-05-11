@@ -45,7 +45,7 @@ namespace SnailbirdAdmin
         {
             var dataAccess = new MongoDataAccess
             (
-                Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird").ConnectionString,
+                Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird-admin").ConnectionString,
                 "snailbird-dev"
             );
 

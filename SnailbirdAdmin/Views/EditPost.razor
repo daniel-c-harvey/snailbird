@@ -2,8 +2,6 @@
 @using SnailbirdData.Models;
 @using RazorCore;
 
-@attribute [StreamRendering]
-@rendermode InteractiveServer
 
 <div class="new-post">
     <span>ID:</span> <input class="form-control" type="number" @bind="Post.ID" disabled/>
@@ -31,6 +29,5 @@
             <span class="bi bi-floppy"></span>
         </button>
     </div>
-
 </div>
 
