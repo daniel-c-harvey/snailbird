@@ -1,5 +1,6 @@
 ﻿using Core;
 using DataAccess;
+using SnailbirdAdmin.Messages;
 
 namespace SnailbirdAdmin
 {
@@ -10,12 +11,12 @@ namespace SnailbirdAdmin
         ChangeDatabase
     }
 
-    public abstract class ConnectionChooserMessage<TDatabase>
+    public abstract class ConnectionChooserMessage<TDatabase> : MessageBase<ConnectionChooserAction>
     {
         public IDataAccess<TDatabase> DataAccess { get; }
-        public virtual ConnectionChooserAction Action => ConnectionChooserAction.Unimplemented;
 
-        public ConnectionChooserMessage(IDataAccess<TDatabase> dataAccess)
+        public ConnectionChooserMessage(ConnectionChooserAction action, IDataAccess<TDatabase> dataAccess)
+        : base(action)
         {
             DataAccess = dataAccess;
         }
@@ -23,11 +24,10 @@ namespace SnailbirdAdmin
 
     public class ConnectionChooserChangeConnectionMessage<TDatabase> : ConnectionChooserMessage<TDatabase>
     {
-        public override ConnectionChooserAction Action => ConnectionChooserAction.ChangeConnection;
         public long ConnectionID { get; private set; }
 
         public ConnectionChooserChangeConnectionMessage(IDataAccess<TDatabase> dataAccess, long connectionID)
-            : base(dataAccess)
+            : base(ConnectionChooserAction.ChangeConnection, dataAccess)
         {
             ConnectionID = connectionID;
         }
@@ -35,11 +35,10 @@ namespace SnailbirdAdmin
     
     public class ConnectionChooserChangeDatabaseMessage<TDatabase> : ConnectionChooserMessage<TDatabase>
     {
-        public override ConnectionChooserAction Action => ConnectionChooserAction.ChangeDatabase;
         public string DatabaseName { get; private set; }
 
         public ConnectionChooserChangeDatabaseMessage(IDataAccess<TDatabase> dataAccess, string databaseName)
-            : base(dataAccess)
+            : base(ConnectionChooserAction.ChangeDatabase, dataAccess)
         {
             DatabaseName = databaseName;
         }

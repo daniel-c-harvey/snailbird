@@ -1,28 +1,18 @@
-﻿@using SnailbirdData.Models;
-@using RazorCore
+﻿@using SnailbirdAdmin.Models;
 
 @page "/posts"
-@rendermode InteractiveServer
 
 <PageTitle>Posts</PageTitle>
 
-<h3>Posts</h3>
+<NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
+    <PostManager @ref="postManager"/>
+</NavPanel>
 
-@if (CurrentMode == Mode.View)
-{
-    <NewRowTable TModel="LiveJamPost"
-                 models="_posts"
-                 columnMap="columns"
-                 OnAdd="AddPost"
-                 OnDelete="DeletePost" />
-} 
-else if (CurrentMode == Mode.Add)
-{
-    <EditPost Post="Post"
-              OnCommitPost="SaveNewPost" />
-} 
-else if (CurrentMode == Mode.Edit)
-{
-    <EditPost Post="Post"
-              OnCommitPost="SavePost" />
+@code{
+    private PostManager postManager;
+
+    private PostManager GetPostManager()
+    {
+        return postManager;
+    }
 }
