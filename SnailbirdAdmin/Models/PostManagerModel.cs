@@ -1,4 +1,5 @@
-﻿using SnailbirdData.Models;
+﻿using RazorCore.Navigation;
+using SnailbirdData.Models;
 
 namespace SnailbirdAdmin.Models
 {
@@ -9,7 +10,7 @@ namespace SnailbirdAdmin.Models
         Edit
     }
 
-    public class PostManagerModel
+    public class PostManagerModel : IMode<PostManagerMode>
     {
         public IEnumerable<LiveJamPost> Posts { get; set; }
         public LiveJamPost Post { get; set; }

@@ -1,0 +1,20 @@
+﻿@typeparam TMode
+
+<div class="nav-panel">
+    <div class="nav-bar">
+        <button type="button" class="btn btn-outline-primary" @onclick="OnNavigateBack">
+            <span class="bi bi-arrow-left"></span>
+        </button>
+    </div>
+    <div class="nav-body">
+        @if (ChildContent is null)
+        {
+            <span>Loading...</span>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </div>
+</div>
+
