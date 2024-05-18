@@ -1,7 +1,5 @@
 ﻿<div class="post">
-    <NavLink href="Studio/post=live-jam-2024-03-27">
-        <h1 class="pink header">@Post.Title</h1>
-    </NavLink>
+    <h1 class="pink header" @onclick="OnHeaderClick">@Post.Title</h1>
     <h3 class="aqua date header">@Post.PostDate.ToShortDateString()</h3>
     <p>
         @Post.Preamble
@@ -24,6 +22,17 @@
 </ul>
 </div>
 @code {
-    [Parameter]
-    public SnailbirdData.Models.LiveJamPost Post { get; set; } = default!;
+        [Parameter]
+        public SnailbirdData.Models.LiveJamPost Post { get; set; } = default!;
+
+        [Parameter]
+        public EventCallback<SnailbirdData.Models.LiveJamPost> OnSelect { get; set; }
+
+        private async Task OnHeaderClick(MouseEventArgs e)
+        {
+            if (OnSelect.HasDelegate)
+            {
+                await OnSelect.InvokeAsync(Post);
+            }
+        }
 }

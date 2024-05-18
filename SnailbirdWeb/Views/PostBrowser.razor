@@ -1,0 +1,8 @@
+﻿
+@if(model != null)
+{   
+    @if(CurrentMode == Models.PostBrowserMode.Feed)
+    {
+        <PostFeed Posts="@model.Feed.Posts" OnSelect="ViewPost"/>
+    }
+}
