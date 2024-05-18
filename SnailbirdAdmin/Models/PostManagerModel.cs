@@ -1,5 +1,5 @@
 ﻿using RazorCore.Navigation;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.Models
 {

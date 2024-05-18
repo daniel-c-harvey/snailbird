@@ -1,6 +1,6 @@
 ﻿using DataAccess;
 using Newtonsoft.Json;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -13,7 +13,7 @@
         </iframe>
     </div>
     <ul class="songdetails">
-        @foreach(SnailbirdData.Models.LiveJamPostInstrument instrument in Post.Instruments)
+        @foreach(SnailbirdData.Models.Post.Instrument instrument in Post.Instruments)
         {
             <li>
                 <span class="instrument">@instrument.Name:</span> @instrument.Description
@@ -23,10 +23,10 @@
 </div>
 @code {
         [Parameter]
-        public SnailbirdData.Models.LiveJamPost Post { get; set; } = default!;
+        public SnailbirdData.Models.Post.LiveJamPost Post { get; set; } = default!;
 
         [Parameter]
-        public EventCallback<SnailbirdData.Models.LiveJamPost> OnSelect { get; set; }
+        public EventCallback<SnailbirdData.Models.Post.LiveJamPost> OnSelect { get; set; }
 
         private async Task OnHeaderClick(MouseEventArgs e)
         {

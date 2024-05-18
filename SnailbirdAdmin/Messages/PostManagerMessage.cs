@@ -1,5 +1,4 @@
-﻿using SnailbirdData.Models;
-using SnailbirdData.DataAdapters;
+﻿using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.Messages
 {

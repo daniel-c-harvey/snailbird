@@ -2,7 +2,7 @@
 using Core.Converters;
 using RazorCore;
 using SnailbirdData.DataAdapters;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 using SnailbirdAdmin.Updates;
 using Microsoft.AspNetCore.Components.Routing;
 using SnailbirdAdmin.Models;

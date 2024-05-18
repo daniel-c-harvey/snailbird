@@ -1,8 +1,7 @@
-﻿using SnailbirdData.Models;
-using SnailbirdData.Providers;
+﻿using SnailbirdData.DataAdapters;
+using SnailbirdData.Models.Post;
 using SnailbirdWeb.Models;
 using SnailbirdWeb.Messages;
-using SnailbirdData.DataAdapters;
 
 namespace SnailbirdWeb.Updates
 {

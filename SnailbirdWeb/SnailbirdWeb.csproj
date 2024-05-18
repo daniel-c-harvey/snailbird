@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Posts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RazorCore\RazorCore.csproj" />
     <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
     <ProjectReference Include="C:\lib\snailbird-web\Core\Core.csproj" />

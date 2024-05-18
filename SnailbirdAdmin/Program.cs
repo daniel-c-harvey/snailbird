@@ -2,7 +2,7 @@ using SnailbirdAdmin.Components;
 using DataAccess;
 using SnailbirdData;
 using SnailbirdData.DataAdapters;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 using SnailbirdData.Providers;
 using MongoDB.Driver;
 

@@ -1,6 +1,6 @@
 ﻿using Core;
 using RazorCore.Navigation;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdWeb.Models
 {
