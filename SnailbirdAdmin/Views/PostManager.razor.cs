@@ -7,6 +7,7 @@ using SnailbirdAdmin.Updates;
 using Microsoft.AspNetCore.Components.Routing;
 using SnailbirdAdmin.Models;
 using SnailbirdAdmin.Messages;
+using RazorCore.Navigation;
 
 namespace SnailbirdAdmin.Views
 {
@@ -114,19 +115,19 @@ namespace SnailbirdAdmin.Views
         }
 
         #region "INavigable"
+        public INavigator<PostManagerMode> Navigator { get; private set; }
         private void InitNavigation()
         {
-            ModeChanging += (_) => StateHasChanged();
+            Navigator = new Navigator<PostManagerMode, PostManagerModel>(model); 
+            Navigator.ModeChanging += (_) => StateHasChanged();
         }
 
         public PostManagerMode CurrentMode => model.CurrentMode;
-
-        public event ModeChangeEventHandler<PostManagerMode>? ModeChanging;
         private void BeforeModeChange()
         {
-            if (model != null && ModeChanging != null)
+            if (model != null)
             {
-                ModeChanging(new ModeChangeEventArgs<PostManagerMode>(model.CurrentMode));
+                Navigator.OnForward();
             }
         }
 
