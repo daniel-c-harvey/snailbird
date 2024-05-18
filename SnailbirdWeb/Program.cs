@@ -3,10 +3,8 @@ using SnailbirdData.Providers;
 using SnailbirdWeb.Components;
 using DataAccess;
 using MongoDB.Driver;
-using SnailbirdData;
 using SnailbirdData.DataAdapters;
-using SnailbirdData.Models;
-using Microsoft.AspNetCore.Http.Extensions;
+using SnailbirdData.Models.Post;
 
 var builder = WebApplication.CreateBuilder(args);
 

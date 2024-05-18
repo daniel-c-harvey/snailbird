@@ -5,7 +5,7 @@
 }
 else
 {    
-    @foreach(SnailbirdData.Models.LiveJamPost post in Posts)
+    @foreach(SnailbirdData.Models.Post.LiveJamPost post in Posts)
     {
         <LiveJamPost Post=@post OnSelect="OnSelectPost"/>
     }
@@ -14,12 +14,12 @@ else
 
 @code {
     [Parameter]
-    public IEnumerable<SnailbirdData.Models.LiveJamPost>? Posts { get; set; }
+    public IEnumerable<SnailbirdData.Models.Post.LiveJamPost>? Posts { get; set; }
 
     [Parameter]
-    public EventCallback<SnailbirdData.Models.LiveJamPost> OnSelect { get; set; }
+    public EventCallback<SnailbirdData.Models.Post.LiveJamPost> OnSelect { get; set; }
 
-    private async Task OnSelectPost(SnailbirdData.Models.LiveJamPost post)
+    private async Task OnSelectPost(SnailbirdData.Models.Post.LiveJamPost post)
     {
         if (OnSelect.HasDelegate)
         {

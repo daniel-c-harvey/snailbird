@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnailbirdData.Models
+namespace SnailbirdData.Models.Post
 {
     public abstract class Post : DataAccess.IModel
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RazorCore;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.Views
 {
@@ -12,17 +12,17 @@ namespace SnailbirdAdmin.Views
         [Parameter]
         public LiveJamPost Post { get; set; }
 
-        private List<LiveJamPostInstrument> _instruments = new List<LiveJamPostInstrument>();
-        private IEnumerable<LiveJamPostInstrument> Instruments => _instruments;
+        private List<Instrument> _instruments = new List<Instrument>();
+        private IEnumerable<Instrument> Instruments => _instruments;
 
-        private static IColumnMap<LiveJamPostInstrument> InstrumentColumns = new ColumnMap<LiveJamPostInstrument>()
+        private static IColumnMap<Instrument> InstrumentColumns = new ColumnMap<Instrument>()
             .AddColumn("Name",
-                new ModelColumn<LiveJamPostInstrument>(
+                new ModelColumn<Instrument>(
                     inst => inst.Name,
                     (inst, name) => inst.Name = name)
                 .MakeEditable())
             .AddColumn("Description",
-                new ModelColumn<LiveJamPostInstrument>(
+                new ModelColumn<Instrument>(
                     inst => inst.Description,
                     (inst, desc) => inst.Description = desc)
                 .MakeEditable());
@@ -33,13 +33,13 @@ namespace SnailbirdAdmin.Views
             _instruments = Post.Instruments.ToList();
         }
 
-        private void AddNewInstrument(LiveJamPostInstrument instrument)
+        private void AddNewInstrument(Instrument instrument)
         {
             _instruments.Add(instrument);
         }
 
 
-        private void RemoveInstrument(LiveJamPostInstrument instrument)
+        private void RemoveInstrument(Instrument instrument)
         {
             _instruments.Remove(instrument);
         }

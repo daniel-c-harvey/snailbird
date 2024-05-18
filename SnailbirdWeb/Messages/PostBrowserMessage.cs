@@ -1,6 +1,6 @@
 ﻿using Core;
 using SnailbirdAdmin.Messages;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdWeb.Messages
 {

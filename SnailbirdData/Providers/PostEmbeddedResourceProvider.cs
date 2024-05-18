@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Providers
 {
     public class PostEmbeddedResourceProvider<TPost> : IPostProvider<TPost>
-        where TPost : Models.Post
+        where TPost : Post
     {
         public TPost GetPost(int id)
         {

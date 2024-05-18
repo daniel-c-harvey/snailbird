@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using DataAccess;
 using SnailbirdData;
 using SnailbirdData.DataAdapters;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Providers
 {

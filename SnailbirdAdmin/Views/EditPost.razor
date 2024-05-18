@@ -1,5 +1,5 @@
 ﻿@using SnailbirdData.DataAdapters;
-@using SnailbirdData.Models;
+@using SnailbirdData.Models.Post;
 @using RazorCore;
 
 
@@ -17,7 +17,7 @@
     <h5>Intruments:</h5>
 
     <NewRowTable
-        TModel="LiveJamPostInstrument"
+        TModel="Instrument"
         models="Instruments"
         columnMap="InstrumentColumns"
         OnAdd="i => AddNewInstrument(i)"

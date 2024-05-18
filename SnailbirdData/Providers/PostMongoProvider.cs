@@ -1,7 +1,7 @@
 ﻿using DataAccess;
 using MongoDB.Driver;
 using SnailbirdData.DataAdapters;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;

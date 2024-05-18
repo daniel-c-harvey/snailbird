@@ -4,18 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnailbirdData.Models
+namespace SnailbirdData.Models.Post
 {
-    public class LiveJamPostInstrument
-    {
-        public string Name { get; set; } = default!;
-        public string Description { get; set; } = default!;
-    }
-
     public class LiveJamPost : Post
     {
         public string Preamble { get; set; } = default!;
         public string VideoURL { get; set; } = default!;
-        public IEnumerable<LiveJamPostInstrument> Instruments { get; set; } = new List<LiveJamPostInstrument>();
+        public IEnumerable<Instrument> Instruments { get; set; } = new List<Instrument>();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SnailbirdAdmin.Messages;
 using SnailbirdAdmin.Models;
-using SnailbirdData.Models;
+using SnailbirdData.Models.Post;
 using SnailbirdData.DataAdapters;
 
 namespace SnailbirdAdmin.Updates
