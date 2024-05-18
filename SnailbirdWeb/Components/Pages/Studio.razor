@@ -1,9 +1,25 @@
-﻿
+﻿@using RazorCore.Navigation;
+@using SnailbirdWeb.Models;
+
 @page "/studio"
 
 <PageTitle>Studio</PageTitle>
 
 <div id="main">
-    <PostFeed />
+    <NavPanel TMode="PostBrowserMode"
+              GetContext="GetPostBrowser">
+        <PostBrowser @ref="@postBrowser"/>
+    </NavPanel>
 </div>
+
+@code{
+    private PostBrowser? postBrowser;
+
+    private PostBrowser GetPostBrowser()
+    {
+        if (postBrowser == null) throw new Exception("Post Browser not yet initialized.");
+        
+        return postBrowser;
+    }
+}
 

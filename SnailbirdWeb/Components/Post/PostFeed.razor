@@ -1,28 +1,29 @@
-﻿@using SnailbirdData.Providers;
-
-@inject IPostProvider<SnailbirdData.Models.LiveJamPost> PostProvider
-
-@foreach(SnailbirdData.Models.LiveJamPost post in Posts)
+﻿
+@if (Posts == null)
 {
-    <LiveJamPost Post=@post />
+    <span>Loading...</span>   
+}
+else
+{    
+    @foreach(SnailbirdData.Models.LiveJamPost post in Posts)
+    {
+        <LiveJamPost Post=@post OnSelect="OnSelectPost"/>
+    }
 }
 
 
 @code {
-    public IEnumerable<SnailbirdData.Models.LiveJamPost> Posts = new SnailbirdData.Models.LiveJamPost[] { };
+    [Parameter]
+    public IEnumerable<SnailbirdData.Models.LiveJamPost>? Posts { get; set; }
 
-    protected override void OnInitialized()
+    [Parameter]
+    public EventCallback<SnailbirdData.Models.LiveJamPost> OnSelect { get; set; }
+
+    private async Task OnSelectPost(SnailbirdData.Models.LiveJamPost post)
     {
-        @* int[] postIds = { 7 };// todo source the available posts somewhere else
-        var posts = new List<SnailbirdData.Models.LiveJamPost>(postIds.Count());
-
-        foreach(int id in postIds) 
+        if (OnSelect.HasDelegate)
         {
-            posts.Add(PostProvider.GetPost<SnailbirdData.Models.LiveJamPost>(id));
+            await OnSelect.InvokeAsync(post);
         }
-
-        Posts = posts; *@
-
-        Posts = PostProvider.GetRecentPosts(0, 25);
     }
 }
