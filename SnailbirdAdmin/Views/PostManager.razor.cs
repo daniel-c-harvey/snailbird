@@ -12,18 +12,19 @@ using RazorCore.Navigation;
 namespace SnailbirdAdmin.Views
 {
 
-    public partial class PostManager : INavigable<PostManagerMode>
+    public partial class PostManager<TPost> : INavigable<PostManagerMode>
+        where TPost : Post, new()
     {
         #region "Members"
         [Inject]
-        public IDataAdapter<LiveJamPost> PostAdapter { private get; set; } = default!;
+        public IDataAdapter<TPost> PostAdapter { protected get; set; } = default!;
 
         //[Inject]
         //NavigationManager? NavigationManager { get; set; }
 
-        private PostManagerUpdate? update;
-        private PostManagerModel? model;
-        private void InitModel()
+        protected PostManagerUpdate<TPost>? update;
+        protected PostManagerModel<TPost>? model;
+        protected void InitModel()
         {
             update = new(PostAdapter);
             model = new(PostManagerMode.View);
@@ -31,21 +32,21 @@ namespace SnailbirdAdmin.Views
         }
         
 
-        private IColumnMap<LiveJamPost> columns = default!;
-        private void InitColumnMap()
+        protected IColumnMap<TPost> columns = default!;
+        protected void InitColumnMap()
         {
-            columns = new ColumnMap<LiveJamPost>()
+            columns = new ColumnMap<TPost>()
                             .AddColumn("ID",
-                                new ModelColumn<LiveJamPost>(
+                                new ModelColumn<TPost>(
                                     (p) => LongConverter.ToString(p.ID),
                                     (p, id) => p.ID = LongConverter.FromString(id)))
                             .AddColumn("Title",
-                                new ModelColumn<LiveJamPost>(
+                                new ModelColumn<TPost>(
                                     (p) => p.Title,
                                     (p, title) => p.Title = title)
                                 .MakeClickable(EditPost))
                             .AddColumn("Date",
-                                new ModelColumn<LiveJamPost>(
+                                new ModelColumn<TPost>(
                                     (p) => DateTimeConverter.ToShortDate(p.PostDate),
                                     (p, date) => p.PostDate = DateTimeConverter.FromString(date)));
         }
@@ -70,60 +71,60 @@ namespace SnailbirdAdmin.Views
         #endregion
 
 
-        protected void AddPost(LiveJamPost post)
+        protected void AddPost(TPost post)
         {
             if (update != null && model != null)
             {
                 BeforeModeChange();
-                update.Update(model, new PostManagerAddMessage(post));
+                update.Update(model, new PostManagerAddMessage<TPost>(post));
             }
         }
 
-        protected void EditPost(LiveJamPost post)
+        protected void EditPost(TPost post)
         {
             if (update != null && model != null)
             {
                 BeforeModeChange();
-                update.Update(model, new PostManagerEditMessage(post));
+                update.Update(model, new PostManagerEditMessage<TPost>(post));
             }
         }
 
-        protected void DeletePost(LiveJamPost post)
+        protected void DeletePost(TPost post)
         {
             if (update != null && model != null)
             {
-                update.Update(model, new PostManagerDeleteMessage(post));
+                update.Update(model, new PostManagerDeleteMessage<TPost>(post));
             }
         }
 
-        protected void SaveNewPost(LiveJamPost post)
-        {
-            if (update != null && model != null)
-            {
-                BeforeModeChange();
-                update.Update(model, new PostManagerSaveNewMessage(post));
-            }
-        }
-
-        protected void SavePost(LiveJamPost post)
+        protected void SaveNewPost(TPost post)
         {
             if (update != null && model != null)
             {
                 BeforeModeChange();
-                update.Update(model, new PostManagerSaveExistingMessage(post));
+                update.Update(model, new PostManagerSaveNewMessage<TPost>(post));
+            }
+        }
+
+        protected void SavePost(TPost post)
+        {
+            if (update != null && model != null)
+            {
+                BeforeModeChange();
+                update.Update(model, new PostManagerSaveExistingMessage<TPost>(post));
             }
         }
 
         #region "INavigable"
-        public INavigator<PostManagerMode> Navigator { get; private set; }
-        private void InitNavigation()
+        public INavigator<PostManagerMode> Navigator { get; protected set; }
+        protected void InitNavigation()
         {
-            Navigator = new Navigator<PostManagerMode, PostManagerModel>(model); 
+            Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(model); 
             Navigator.ModeChanging += (_) => StateHasChanged();
         }
 
         public PostManagerMode CurrentMode => model.CurrentMode;
-        private void BeforeModeChange()
+        protected void BeforeModeChange()
         {
             if (model != null)
             {

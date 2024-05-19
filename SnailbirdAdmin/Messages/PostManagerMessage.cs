@@ -17,49 +17,55 @@ namespace SnailbirdAdmin.Messages
         protected PostManagerMessage(PostManagerAction action) : base(action) { }
     }
 
-    public class PostManagerAddMessage : PostManagerMessage
+    public class PostManagerAddMessage<TPost> : PostManagerMessage
+        where TPost : Post
     {
-        public LiveJamPost NewPost { get; }
+        public TPost NewPost { get; }
 
-        public PostManagerAddMessage(LiveJamPost newPost)
+        public PostManagerAddMessage(TPost newPost)
         : base(PostManagerAction.Add)
         {
             NewPost = newPost;
         }
     }
 
-    public abstract class PostManagerPostMessage : PostManagerMessage
+    public abstract class PostManagerPostMessage<TPost> : PostManagerMessage
+        where TPost : Post
     {
-        public LiveJamPost Post { get; }
+        public TPost Post { get; }
 
-        public PostManagerPostMessage(PostManagerAction action, LiveJamPost post)
+        public PostManagerPostMessage(PostManagerAction action, TPost post)
         : base(action)
         {
             Post = post;
         }
     }
 
-    public class PostManagerEditMessage : PostManagerPostMessage
+    public class PostManagerEditMessage<TPost> : PostManagerPostMessage<TPost>
+        where TPost : Post
     {
-        public PostManagerEditMessage(LiveJamPost post)
+        public PostManagerEditMessage(TPost post)
         : base(PostManagerAction.Edit, post) { }
     }
 
-    public class PostManagerDeleteMessage : PostManagerPostMessage
+    public class PostManagerDeleteMessage<TPost> : PostManagerPostMessage<TPost>
+        where TPost : Post
     {
-        public PostManagerDeleteMessage(LiveJamPost post)
+        public PostManagerDeleteMessage(TPost post)
         : base(PostManagerAction.Delete, post) { }
     }
 
-    public class PostManagerSaveNewMessage : PostManagerPostMessage
+    public class PostManagerSaveNewMessage<TPost> : PostManagerPostMessage<TPost>
+        where TPost : Post
     {
-        public PostManagerSaveNewMessage(LiveJamPost post)
+        public PostManagerSaveNewMessage(TPost post)
         : base(PostManagerAction.SaveNew, post) { }
     }
 
-    public class PostManagerSaveExistingMessage : PostManagerPostMessage
+    public class PostManagerSaveExistingMessage<TPost> : PostManagerPostMessage<TPost>
+        where TPost : Post
     {
-        public PostManagerSaveExistingMessage(LiveJamPost post)
+        public PostManagerSaveExistingMessage(TPost post)
         : base(PostManagerAction.SaveExisting, post) { }
     }
 

@@ -2,7 +2,7 @@
 @using SnailbirdAdmin.Models;
 @using RazorCore;
 
-@typeparam TPost where TPost : Post, new()
+@inherits PostManager<LiveJamPost>
 
 <h3>Posts</h3>
 
@@ -10,7 +10,7 @@
 {
     @if (CurrentMode == PostManagerMode.View)
     {
-        <NewRowTable TModel="TPost"
+        <NewRowTable TModel="LiveJamPost"
                      models="model.Posts"
                      columnMap="columns"
                      OnAdd="AddPost"
@@ -18,12 +18,12 @@
     }
     else if (CurrentMode == PostManagerMode.Add)
     {
-        <EditPost Post="model.Post"
+        <EditLiveJamPost Post="model.Post"
                   OnCommitPost="SaveNewPost" />
     }
     else if (CurrentMode == PostManagerMode.Edit)
     {
-        <EditPost Post="model.Post"
+        <EditLiveJamPost Post="model.Post"
                   OnCommitPost="SavePost" />
     }
 }

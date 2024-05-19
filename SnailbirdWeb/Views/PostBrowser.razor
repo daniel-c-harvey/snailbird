@@ -1,8 +1,13 @@
-﻿
+﻿@using SnailbirdWeb.Models;
+
 @if(model != null)
 {   
-    @if(CurrentMode == Models.PostBrowserMode.Feed)
+    @if(CurrentMode == PostBrowserMode.Feed)
     {
         <PostFeed Posts="@model.Feed.Posts" OnSelect="ViewPost"/>
+    }
+    else if (CurrentMode == PostBrowserMode.ViewPost)
+    {
+        <FlexPost></FlexPost>
     }
 }
