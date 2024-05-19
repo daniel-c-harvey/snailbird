@@ -1,0 +1,25 @@
+﻿@using SnailbirdData.DataAdapters;
+@using SnailbirdData.Models.Post;
+@using RazorCore;
+
+@typeparam TPost where TPost : LiveJamPost, new()
+
+@inherits EditPost<TPost>
+
+<EditPost TPost="TPost">
+
+    <span>Preamble:</span>  <textarea class="form-control" type="text" @bind="Post.Preamble" />
+    <br/>
+    <span>Video Link:</span> <input class="form-control" type="url" @bind="Post.VideoURL" />
+    <br/>
+    <h5>Intruments:</h5>
+
+    <NewRowTable
+        TModel="Instrument"
+        models="Instruments"
+        columnMap="InstrumentColumns"
+        OnAdd="i => AddNewInstrument(i)"
+        OnDelete="i => RemoveInstrument(i)" />
+
+</EditPost>
+

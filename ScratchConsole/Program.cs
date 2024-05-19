@@ -1,5 +1,9 @@
 ﻿using DataAccess;
+using MongoDB.Driver;
 using Newtonsoft.Json;
+using SnailbirdAdmin.Converters;
+using SnailbirdData.Adapters;
+using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
 using System;
 using System.Collections.Generic;
@@ -33,7 +37,11 @@ namespace ScratchConsole
             //serializer.Serialize(x);
             //Console.WriteLine(JsonConvert.SerializeObject(x));
 
-            var x = new MongoObject<LiveJamPost>() { Document = new LiveJamPost() { ID = 12345678} };
+            //var x = new MongoObject<LiveJamPost>() { Document = new LiveJamPost() { ID = 12345678} };
+
+            LiveJamPostToFlexPostConverter.ConvertLiveJamPostToFlexPosts();
+
+
         }
     }
 }

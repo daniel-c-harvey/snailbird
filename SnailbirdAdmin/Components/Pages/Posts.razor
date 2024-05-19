@@ -1,18 +1,21 @@
 ﻿@using RazorCore.Navigation;
+@using SnailbirdData.Models.Post;
 @using SnailbirdAdmin.Models;
+@using SnailbirdAdmin.Views;
 
 @page "/posts"
 
 <PageTitle>Posts</PageTitle>
 
 <NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
-    <PostManager @ref="postManager"/>
+    <PostManager TPost="LiveJamPost" @ref="postManager" />
 </NavPanel>
 
 @code{
-    private PostManager postManager;
+    private LiveJamPostManager postManager;
+    private PostManager<LiveJamPost> PostManager => postManager;
 
-    private PostManager GetPostManager()
+    private PostManager<LiveJamPost> GetPostManager()
     {
         return postManager;
     }

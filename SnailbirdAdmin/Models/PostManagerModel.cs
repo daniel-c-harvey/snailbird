@@ -10,20 +10,21 @@ namespace SnailbirdAdmin.Models
         Edit
     }
 
-    public class PostManagerModel : IMode<PostManagerMode>
+    public class PostManagerModel<TPost> : IMode<PostManagerMode>
+        where TPost : Post, new()
     {
-        public IEnumerable<LiveJamPost> Posts { get; set; }
-        public LiveJamPost Post { get; set; }
+        public IEnumerable<TPost> Posts { get; set; }
+        public TPost Post { get; set; }
         public PostManagerMode CurrentMode { get; set; }
 
         public PostManagerModel(PostManagerMode currentMode)
         {
-            Posts = new List<LiveJamPost>();
-            Post = new LiveJamPost();
+            Posts = new List<TPost>();
+            Post = new TPost();
             CurrentMode = currentMode;
         }
 
-        public PostManagerModel(IEnumerable<LiveJamPost> posts, LiveJamPost post, PostManagerMode currentMode)
+        public PostManagerModel(IEnumerable<TPost> posts, TPost post, PostManagerMode currentMode)
         {
             Posts = posts;
             Post = post;
