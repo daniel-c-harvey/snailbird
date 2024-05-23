@@ -48,7 +48,7 @@ namespace SnailbirdWeb.Views
         private void InitNavigation()
         {
             Navigator = new Navigator<PostBrowserMode, PostBrowserModel>(model);
-            Navigator.ModeChanging += (_) => StateHasChanged();
+            Navigator.ModeChanging += (_) => ModeChanged();
         }
 
         public INavigator<PostBrowserMode> Navigator { get; private set; }
@@ -61,13 +61,9 @@ namespace SnailbirdWeb.Views
             }
         }
 
-        public void OnBack(PostBrowserMode mode)
+        public void ModeChanged()
         {
-            if (model != null)
-            {
-                model.CurrentMode = mode;
-                StateHasChanged();
-            }
+            StateHasChanged();
         }
         #endregion
     }

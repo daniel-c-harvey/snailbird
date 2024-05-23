@@ -4,8 +4,7 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.Views
 {
-    public partial class EditLiveJamPost<TPost> : EditPost<TPost>
-        where TPost : LiveJamPost, new()
+    public partial class EditLiveJamPost : EditPost<LiveJamPost>
     {
         private List<Instrument> _instruments = new List<Instrument>();
         private IEnumerable<Instrument> Instruments => _instruments;

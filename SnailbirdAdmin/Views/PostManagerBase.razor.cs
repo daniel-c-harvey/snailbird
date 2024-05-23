@@ -12,15 +12,18 @@ using RazorCore.Navigation;
 namespace SnailbirdAdmin.Views
 {
 
-    public partial class PostManager<TPost> : INavigable<PostManagerMode>
+    public partial class PostManagerBase<TPost, TEdit> : INavigable<PostManagerMode>
         where TPost : Post, new()
+        where TEdit : EditPost<TPost>
     {
         #region "Members"
         [Inject]
         public IDataAdapter<TPost> PostAdapter { protected get; set; } = default!;
 
-        //[Inject]
-        //NavigationManager? NavigationManager { get; set; }
+        [Parameter]
+        public RenderFragment AddComponent { get; set; }
+        [Parameter]
+        public RenderFragment EditComponent { get; set; }
 
         protected PostManagerUpdate<TPost>? update;
         protected PostManagerModel<TPost>? model;
@@ -59,17 +62,7 @@ namespace SnailbirdAdmin.Views
             InitModel();
             InitNavigation();
         }
-
-        //protected override void OnAfterRender(bool firstRender)
-        //{
-        //    base.OnAfterRender(firstRender);
-        //    if (firstRender)
-        //    {
-        //        BeforeModeChange();
-        //    }
-        //}
         #endregion
-
 
         protected void AddPost(TPost post)
         {
