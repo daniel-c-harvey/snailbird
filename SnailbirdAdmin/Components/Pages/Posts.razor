@@ -14,7 +14,7 @@
 @code{
     private LiveJamPostManager postManager = default!;
 
-    private PostManager<LiveJamPost> GetPostManager()
+    private INavigable<PostManagerMode> GetPostManager()
     {
         return postManager;
     }

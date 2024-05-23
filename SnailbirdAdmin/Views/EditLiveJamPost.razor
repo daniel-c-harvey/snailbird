@@ -2,11 +2,9 @@
 @using SnailbirdData.Models.Post;
 @using RazorCore;
 
-@typeparam TPost where TPost : LiveJamPost, new()
+@inherits EditPost<LiveJamPost>
 
-@inherits EditPost<TPost>
-
-<EditPost TPost="TPost" Post="Post" OnCommitPost="OnCommitPost">
+<EditPost TPost="LiveJamPost" Post="Post" OnCommitPost="OnCommitPost">
     <span>Preamble:</span>  <textarea class="form-control" type="text" @bind="Post.Preamble" />
     <br/>
     <span>Video Link:</span> <input class="form-control" type="url" @bind="Post.VideoURL" />

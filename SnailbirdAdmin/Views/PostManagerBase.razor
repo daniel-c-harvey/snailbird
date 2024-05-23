@@ -3,6 +3,7 @@
 @using RazorCore;
 
 @typeparam TPost where TPost : Post, new()
+@typeparam TEdit where TEdit : EditPost<TPost>
 
 <h3>Posts</h3>
 
@@ -18,12 +19,10 @@
     }
     else if (CurrentMode == PostManagerMode.Add)
     {
-        <EditPost Post="model.Post"
-                  OnCommitPost="SaveNewPost" />
+        @AddComponent
     }
     else if (CurrentMode == PostManagerMode.Edit)
     {
-        <EditPost Post="model.Post"
-                  OnCommitPost="SavePost" />
+        @EditComponent
     }
 }

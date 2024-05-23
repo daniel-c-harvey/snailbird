@@ -2,11 +2,20 @@
 @using SnailbirdAdmin.Models;
 @using RazorCore;
 
-@inherits PostManager<LiveJamPost>
+@inherits PostManagerBase<LiveJamPost, EditLiveJamPost>
 
-<h3>Posts</h3>
+<PostManagerBase TPost="LiveJamPost" TEdit="EditLiveJamPost">
+    <AddComponent>
+        <EditLiveJamPost Post="model?.Post" OnCommitPost="SaveNewPost" />
+    </AddComponent>
+    <EditComponent>
+        <EditLiveJamPost Post="model?.Post" OnCommitPost="SavePost" />
+    </EditComponent>
+</PostManagerBase>
 
-@if (model != null)
+
+
+@* @if (model != null)
 {
     @if (CurrentMode == PostManagerMode.View)
     {
@@ -26,4 +35,4 @@
         <EditLiveJamPost Post="model.Post"
                   OnCommitPost="SavePost" />
     }
-}
+} *@
