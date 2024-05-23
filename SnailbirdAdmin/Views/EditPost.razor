@@ -4,15 +4,22 @@
 
 @typeparam TPost where TPost : Post, new()
 
+@if (Post == null)
+{
+    <span>Loading...</span>
+}
+else
+{
 <div class="new-post">
     <span>ID:</span> <input class="form-control" type="number" @bind="Post.ID" disabled />
     <br />
     <span>Title:</span> <input class="form-control" type="text" @bind="Post.Title" />
     <br />
     <span>Date:</span> <input class="form-control" type="date" @bind="Post.PostDate" />
-    @if(Content != null)
+    <br/>
+    @if(ChildContent != null)
     {
-        @Content
+        @ChildContent
     }
     <hr />
     <div>
@@ -21,4 +28,4 @@
         </button>
     </div>
 </div>
-
+}

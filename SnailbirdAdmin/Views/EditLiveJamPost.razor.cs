@@ -4,15 +4,9 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.Views
 {
-    public partial class EditLiveJamPost<TPost> :EditPost<TPost>
+    public partial class EditLiveJamPost<TPost> : EditPost<TPost>
         where TPost : LiveJamPost, new()
     {
-        [Parameter]
-        public Action<TPost> OnCommitPost { get; set; } = default!;
-
-        [Parameter]
-        public TPost Post { get; set; }
-
         private List<Instrument> _instruments = new List<Instrument>();
         private IEnumerable<Instrument> Instruments => _instruments;
 
@@ -45,10 +39,10 @@ namespace SnailbirdAdmin.Views
             _instruments.Remove(instrument);
         }
 
-        private void CommitPost()
+        protected override void CommitPost()
         {
             Post.Instruments = _instruments;
-            OnCommitPost(Post);
+            base.CommitPost();
         }
     }
 }

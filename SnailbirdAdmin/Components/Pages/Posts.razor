@@ -8,12 +8,11 @@
 <PageTitle>Posts</PageTitle>
 
 <NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
-    <PostManager TPost="LiveJamPost" @ref="postManager" />
+    <LiveJamPostManager @ref="postManager" />
 </NavPanel>
 
 @code{
-    private LiveJamPostManager postManager;
-    private PostManager<LiveJamPost> PostManager => postManager;
+    private LiveJamPostManager postManager = default!;
 
     private PostManager<LiveJamPost> GetPostManager()
     {

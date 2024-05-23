@@ -120,7 +120,7 @@ namespace SnailbirdAdmin.Views
         protected void InitNavigation()
         {
             Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(model); 
-            Navigator.ModeChanging += (_) => StateHasChanged();
+            Navigator.ModeChanging += (_) => ModeChanged();
         }
 
         public PostManagerMode CurrentMode => model.CurrentMode;
@@ -132,13 +132,9 @@ namespace SnailbirdAdmin.Views
             }
         }
 
-        public void OnBack(PostManagerMode mode)
+        public void ModeChanged()
         {
-            if (model != null)
-            {
-                model.CurrentMode = mode;
-                StateHasChanged();
-            }
+            StateHasChanged();
         }
         #endregion
     }

@@ -46,6 +46,7 @@ namespace RazorCore.Navigation
             if (Context is not null && modeHistory.TryPop(out newMode))
             {
                 Context.Navigator.OnBack(newMode);
+                Context.ModeChanged();
             }
         }
 

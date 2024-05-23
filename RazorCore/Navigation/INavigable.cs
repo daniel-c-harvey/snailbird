@@ -5,5 +5,6 @@
     public interface INavigable<TMode>
     {
         INavigator<TMode> Navigator { get; }
+        void ModeChanged();
     }
 }
