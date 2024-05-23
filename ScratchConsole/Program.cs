@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using Core;
+using DataAccess;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using SnailbirdAdmin.Converters;
@@ -39,9 +40,18 @@ namespace ScratchConsole
 
             //var x = new MongoObject<LiveJamPost>() { Document = new LiveJamPost() { ID = 12345678} };
 
-            LiveJamPostToFlexPostConverter.ConvertLiveJamPostToFlexPosts();
+            //LiveJamPostToFlexPostConverter.ConvertLiveJamPostToFlexPosts();
 
-
+            Connections connections = 
+                new Connections 
+                { 
+                    ConnectionStrings =
+                    [
+                        new Connection { ID = 1, Name = "snailbird-dev", ConnectionString = "test" },
+                        new Connection { ID = 2, Name = "snailbird", ConnectionString = "test" }
+                    ] 
+                };
+            ConnectionStringTools.SaveToFile("../../../.secrets/connections.json", connections);
         }
     }
 }

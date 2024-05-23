@@ -8,20 +8,20 @@ namespace SnailbirdAdmin.Views
         where TPost : Post, new()
     {
         [Parameter]
-        public Action<TPost> OnCommitPost { get; set; } = default!;
+        public Action<TPost> OnCommitPost { get; set; }
 
         [Parameter]
         public TPost Post { get; set; }
 
         [Parameter]
-        public RenderFragment? Content { get; set; } = null;        
+        public RenderFragment? ChildContent { get; set; } = null;        
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
         }
 
-        protected void CommitPost()
+        protected virtual void CommitPost()
         {
             OnCommitPost(Post);
         }
