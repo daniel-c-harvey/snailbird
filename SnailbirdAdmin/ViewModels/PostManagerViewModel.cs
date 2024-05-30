@@ -1,34 +1,41 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Core.Converters;
+using RazorCore.Navigation;
 using RazorCore;
+using SnailbirdAdmin.Messages;
+using SnailbirdAdmin.Models;
+using SnailbirdAdmin.Updates;
+using SnailbirdAdmin.Views;
 using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
-using SnailbirdAdmin.Updates;
-using Microsoft.AspNetCore.Components.Routing;
-using SnailbirdAdmin.Models;
-using SnailbirdAdmin.Messages;
-using RazorCore.Navigation;
 
-namespace SnailbirdAdmin.Views
+namespace SnailbirdAdmin.ViewModels
 {
-
-    public partial class PostManagerBase<TPost, TEdit> : INavigable<PostManagerMode>
+    public class PostManagerViewModel<TPost, TEdit>
         where TPost : Post, new()
         where TEdit : EditPost<TPost>
     {
         #region "Members"
-        [Inject]
-        public IDataAdapter<TPost> PostAdapter { protected get; set; } = default!;
+        protected IDataAdapter<TPost> PostAdapter { get; set; }
 
         protected PostManagerUpdate<TPost>? update;
         protected PostManagerModel<TPost>? model;
+        
+        public PostManagerViewModel(IDataAdapter<TPost> postAdapter)
+        {
+            PostAdapter = postAdapter;
+            InitColumnMap();
+            InitModel();
+            InitNavigation();
+        }
+
         protected void InitModel()
         {
             update = new(PostAdapter);
             model = new(PostManagerMode.View);
             model = update.Update(model, new PostManagerGetPostsMessage(1, 25));
         }
-        
+
 
         protected IColumnMap<TPost> columns = default!;
         protected void InitColumnMap()
@@ -51,14 +58,6 @@ namespace SnailbirdAdmin.Views
         #endregion
 
         #region "Event Handlers"
-        protected override void OnInitialized()
-        {
-            InitColumnMap();
-            InitModel();
-            InitNavigation();
-        }
-        #endregion
-
         protected void AddPost(TPost post)
         {
             if (update != null && model != null)
@@ -102,13 +101,13 @@ namespace SnailbirdAdmin.Views
                 update.Update(model, new PostManagerSaveExistingMessage<TPost>(post));
             }
         }
+        #endregion
 
         #region "INavigable"
         public INavigator<PostManagerMode> Navigator { get; protected set; }
         protected void InitNavigation()
         {
-            Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(model); 
-            Navigator.ModeChanging += (_) => ModeChanged();
+            Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(model);
         }
 
         public PostManagerMode CurrentMode => model.CurrentMode;
@@ -118,11 +117,6 @@ namespace SnailbirdAdmin.Views
             {
                 Navigator.OnForward();
             }
-        }
-
-        public void ModeChanged()
-        {
-            StateHasChanged();
         }
         #endregion
     }

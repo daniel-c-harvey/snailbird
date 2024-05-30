@@ -1,0 +1,59 @@
+﻿@using SnailbirdAdmin.ViewModels;
+@using SnailbirdAdmin.Models;
+@using SnailbirdData.DataAdapters
+@using SnailbirdData.Models.Post;
+@using RazorCore;
+@using RazorCore.Navigation;
+
+@typeparam TPost where TPost : Post, new()
+@typeparam TEdit where TEdit : EditPost<TPost>
+
+<h3>Posts</h3>
+
+@if (ViewModel != null)
+{
+    @if (ViewModel.CurrentMode == PostManagerMode.View)
+    {
+        <NewRowTable TModel="TPost"
+                     models="model.Posts"
+                     columnMap="columns"
+                     OnAdd="AddPost"
+                     OnDelete="DeletePost" />
+    }
+    else if (CurrentMode == PostManagerMode.Add)
+    {
+        @AddComponent
+    }
+    else if (CurrentMode == PostManagerMode.Edit)
+    {
+        @EditComponent
+    }
+}
+
+@code {
+    [Inject]
+    public IDataAdapter<TPost> PostAdapter { protected get; set; }
+
+    [Parameter]
+    public PostManagerViewModel<TPost, TEdit>? ViewModel { get; set; }
+
+    protected virtual RenderFragment AddComponent => @<EditPost TPost="TPost" Post="model?.Post" OnCommitPost="SaveNewPost" />;
+    protected virtual RenderFragment EditComponent => @<EditPost TPost="TPost" Post="model?.Post" OnCommitPost="SavePost" />;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        InitViewModel();
+        ViewModel.Navigator.ModeChanging += (_) => ModeChanged();
+    }
+
+    protected void InitViewModel()
+    {
+        ViewModel = new()
+    }
+
+    public void ModeChanged()
+    {
+        StateHasChanged();
+    }
+}

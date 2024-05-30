@@ -11,6 +11,11 @@ namespace SnailbirdData.Models.Post
     {
         public IEnumerable<PostElement> Elements { get; set; }
 
+        public FlexPost()
+        { 
+            Elements = new List<PostElement>();
+        }
+
         public FlexPost(long ID, string title, DateTime date, IEnumerable<PostElement> elements)
         {
             this.ID = ID;

@@ -9,10 +9,12 @@
 
 <NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
     <LiveJamPostManager @ref="postManager" />
+    @* <FlexPostManager @ref="postManager" /> *@
 </NavPanel>
 
 @code{
     private LiveJamPostManager postManager = default!;
+    //private FlexPostManager postManager = default!;
 
     private INavigable<PostManagerMode> GetPostManager()
     {

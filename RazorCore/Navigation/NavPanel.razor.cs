@@ -14,10 +14,18 @@ namespace RazorCore.Navigation
         private INavigable<TMode>? Context;
         protected Stack<TMode> modeHistory = new Stack<TMode>();
 
+        private string backButtonClass = "btn btn-outline-secondary";
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
             InitNavigation();
+            InitStyles();
+        }
+
+        private void InitStyles()
+        {
+            SetBackButtonClass();
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -38,6 +46,7 @@ namespace RazorCore.Navigation
         protected void OnModeChange(ModeChangeEventArgs<TMode> args)
         {
             modeHistory.Push(args.oldMode);
+            SetBackButtonClass();
         }
 
         protected void OnNavigateBack(MouseEventArgs e)
@@ -47,6 +56,7 @@ namespace RazorCore.Navigation
             {
                 Context.Navigator.OnBack(newMode);
                 Context.ModeChanged();
+                SetBackButtonClass();
             }
         }
 
@@ -68,6 +78,15 @@ namespace RazorCore.Navigation
                 // todo interrupt naviagting away from a dirty page
                 //StateHasChanged();
             }
+        }
+
+        protected void SetBackButtonClass()
+        {
+            if(modeHistory.Any())
+                backButtonClass = "btn btn-outline-primary";
+            else
+                backButtonClass = "btn btn-outline-secondary";
+            StateHasChanged();
         }
     }
 }

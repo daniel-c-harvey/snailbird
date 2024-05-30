@@ -1,22 +1,32 @@
 ﻿@using SnailbirdData.DataAdapters;
+@using SnailbirdAdmin.ViewModels;
 @using SnailbirdData.Models.Post;
 @using RazorCore;
 
-@inherits EditPost<LiveJamPost>
+@*@inherits EditPost<LiveJamPost>*@
 
-<EditPost TPost="LiveJamPost" Post="Post" OnCommitPost="OnCommitPost">
-    <span>Preamble:</span>  <textarea class="form-control" type="text" @bind="Post.Preamble" />
-    <br/>
-    <span>Video Link:</span> <input class="form-control" type="url" @bind="Post.VideoURL" />
-    <br/>
-    <h5>Intruments:</h5>
-
-    <NewRowTable
+@if (ViewModel != null && ViewModel.Post != null)
+{
+    <EditPost ViewModel="ViewModel">
+        <span>Preamble:</span>  <textarea class="form-control" type="text" @bind="ViewModel.Post.Preamble" />
+        <br/>
+        <span>Video Link:</span> <input class="form-control" type="url" @bind="ViewModel.Post.VideoURL" />
+        <br/>
+        <h5>Intruments:</h5>
+        <NewRowTable
         TModel="Instrument"
-        models="Instruments"
-        columnMap="InstrumentColumns"
-        OnAdd="i => AddNewInstrument(i)"
-        OnDelete="i => RemoveInstrument(i)" />
+                     models="ViewModel.Instruments"
+                     columnMap="EditLiveJamPostViewModel.InstrumentColumns"
+                     OnAdd="i => ViewModel.AddNewInstrument(i)"
+                     OnDelete="i => ViewModel.RemoveInstrument(i)" />
 
-</EditPost>
-
+    </EditPost>
+}
+else
+{
+    <span>Loading...</span>
+}
+@code{
+    [Parameter]
+    public EditLiveJamPostViewModel? ViewModel { get; set; }
+}

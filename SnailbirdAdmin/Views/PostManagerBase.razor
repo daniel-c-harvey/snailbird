@@ -26,3 +26,8 @@
         @EditComponent
     }
 }
+
+@code {
+    protected virtual RenderFragment AddComponent  => @<EditPost TPost="TPost" Post="model?.Post" OnCommitPost="SaveNewPost" />;
+    protected virtual RenderFragment EditComponent => @<EditPost TPost="TPost" Post="model?.Post" OnCommitPost="SavePost" />;
+}
