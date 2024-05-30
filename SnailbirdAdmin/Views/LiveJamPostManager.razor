@@ -1,38 +1,11 @@
-﻿@using SnailbirdData.Models.Post;
+﻿@* @using SnailbirdData.Models.Post;
 @using SnailbirdAdmin.Models;
 @using RazorCore;
 
 @inherits PostManagerBase<LiveJamPost, EditLiveJamPost>
 
-<PostManagerBase TPost="LiveJamPost" TEdit="EditLiveJamPost">
-    <AddComponent>
-        <EditLiveJamPost Post="model?.Post" OnCommitPost="SaveNewPost" />
-    </AddComponent>
-    <EditComponent>
-        <EditLiveJamPost Post="model?.Post" OnCommitPost="SavePost" />
-    </EditComponent>
-</PostManagerBase>
-
-
-
-@* @if (model != null)
+@code
 {
-    @if (CurrentMode == PostManagerMode.View)
-    {
-        <NewRowTable TModel="LiveJamPost"
-                     models="model.Posts"
-                     columnMap="columns"
-                     OnAdd="AddPost"
-                     OnDelete="DeletePost" />
-    }
-    else if (CurrentMode == PostManagerMode.Add)
-    {
-        <EditLiveJamPost Post="model.Post"
-                  OnCommitPost="SaveNewPost" />
-    }
-    else if (CurrentMode == PostManagerMode.Edit)
-    {
-        <EditLiveJamPost Post="model.Post"
-                  OnCommitPost="SavePost" />
-    }
+    protected override RenderFragment AddComponent  => @<EditLiveJamPost Post="model?.Post" OnCommitPost="SaveNewPost" />;
+    protected override RenderFragment EditComponent => @<EditLiveJamPost Post="model?.Post" OnCommitPost="SavePost" />;
 } *@
