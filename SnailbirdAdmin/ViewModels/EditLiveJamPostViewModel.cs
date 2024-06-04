@@ -20,6 +20,10 @@ namespace SnailbirdAdmin.ViewModels
                     (inst, desc) => inst.Description = desc)
                 .MakeEditable());
 
+        public EditLiveJamPostViewModel(Action<LiveJamPost> onCommitPost) 
+        : base(onCommitPost) 
+        { }
+
         public void AddNewInstrument(Instrument instrument)
         {
             _instruments.Add(instrument);

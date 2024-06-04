@@ -1,14 +1,29 @@
-﻿@using Microsoft.AspNetCore.Components;
+﻿@using SnailbirdData.DataAdapters;
+@using SnailbirdAdmin.ViewModels;
 @using SnailbirdData.Models.Post;
+@using RazorCore;
 
-@inherits EditPost<FlexPost>
+@if (ViewModel != null && ViewModel.Post != null)
+{
+    <EditPost ViewModel="ViewModel">
+        @* <span>Preamble:</span>  <textarea class="form-control" type="text" @bind="ViewModel.Post.Preamble" />
+        <br />
+        <span>Video Link:</span> <input class="form-control" type="url" @bind="ViewModel.Post.VideoURL" />
+        <br />
+        <h5>Intruments:</h5>
+        <NewRowTable TModel="Instrument"
+                     models="ViewModel.Instruments"
+                     columnMap="EditLiveJamPostViewModel.InstrumentColumns"
+                     OnAdd="i => ViewModel.AddNewInstrument(i)"
+                     OnDelete="i => ViewModel.RemoveInstrument(i)" /> *@
 
-   
-   <div>
-    Flex Test
-   </div>
-   
-   @* @{
-    base.BuildRenderTree(__builder);
-} *@
-
+    </EditPost>
+}
+else
+{
+    <span>Loading...</span>
+}
+@code {
+    [Parameter]
+    public EditFlexPostViewModel? ViewModel { get; set; }
+}

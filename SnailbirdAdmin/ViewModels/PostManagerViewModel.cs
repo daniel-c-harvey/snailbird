@@ -11,36 +11,37 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels
 {
-    public class PostManagerViewModel<TPost, TEdit>
+    public class PostManagerViewModel<TPost> : INavigable<PostManagerMode>
         where TPost : Post, new()
-        where TEdit : EditPost<TPost>
     {
         #region "Members"
-        protected IDataAdapter<TPost> PostAdapter { get; set; }
-
-        protected PostManagerUpdate<TPost>? update;
-        protected PostManagerModel<TPost>? model;
+        public PostManagerUpdate<TPost> Update;
+        public PostManagerModel<TPost> Model;
         
         public PostManagerViewModel(IDataAdapter<TPost> postAdapter)
         {
-            PostAdapter = postAdapter;
+            Init(postAdapter);
+        }
+
+        protected virtual void Init(IDataAdapter<TPost> postAdapter)
+        {
             InitColumnMap();
-            InitModel();
+            InitModel(postAdapter);
             InitNavigation();
         }
 
-        protected void InitModel()
+        protected virtual void InitModel(IDataAdapter<TPost> PostAdapter)
         {
-            update = new(PostAdapter);
-            model = new(PostManagerMode.View);
-            model = update.Update(model, new PostManagerGetPostsMessage(1, 25));
+            Update = new(PostAdapter);
+            Model = new(PostManagerMode.View);
+            Model = Update.Update(Model, new PostManagerGetPostsMessage(1, 25));
         }
 
 
-        protected IColumnMap<TPost> columns = default!;
-        protected void InitColumnMap()
+        public IColumnMap<TPost> Columns = default!;
+        protected virtual void InitColumnMap()
         {
-            columns = new ColumnMap<TPost>()
+            Columns = new ColumnMap<TPost>()
                             .AddColumn("ID",
                                 new ModelColumn<TPost>(
                                     (p) => LongConverter.ToString(p.ID),
@@ -58,65 +59,79 @@ namespace SnailbirdAdmin.ViewModels
         #endregion
 
         #region "Event Handlers"
-        protected void AddPost(TPost post)
+        public void AddPost(TPost post)
         {
-            if (update != null && model != null)
+            if (Update != null && Model != null)
             {
                 BeforeModeChange();
-                update.Update(model, new PostManagerAddMessage<TPost>(post));
+                Update.Update(Model, new PostManagerAddMessage<TPost>(post));
             }
         }
 
-        protected void EditPost(TPost post)
+        public void EditPost(TPost post)
         {
-            if (update != null && model != null)
+            if (Update != null && Model != null)
             {
                 BeforeModeChange();
-                update.Update(model, new PostManagerEditMessage<TPost>(post));
+                Update.Update(Model, new PostManagerEditMessage<TPost>(post));
             }
         }
 
-        protected void DeletePost(TPost post)
+        public void DeletePost(TPost post)
         {
-            if (update != null && model != null)
+            if (Update != null && Model != null)
             {
-                update.Update(model, new PostManagerDeleteMessage<TPost>(post));
+                Update.Update(Model, new PostManagerDeleteMessage<TPost>(post));
             }
         }
 
-        protected void SaveNewPost(TPost post)
+        public void SaveNewPost(TPost post)
         {
-            if (update != null && model != null)
+            if (Update != null && Model != null)
             {
                 BeforeModeChange();
-                update.Update(model, new PostManagerSaveNewMessage<TPost>(post));
+                Update.Update(Model, new PostManagerSaveNewMessage<TPost>(post));
             }
         }
 
-        protected void SavePost(TPost post)
+        public void SavePost(TPost post)
         {
-            if (update != null && model != null)
+            if (Update != null && Model != null)
             {
                 BeforeModeChange();
-                update.Update(model, new PostManagerSaveExistingMessage<TPost>(post));
+                Update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post));
             }
         }
         #endregion
 
         #region "INavigable"
         public INavigator<PostManagerMode> Navigator { get; protected set; }
-        protected void InitNavigation()
+
+        protected virtual void InitNavigation()
         {
-            Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(model);
+            if (Model is null) throw new ArgumentNullException(nameof(Model));
+            Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(Model);
+            //Navigator.ModeChanging += ModeChanging();
         }
 
-        public PostManagerMode CurrentMode => model.CurrentMode;
+        public PostManagerMode CurrentMode {
+            get
+            {
+                if (Model is null) throw new ArgumentNullException(nameof(Model));
+                return Model.CurrentMode;
+            }
+        }
         protected void BeforeModeChange()
         {
-            if (model != null)
+            if (Model != null)
             {
                 Navigator.OnForward();
             }
+        }
+
+        private ModeChangeEventHandler<PostManagerMode> ModeChanging()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

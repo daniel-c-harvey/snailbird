@@ -3,21 +3,11 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels
 {
-    public class EditPostViewModel<TPost>
+    public class EditPostViewModel<TPost> : EditPostViewModelBase<TPost, EditPostViewModel<TPost>>
         where TPost : Post, new()
     {
-        [Parameter]
-        public Action<TPost>? OnCommitPost { get; set; }
-
-        [Parameter]
-        public TPost? Post { get; set; }
-
-        public virtual void CommitPost()
-        {
-            if (OnCommitPost != null && Post != null)
-            {
-                OnCommitPost(Post);
-            }
-        }
+        public EditPostViewModel(Action<TPost> onCommitPost)
+        : base(onCommitPost)
+        { }
     }
 }

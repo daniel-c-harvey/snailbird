@@ -1,19 +1,18 @@
 ﻿@using RazorCore.Navigation;
 @using SnailbirdData.Models.Post;
 @using SnailbirdAdmin.Models;
-@using SnailbirdAdmin.ViewModels;
 @using SnailbirdAdmin.Views;
 
-@page "/posts"
+@page "/flex-posts"
 
 <PageTitle>Posts</PageTitle>
 
 <NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
-    <PostManager TPost="LiveJamPost" TEdit="EditPostViewModel<LiveJamPost>" @ref="postManager" />
+    <FlexPostManager @ref="postManager" />
 </NavPanel>
 
-@code{
-    private PostManager<LiveJamPost, EditPostViewModel<LiveJamPost>> postManager = default!;
+@code {
+    private FlexPostManager postManager = default!;
 
     private INavigable<PostManagerMode> GetPostManager()
     {
