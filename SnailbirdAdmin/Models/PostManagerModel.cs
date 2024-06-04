@@ -30,5 +30,10 @@ namespace SnailbirdAdmin.Models
             Post = post;
             CurrentMode = currentMode;
         }
+
+        public TPost CurrentPost()
+        {
+            return Post;
+        }
     }
 }

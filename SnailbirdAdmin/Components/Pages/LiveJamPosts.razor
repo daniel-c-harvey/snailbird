@@ -1,19 +1,18 @@
 ﻿@using RazorCore.Navigation;
 @using SnailbirdData.Models.Post;
 @using SnailbirdAdmin.Models;
-@using SnailbirdAdmin.ViewModels;
 @using SnailbirdAdmin.Views;
 
-@page "/posts"
+@page "/live-jam-posts"
 
-<PageTitle>Posts</PageTitle>
+<PageTitle>Live Jam Posts</PageTitle>
 
 <NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
-    <PostManager TPost="LiveJamPost" TEdit="EditPostViewModel<LiveJamPost>" @ref="postManager" />
+    <LiveJamPostManager @ref="postManager" />
 </NavPanel>
 
-@code{
-    private PostManager<LiveJamPost, EditPostViewModel<LiveJamPost>> postManager = default!;
+@code {
+    private LiveJamPostManager postManager = default!;
 
     private INavigable<PostManagerMode> GetPostManager()
     {

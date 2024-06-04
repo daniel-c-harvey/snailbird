@@ -1,11 +1,36 @@
-﻿@* @using SnailbirdData.Models.Post;
+﻿@using SnailbirdData.DataAdapters;
+@using SnailbirdData.Models.Post;
 @using SnailbirdAdmin.Models;
+@using SnailbirdAdmin.ViewModels;
 @using RazorCore;
 
-@inherits PostManagerBase<LiveJamPost, EditLiveJamPost>
+<PostManager TPost="LiveJamPost" TEdit="EditLiveJamPostViewModel" ViewModel="@ViewModel">
+    <AddComponent>
+        <EditLiveJamPost ViewModel="@EditViewModel"/>
+    </AddComponent>
+    <EditComponent>
+        <EditLiveJamPost ViewModel="@AddViewModel"/>
+    </EditComponent>
+</PostManager>
 
 @code
 {
-    protected override RenderFragment AddComponent  => @<EditLiveJamPost Post="model?.Post" OnCommitPost="SaveNewPost" />;
-    protected override RenderFragment EditComponent => @<EditLiveJamPost Post="model?.Post" OnCommitPost="SavePost" />;
-} *@
+    [Inject]
+    public IDataAdapter<LiveJamPost>? PostAdapter { get; set; }
+    public LiveJamPostManagerViewModel? ViewModel { get; set; }
+
+    protected EditLiveJamPostViewModel? EditViewModel { get; set; }
+    protected EditLiveJamPostViewModel? AddViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        if (PostAdapter is null) throw new ArgumentNullException(nameof(PostAdapter));
+        ViewModel = new(PostAdapter);
+
+        if (ViewModel.Model is null) throw new ArgumentNullException(nameof(ViewModel.Model));
+        EditViewModel = new(ViewModel.SavePost);
+        AddViewModel = new(ViewModel.SaveNewPost);
+    }
+}

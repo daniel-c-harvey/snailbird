@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\LiveJamPostManager.razor" />
+    <Compile Remove="Views\FlexPostManager.cs" />
+    <Compile Remove="Views\OLDLiveJamPostManager.cs" />
+    <Compile Remove="Views\PostManagerBase.razor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\PostManagerBase.razor" />
   </ItemGroup>
 
   <ItemGroup>

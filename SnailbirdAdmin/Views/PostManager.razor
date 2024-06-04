@@ -6,7 +6,7 @@
 @using RazorCore.Navigation;
 
 @typeparam TPost where TPost : Post, new()
-@typeparam TEdit where TEdit : EditPost<TPost>
+@typeparam TEdit where TEdit : EditPostViewModel<TPost>
 
 <h3>Posts</h3>
 
@@ -14,42 +14,62 @@
 {
     @if (ViewModel.CurrentMode == PostManagerMode.View)
     {
-        <NewRowTable TModel="TPost"
-                     models="model.Posts"
-                     columnMap="columns"
-                     OnAdd="AddPost"
-                     OnDelete="DeletePost" />
+        @if (ViewModel.Model != null)
+        {
+            <NewRowTable TModel="TPost"
+                         models="ViewModel.Model.Posts"
+                         columnMap="ViewModel.Columns"
+                         OnAdd="ViewModel.AddPost"
+                         OnDelete="ViewModel.DeletePost" />
+        }
+        else
+        {   
+            
+        }
     }
-    else if (CurrentMode == PostManagerMode.Add)
+    else if (ViewModel.CurrentMode == PostManagerMode.Add && AddComponent != null && AddViewModel != null)
     {
-        @AddComponent
+        @AddComponent((TEdit)AddViewModel.LoadPost(ViewModel.Model.Post))
     }
-    else if (CurrentMode == PostManagerMode.Edit)
+    else if (ViewModel.CurrentMode == PostManagerMode.Edit && EditComponent != null)
     {
-        @EditComponent
+        @EditComponent((TEdit)EditViewModel.LoadPost(ViewModel.Model.Post))
     }
 }
 
 @code {
     [Inject]
-    public IDataAdapter<TPost> PostAdapter { protected get; set; }
+    public IDataAdapter<TPost>? PostAdapter { get; set; }
 
     [Parameter]
-    public PostManagerViewModel<TPost, TEdit>? ViewModel { get; set; }
+    public PostManagerViewModel<TPost>? ViewModel { get; set; }
+    [Parameter]
+    public RenderFragment<TEdit>? AddComponent { get; set; }
+    protected TEdit? AddViewModel { get; set; }
+    [Parameter]
+    public RenderFragment<TEdit>? EditComponent {get; set; }
+    protected TEdit? EditViewModel { get; set; }
 
-    protected virtual RenderFragment AddComponent => @<EditPost TPost="TPost" Post="model?.Post" OnCommitPost="SaveNewPost" />;
-    protected virtual RenderFragment EditComponent => @<EditPost TPost="TPost" Post="model?.Post" OnCommitPost="SavePost" />;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        InitViewModel();
-        ViewModel.Navigator.ModeChanging += (_) => ModeChanged();
+        InitViewModel();        
     }
 
     protected void InitViewModel()
     {
-        ViewModel = new()
+        if (PostAdapter != null)
+        {
+            ViewModel = new(PostAdapter);
+            ViewModel.Navigator.ModeChanging += (_) => ModeChanged();
+
+            if (AddViewModel is null) AddViewModel = new EditPostViewModel<TPost>(ViewModel.SaveNewPost);
+            if (AddComponent is null) AddComponent = (viewModel) => @<EditPost TPost="TPost" ViewModel="viewModel" />;
+
+            if (EditViewModel is null) EditViewModel = (TEdit)new EditPostViewModel<TPost>(ViewModel.SavePost);
+            if (EditComponent is null) EditComponent = (viewModel) => @<EditPost TPost="TPost" ViewModel="viewModel" />;
+        }
     }
 
     public void ModeChanged()
