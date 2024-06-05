@@ -39,7 +39,7 @@ namespace RazorCore.Navigation
 
                 if (Context is null) throw new ArgumentNullException(nameof(Context));
 
-                Context.Navigator.ModeChanging += OnModeChange;
+                Context.Navigator.ModeAdvancing += OnModeChange;
             }
         }
 

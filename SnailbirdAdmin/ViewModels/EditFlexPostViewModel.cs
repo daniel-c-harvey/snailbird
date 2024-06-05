@@ -3,7 +3,7 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels
 {
-    public class EditFlexPostViewModel : EditPostViewModel<FlexPost>
+    public class EditFlexPostViewModel : EditPostViewModelBase<FlexPost, EditFlexPostViewModel>
     {
         //private List<Instrument> _instruments = new List<Instrument>();
         //public IEnumerable<Instrument> Instruments => _instruments;

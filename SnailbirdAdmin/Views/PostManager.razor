@@ -6,7 +6,7 @@
 @using RazorCore.Navigation;
 
 @typeparam TPost where TPost : Post, new()
-@typeparam TEdit where TEdit : EditPostViewModel<TPost>
+@typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
 
 <h3>Posts</h3>
 
@@ -23,57 +23,16 @@
                          OnDelete="ViewModel.DeletePost" />
         }
         else
-        {   
-            
+        {
+
         }
     }
     else if (ViewModel.CurrentMode == PostManagerMode.Add && AddComponent != null && AddViewModel != null)
     {
-        @AddComponent((TEdit)AddViewModel.LoadPost(ViewModel.Model.Post))
+        @AddComponent(AddViewModel.LoadPost(ViewModel.Model.Post))
     }
-    else if (ViewModel.CurrentMode == PostManagerMode.Edit && EditComponent != null)
+    else if (ViewModel.CurrentMode == PostManagerMode.Edit && EditComponent != null && EditViewModel != null)
     {
-        @EditComponent((TEdit)EditViewModel.LoadPost(ViewModel.Model.Post))
-    }
-}
-
-@code {
-    [Inject]
-    public IDataAdapter<TPost>? PostAdapter { get; set; }
-
-    [Parameter]
-    public PostManagerViewModel<TPost>? ViewModel { get; set; }
-    [Parameter]
-    public RenderFragment<TEdit>? AddComponent { get; set; }
-    protected TEdit? AddViewModel { get; set; }
-    [Parameter]
-    public RenderFragment<TEdit>? EditComponent {get; set; }
-    protected TEdit? EditViewModel { get; set; }
-
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        InitViewModel();        
-    }
-
-    protected void InitViewModel()
-    {
-        if (PostAdapter != null)
-        {
-            ViewModel = new(PostAdapter);
-            ViewModel.Navigator.ModeChanging += (_) => ModeChanged();
-
-            if (AddViewModel is null) AddViewModel = new EditPostViewModel<TPost>(ViewModel.SaveNewPost);
-            if (AddComponent is null) AddComponent = (viewModel) => @<EditPost TPost="TPost" ViewModel="viewModel" />;
-
-            if (EditViewModel is null) EditViewModel = (TEdit)new EditPostViewModel<TPost>(ViewModel.SavePost);
-            if (EditComponent is null) EditComponent = (viewModel) => @<EditPost TPost="TPost" ViewModel="viewModel" />;
-        }
-    }
-
-    public void ModeChanged()
-    {
-        StateHasChanged();
+        @EditComponent(EditViewModel.LoadPost(ViewModel.Model.Post))
     }
 }

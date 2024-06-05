@@ -4,6 +4,7 @@
 @using RazorCore;
 
 @typeparam TPost where TPost : Post, new()
+@typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
 
 @if (ViewModel?.Post == null)
 {
@@ -33,7 +34,7 @@ else
 
 @code{
     [Parameter]
-    public EditPostViewModel<TPost>? ViewModel { get; set; }
+    public EditPostViewModelBase<TPost, TEdit>? ViewModel { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; } = null;

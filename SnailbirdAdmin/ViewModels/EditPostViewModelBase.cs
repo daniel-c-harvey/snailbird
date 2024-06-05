@@ -14,7 +14,7 @@ namespace SnailbirdAdmin.ViewModels
             OnCommitPost = onCommitPost;
         }
 
-        public TSelf LoadPost(TPost post)
+        public virtual TSelf LoadPost(TPost post)
         {
             Post = post;
             return (TSelf)this;
