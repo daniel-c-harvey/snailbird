@@ -9,11 +9,11 @@
 <PageTitle>Posts</PageTitle>
 
 <NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
-    <PostManager TPost="LiveJamPost" TEdit="EditPostViewModel<LiveJamPost>" @ref="postManager" />
+    <PostManager TPost="Post" TEdit="EditPostViewModel" @ref="postManager" />
 </NavPanel>
 
 @code{
-    private PostManager<LiveJamPost, EditPostViewModel<LiveJamPost>> postManager = default!;
+    private PostManager postManager = default!;
 
     private INavigable<PostManagerMode> GetPostManager()
     {

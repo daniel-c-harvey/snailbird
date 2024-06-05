@@ -1,9 +1,10 @@
-﻿@using SnailbirdData.Models.Post;
+﻿@using SnailbirdData.DataAdapters
+@using SnailbirdData.Models.Post;
 @using SnailbirdAdmin.Models;
 @using SnailbirdAdmin.ViewModels;
 @using RazorCore;
 
-<PostManager @ref="Manager" TPost="FlexPost" TEdit="EditFlexPostViewModel" ViewModel="ViewModel">
+<PostManager TPost="FlexPost" TEdit="EditFlexPostViewModel" ViewModel="ViewModel">
     <AddComponent>
         <EditFlexPost ViewModel="EditViewModel" />
     </AddComponent>
@@ -14,9 +15,11 @@
 
 @code
 {
+    [Inject]
+    public IDataAdapter<FlexPost>? PostAdapter { get; set; }
+
     public FlexPostManagerViewModel? ViewModel { get; set; }
 
-    protected PostManager<FlexPost, EditFlexPostViewModel>? Manager { get; set; }
     protected EditFlexPostViewModel? EditViewModel { get; set; }
     protected EditFlexPostViewModel? AddViewModel { get; set; }
 
@@ -24,8 +27,8 @@
     {
         base.OnInitialized();
 
-        if (Manager?.PostAdapter is null) throw new ArgumentNullException(nameof(Manager.PostAdapter));
-        ViewModel = new(Manager.PostAdapter);
+        if (PostAdapter is null) throw new ArgumentNullException(nameof(PostAdapter));
+        ViewModel = new(PostAdapter);
 
         if (ViewModel.Model is null) throw new ArgumentNullException(nameof(ViewModel.Model));
         EditViewModel = new(ViewModel.SavePost);

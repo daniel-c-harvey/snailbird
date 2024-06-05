@@ -4,12 +4,16 @@
 @using SnailbirdAdmin.ViewModels;
 @using RazorCore;
 
-<PostManager TPost="LiveJamPost" TEdit="EditLiveJamPostViewModel" ViewModel="@ViewModel">
-    <AddComponent>
-        <EditLiveJamPost ViewModel="@EditViewModel"/>
+<PostManager TPost="LiveJamPost" 
+             TEdit="EditLiveJamPostViewModel" 
+             ViewModel="@ViewModel"
+             AddViewModel="@AddViewModel"
+             EditViewModel="@EditViewModel">
+    <AddComponent Context="viewModel">
+        <EditLiveJamPost ViewModel="@viewModel"/>
     </AddComponent>
-    <EditComponent>
-        <EditLiveJamPost ViewModel="@AddViewModel"/>
+    <EditComponent Context="viewModel">
+        <EditLiveJamPost ViewModel="@viewModel"/>
     </EditComponent>
 </PostManager>
 

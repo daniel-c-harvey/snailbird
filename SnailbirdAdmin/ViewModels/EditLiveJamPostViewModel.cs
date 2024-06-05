@@ -3,7 +3,7 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels
 {
-    public class EditLiveJamPostViewModel : EditPostViewModel<LiveJamPost>
+    public class EditLiveJamPostViewModel : EditPostViewModelBase<LiveJamPost, EditLiveJamPostViewModel>
     {
         private List<Instrument> _instruments = new List<Instrument>();
         public IEnumerable<Instrument> Instruments => _instruments;
@@ -33,6 +33,12 @@ namespace SnailbirdAdmin.ViewModels
         public void RemoveInstrument(Instrument instrument)
         {
             _instruments.Remove(instrument);
+        }
+
+        public override EditLiveJamPostViewModel LoadPost(LiveJamPost post)
+        {
+            _instruments = post.Instruments.ToList();
+            return base.LoadPost(post);
         }
 
         public override void CommitPost()

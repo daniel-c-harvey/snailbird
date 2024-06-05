@@ -16,7 +16,8 @@
     {
         TMode CurrentMode { get; }
 
-        event ModeChangeEventHandler<TMode> ModeChanging;
+        event ModeChangeEventHandler<TMode> ModeAdvancing;
+        event ModeChangeEventHandler<TMode> ModeChanged;
         void OnForward();
         void OnBack(TMode mode);
     }

@@ -1,0 +1,116 @@
+﻿@using SnailbirdData.DataAdapters;
+@using SnailbirdData.Models.Post;
+@using SnailbirdAdmin.Models;
+@using SnailbirdAdmin.ViewModels;
+@using RazorCore;
+
+<PostManagerBase TPost="Post" TEdit="EditPostViewModel" ViewModel="@ViewModel">
+    <AddComponent>
+        <EditPost ViewModel="@EditViewModel"/>
+    </AddComponent>
+    <EditComponent>
+        <EditPost ViewModel="@AddViewModel"/>
+    </EditComponent>
+</PostManagerBase>
+
+@code
+{
+    [Inject]
+    public IDataAdapter<Post>? PostAdapter { get; set; }
+    public PostManagerViewModel<Post>? ViewModel { get; set; }
+
+    protected EditPostViewModel? EditViewModel { get; set; }
+    protected EditPostViewModel? AddViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        if (PostAdapter is null) throw new ArgumentNullException(nameof(PostAdapter));
+        ViewModel = new(PostAdapter);
+
+        if (ViewModel.Model is null) throw new ArgumentNullException(nameof(ViewModel.Model));
+        EditViewModel = new(ViewModel.SavePost);
+        AddViewModel = new(ViewModel.SaveNewPost);
+    }
+}
+
+@* @using SnailbirdAdmin.ViewModels;
+@using SnailbirdAdmin.Models;
+@using SnailbirdData.DataAdapters
+@using SnailbirdData.Models.Post;
+@using RazorCore;
+@using RazorCore.Navigation;
+
+@typeparam TPost where TPost : Post, new()
+@typeparam TEdit where TEdit : EditPostViewModel<TPost>
+
+<h3>Posts</h3>
+
+@if (ViewModel != null)
+{
+    @if (ViewModel.CurrentMode == PostManagerMode.View)
+    {
+        @if (ViewModel.Model != null)
+        {
+            <NewRowTable TModel="TPost"
+                         models="ViewModel.Model.Posts"
+                         columnMap="ViewModel.Columns"
+                         OnAdd="ViewModel.AddPost"
+                         OnDelete="ViewModel.DeletePost" />
+        }
+        else
+        {   
+            
+        }
+    }
+    else if (ViewModel.CurrentMode == PostManagerMode.Add && AddComponent != null && AddViewModel != null)
+    {
+        @AddComponent(AddViewModel.LoadPost(ViewModel.Model.Post))
+    }
+    else if (ViewModel.CurrentMode == PostManagerMode.Edit && EditComponent != null)
+    {
+        @EditComponent((TEdit)EditViewModel.LoadPost(ViewModel.Model.Post))
+    }
+}
+
+@code {
+    [Inject]
+    public IDataAdapter<TPost>? PostAdapter { get; set; }
+
+    [Parameter]
+    public PostManagerViewModel<TPost>? ViewModel { get; set; }
+    [Parameter]
+    public RenderFragment<TEdit>? AddComponent { get; set; }
+    protected TEdit? AddViewModel { get; set; }
+    [Parameter]
+    public RenderFragment<TEdit>? EditComponent {get; set; }
+    protected TEdit? EditViewModel { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        InitViewModel();        
+    }
+
+    protected void InitViewModel()
+    {
+        if (PostAdapter != null)
+        {
+            ViewModel = new(PostAdapter);
+            ViewModel.Navigator.ModeChanging += (_) => ModeChanged();
+
+            if (AddViewModel is null) AddViewModel = new EditPostViewModel<TPost>(ViewModel.SaveNewPost);
+            if (AddComponent is null) AddComponent = (viewModel) => @<EditPost TPost="TPost" ViewModel="viewModel" />;
+
+            if (EditViewModel is null) EditViewModel = (TEdit)new EditPostViewModel<TPost>(ViewModel.SavePost);
+            if (EditComponent is null) EditComponent = (viewModel) => @<EditPost TPost="TPost" ViewModel="viewModel" />;
+        }
+    }
+
+    public void ModeChanged()
+    {
+        StateHasChanged();
+    }
+} *@

@@ -14,8 +14,8 @@ namespace RazorCore.Navigation
 
         public TMode CurrentMode => Model.CurrentMode;
 
-        public event ModeChangeEventHandler<TMode>? ModeChanging;
-
+        public event ModeChangeEventHandler<TMode>? ModeAdvancing;
+        public event ModeChangeEventHandler<TMode> ModeChanged;
 
         public Navigator(TModel model)
         {
@@ -24,15 +24,25 @@ namespace RazorCore.Navigation
 
         public void OnForward()
         {
-            if (ModeChanging != null)
+            if (ModeAdvancing != null)
             {
-                ModeChanging(new ModeChangeEventArgs<TMode>(Model.CurrentMode));
+                ModeAdvancing(new ModeChangeEventArgs<TMode>(Model.CurrentMode));
+                OnChange();
             }
         }
 
         public void OnBack(TMode mode)
         {
             Model.CurrentMode = mode;
+            OnChange();
+        }
+
+        protected void OnChange()
+        {
+            if (ModeChanged != null) 
+            {
+                ModeChanged(new ModeChangeEventArgs<TMode>(Model.CurrentMode));
+            }
         }
     }
 }

@@ -111,7 +111,6 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Model is null) throw new ArgumentNullException(nameof(Model));
             Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(Model);
-            //Navigator.ModeChanging += ModeChanging();
         }
 
         public PostManagerMode CurrentMode {
@@ -127,11 +126,6 @@ namespace SnailbirdAdmin.ViewModels
             {
                 Navigator.OnForward();
             }
-        }
-
-        private ModeChangeEventHandler<PostManagerMode> ModeChanging()
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }
