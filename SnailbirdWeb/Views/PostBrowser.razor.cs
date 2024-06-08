@@ -48,7 +48,7 @@ namespace SnailbirdWeb.Views
         private void InitNavigation()
         {
             Navigator = new Navigator<PostBrowserMode, PostBrowserModel>(model);
-            Navigator.ModeChanging += (_) => ModeChanged();
+            Navigator.ModeChanged += (_) => ModeChanged();
         }
 
         public INavigator<PostBrowserMode> Navigator { get; private set; }
