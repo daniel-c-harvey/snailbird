@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,23 @@ using System.Threading.Tasks;
 
 namespace SnailbirdData.Models.Post
 {
-    public class PostElement
+
+    [BsonDiscriminator(RootClass = true)]
+    [BsonKnownTypes(typeof(PostParagraph), 
+                    typeof(PostImage), 
+                    typeof(PostYouTubeEmbed),
+                    typeof(PostInstrumentList))]
+    public abstract class PostElement
     {
+        public static IDictionary<string, string> PostElementTypeCaptions =
+            new Dictionary<string, string>
+            {
+                { nameof(PostParagraph), "Paragraph"},
+                { nameof(PostImage), "Image" },
+                { nameof(PostYouTubeEmbed), "YouTube Embed" },
+                { nameof(PostInstrumentList), "Instrument List" }
+            };
+
         public int Ordinal { get; set; }
     }
     

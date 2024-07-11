@@ -5,6 +5,8 @@ namespace SnailbirdAdmin.ViewModels
 {
     public class FlexPostManagerViewModel : PostManagerViewModel<FlexPost>
     {
-        public FlexPostManagerViewModel(IDataAdapter<FlexPost> postAdapter) : base(postAdapter) { }
+        public FlexPostManagerViewModel(IDataAdapter<FlexPost> postAdapter) 
+        : base(postAdapter) 
+        { }
     }
 }
