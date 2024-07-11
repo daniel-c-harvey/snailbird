@@ -8,31 +8,22 @@
 @typeparam TPost where TPost : Post, new()
 @typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
 
-<h3>Posts</h3>
-
-@if (ViewModel != null)
+@if (ViewModel != null && AddComponent != null && EditComponent != null)
 {
-    @if (ViewModel.CurrentMode == PostManagerMode.View)
-    {
-        @if (ViewModel.Model != null)
-        {
+    <PostManagerBase TPost="TPost"
+                     TEdit="TEdit"
+                     TView="PostManagerViewModel<TPost>"
+                     ViewModel="ViewModel"
+                     AddComponent="AddComponent"
+                     AddViewModel="AddViewModel"
+                     EditComponent="EditComponent"
+                     EditViewModel="EditViewModel">
+        <ViewComponent Context="viewModel">
             <NewRowTable TModel="TPost"
-                         models="ViewModel.Model.Posts"
-                         columnMap="ViewModel.Columns"
-                         OnAdd="ViewModel.AddPost"
-                         OnDelete="ViewModel.DeletePost" />
-        }
-        else
-        {
-
-        }
-    }
-    else if (ViewModel.CurrentMode == PostManagerMode.Add && AddComponent != null && AddViewModel != null)
-    {
-        @AddComponent(AddViewModel.LoadPost(ViewModel.Model.Post))
-    }
-    else if (ViewModel.CurrentMode == PostManagerMode.Edit && EditComponent != null && EditViewModel != null)
-    {
-        @EditComponent(EditViewModel.LoadPost(ViewModel.Model.Post))
-    }
+                         models="viewModel.Model.Posts"
+                         columnMap="viewModel.Columns"
+                         OnAdd="viewModel.AddPost"
+                         OnDelete="viewModel.DeletePost" />
+        </ViewComponent>
+    </PostManagerBase>
 }

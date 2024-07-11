@@ -58,7 +58,7 @@ namespace SnailbirdAdmin
             );
 
             MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
-            MongoAdapter<FlexPost> flexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("sutdioFeedFlexPost"));
+            MongoAdapter<FlexPost> flexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
 
             services
             .AddSingleton<IDataAccess<IMongoDatabase>,MongoDataAccess>(_ => dataAccess)
