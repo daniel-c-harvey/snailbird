@@ -25,14 +25,14 @@
         [Parameter]
         public SnailbirdData.Models.Post.LiveJamPost Post { get; set; } = default!;
 
-        // [Parameter]
-        // public EventCallback<SnailbirdData.Models.Post.LiveJamPost> OnSelect { get; set; }
+        [Parameter]
+        public EventCallback<SnailbirdData.Models.Post.LiveJamPost> OnSelect { get; set; }
 
-        // private async Task OnHeaderClick(MouseEventArgs e)
-        // {
-        //     if (OnSelect.HasDelegate)
-        //     {
-        //         await OnSelect.InvokeAsync(Post);
-        //     }
-        // }
+        private async Task OnHeaderClick(MouseEventArgs e)
+        {
+            if (OnSelect.HasDelegate)
+            {
+                await OnSelect.InvokeAsync(Post);
+            }
+        }
 }

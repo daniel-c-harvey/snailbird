@@ -8,7 +8,7 @@ else
 {    
     @foreach(TModel post in Posts)
     {
-        <ViewPost TPostModel="TModel" Post="@post" />
+        <ViewPost TPostModel="TModel" Post="@post" OnSelect="OnSelectPost"/>
     }
 }
 

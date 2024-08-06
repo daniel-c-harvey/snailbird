@@ -36,6 +36,8 @@ namespace SnailbirdWeb.Updates
 
         private void GetFeed(PostBrowserModel<TPostModel> model, PostBrowserGetFeedMessage message) 
         {
+            model.CurrentMode = PostBrowserMode.Feed;
+
             if (PostAdapter != null)
             {
                 var results = PostAdapter.GetPage(message.Page.PageIndex, message.Page.PageLength);
@@ -49,6 +51,8 @@ namespace SnailbirdWeb.Updates
 
         private void ViewPost(PostBrowserModel<TPostModel> model, PostBrowserViewPostMessage<TPostModel> message)
         {
+            model.CurrentMode = PostBrowserMode.ViewPost;
+
             model.SelectedPostModel.Post = message.Post;
         }
     }
