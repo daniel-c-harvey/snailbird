@@ -1,0 +1,45 @@
+﻿@using SnailbirdData.Models.Post;
+
+@if (Element != null)
+{
+    @if (Element is PostParagraph)
+    {
+        <p>
+            @this.PostParagraph.Text;
+        </p>
+    } else if (Element is PostImage)
+    {
+        <img class="centeredimage" src="@PostImage.ImageURI" alt="@PostImage.AltText" />
+    } else if (Element is PostYouTubeEmbed)
+    {
+        <div class="centeredimage">
+            <iframe class="youtubeframe"
+                    src="@PostYouTubeEmbed.VideosURL"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+            </iframe>
+        </div>
+    } else if (Element is PostInstrumentList)
+    {
+        <ul class="songdetails">
+            @foreach (Instrument instrument in PostInstrumentList.Instruments)
+            {
+                <li>
+                    <span class="instrument">@instrument.Name:</span> @instrument.Description
+                </li>
+            }
+        </ul>
+    }
+}
+
+@code {
+    [Parameter]
+    public SnailbirdData.Models.Post.PostElement? Element { get; set; }
+
+    protected PostParagraph PostParagraph => Element as PostParagraph ?? throw new ArgumentNullException(nameof(Element));
+    protected PostImage PostImage => Element as PostImage ?? throw new ArgumentNullException(nameof(Element));
+    protected PostYouTubeEmbed PostYouTubeEmbed => Element as PostYouTubeEmbed ?? throw new ArgumentNullException(nameof(Element));
+    protected PostInstrumentList PostInstrumentList => Element as PostInstrumentList ?? throw new ArgumentNullException(nameof(Element));
+
+}

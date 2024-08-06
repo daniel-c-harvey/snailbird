@@ -1,0 +1,19 @@
+﻿@typeparam TPostModel where TPostModel : SnailbirdData.Models.Post.Post, new()
+
+@if (Post != null)
+{
+    @if (Post is SnailbirdData.Models.Post.LiveJamPost)
+    {
+        var liveJamPost = Post as SnailbirdData.Models.Post.LiveJamPost;
+        <LiveJamPost Post="@liveJamPost" />
+    } else if (Post is SnailbirdData.Models.Post.FlexPost)
+    {
+        var flexPost = Post as SnailbirdData.Models.Post.FlexPost;
+        <FlexPost Post="@flexPost" />
+    }
+}
+
+@code {
+    [Parameter]
+    public TPostModel? Post { get; set; }
+}

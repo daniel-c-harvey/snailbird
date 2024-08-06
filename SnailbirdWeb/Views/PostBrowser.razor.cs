@@ -9,14 +9,15 @@ using SnailbirdWeb.Messages;
 
 namespace SnailbirdWeb.Views
 {
-    public partial class PostBrowser : INavigable<PostBrowserMode>
+    public partial class PostBrowser<TPostModel> : INavigable<PostBrowserMode>
+    where TPostModel : Post, new()
     {
         #region "Members"
         [Inject]
-        public IDataAdapter<LiveJamPost> PostAdapter { get; set; }
+        public IDataAdapter<TPostModel> PostAdapter { get; set; }
 
-        private PostBrowserModel? model;
-        private PostBrowserUpdate? update;
+        private PostBrowserModel<TPostModel>? model;
+        private PostBrowserUpdate<TPostModel>? update;
         private void InitModel()
         {
             model = new(PostBrowserMode.Feed);
@@ -34,12 +35,12 @@ namespace SnailbirdWeb.Views
         #endregion
 
         #region "View Model"
-        private void ViewPost(LiveJamPost post)
+        private void ViewPost(TPostModel post)
         {
             if (update != null && model != null) 
             {
                 BeforeModeChange();
-                update.Update(model, new PostBrowserViewPostMessage(post));
+                update.Update(model, new PostBrowserViewPostMessage<TPostModel>(post));
             }
         }
         #endregion
@@ -47,7 +48,7 @@ namespace SnailbirdWeb.Views
         #region "INavigable"
         private void InitNavigation()
         {
-            Navigator = new Navigator<PostBrowserMode, PostBrowserModel>(model);
+            Navigator = new Navigator<PostBrowserMode, PostBrowserModel<TPostModel>>(model);
             Navigator.ModeChanged += (_) => ModeChanged();
         }
 

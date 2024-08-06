@@ -8,14 +8,14 @@
 <div id="main">
     <NavPanel TMode="PostBrowserMode"
               GetContext="GetPostBrowser">
-        <PostBrowser @ref="@postBrowser"/>
+        <PostBrowser TPostModel="SnailbirdData.Models.Post.FlexPost" @ref="@postBrowser"/>
     </NavPanel>
 </div>
 
 @code{
-    private PostBrowser? postBrowser;
+    private PostBrowser<SnailbirdData.Models.Post.FlexPost>? postBrowser;
 
-    private PostBrowser GetPostBrowser()
+    private PostBrowser<SnailbirdData.Models.Post.FlexPost> GetPostBrowser()
     {
         if (postBrowser == null) throw new Exception("Post Browser not yet initialized.");
         

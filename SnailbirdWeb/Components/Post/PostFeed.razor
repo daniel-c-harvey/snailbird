@@ -1,25 +1,26 @@
-﻿
+﻿@typeparam TModel where TModel : SnailbirdData.Models.Post.Post, new()
+
 @if (Posts == null)
 {
     <span>Loading...</span>   
 }
 else
 {    
-    @foreach(SnailbirdData.Models.Post.LiveJamPost post in Posts)
+    @foreach(TModel post in Posts)
     {
-        <LiveJamPost Post=@post OnSelect="OnSelectPost"/>
+        <ViewPost TPostModel="TModel" Post="@post" />
     }
 }
 
 
 @code {
     [Parameter]
-    public IEnumerable<SnailbirdData.Models.Post.LiveJamPost>? Posts { get; set; }
+    public IEnumerable<TModel>? Posts { get; set; }
 
     [Parameter]
-    public EventCallback<SnailbirdData.Models.Post.LiveJamPost> OnSelect { get; set; }
+    public EventCallback<TModel> OnSelect { get; set; }
 
-    private async Task OnSelectPost(SnailbirdData.Models.Post.LiveJamPost post)
+    private async Task OnSelectPost(TModel post)
     {
         if (OnSelect.HasDelegate)
         {

@@ -1,5 +1,5 @@
 ﻿<div class="post">
-    <h1 class="pink header" @onclick="OnHeaderClick">@Post.Title</h1>
+    <h1 class="pink header">@Post.Title</h1>
     <h3 class="aqua date header">@Post.PostDate.ToShortDateString()</h3>
     <p>
         @Post.Preamble
@@ -25,14 +25,14 @@
         [Parameter]
         public SnailbirdData.Models.Post.LiveJamPost Post { get; set; } = default!;
 
-        [Parameter]
-        public EventCallback<SnailbirdData.Models.Post.LiveJamPost> OnSelect { get; set; }
+        // [Parameter]
+        // public EventCallback<SnailbirdData.Models.Post.LiveJamPost> OnSelect { get; set; }
 
-        private async Task OnHeaderClick(MouseEventArgs e)
-        {
-            if (OnSelect.HasDelegate)
-            {
-                await OnSelect.InvokeAsync(Post);
-            }
-        }
+        // private async Task OnHeaderClick(MouseEventArgs e)
+        // {
+        //     if (OnSelect.HasDelegate)
+        //     {
+        //         await OnSelect.InvokeAsync(Post);
+        //     }
+        // }
 }
