@@ -5,22 +5,27 @@ using SnailbirdWeb.Messages;
 
 namespace SnailbirdWeb.Updates
 {
-    public class PostBrowserUpdate
+    public class PostBrowserUpdate<TPostModel>
+    where TPostModel : Post, new()
     {
-        private IDataAdapter<LiveJamPost> PostAdapter { get; }
+        private IDataAdapter<TPostModel> PostAdapter { get; }
 
-        public PostBrowserUpdate(IDataAdapter<LiveJamPost> postAdapter)
+        public PostBrowserUpdate(IDataAdapter<TPostModel> postAdapter)
         {
             PostAdapter = postAdapter;
         }
 
-        public PostBrowserModel Update(PostBrowserModel model, PostBrowserMessage message)
+        public PostBrowserModel<TPostModel> Update(PostBrowserModel<TPostModel> model, PostBrowserMessage message)
         {
             switch (message.Action)
             {
                 case PostBrowserAction.GetFeed:
                     var getFeedMessage = message as PostBrowserGetFeedMessage;
                     if (getFeedMessage != null) { GetFeed(model, getFeedMessage); }
+                    break;
+                case PostBrowserAction.ViewPost:
+                    var viewPostMessage = message as PostBrowserViewPostMessage<TPostModel>;
+                    if (viewPostMessage != null) { ViewPost(model, viewPostMessage); }
                     break;
                 default:
                     throw new NotImplementedException();
@@ -29,17 +34,22 @@ namespace SnailbirdWeb.Updates
             return model;
         }
 
-        private void GetFeed(PostBrowserModel model, PostBrowserGetFeedMessage message) 
+        private void GetFeed(PostBrowserModel<TPostModel> model, PostBrowserGetFeedMessage message) 
         {
             if (PostAdapter != null)
             {
                 var results = PostAdapter.GetPage(message.Page.PageIndex, message.Page.PageLength);
                 if (results.Success)
                 {
-                    model.Feed.Posts = results.Value;
-                    model.Feed.Page = message.Page;
+                    model.FeedModel.Posts = results.Value;
+                    model.FeedModel.Page = message.Page;
                 }
             }
+        }
+
+        private void ViewPost(PostBrowserModel<TPostModel> model, PostBrowserViewPostMessage<TPostModel> message)
+        {
+            model.SelectedPostModel.Post = message.Post;
         }
     }
 }

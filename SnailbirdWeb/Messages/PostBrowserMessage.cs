@@ -26,11 +26,12 @@ namespace SnailbirdWeb.Messages
         }
     }
 
-    public class PostBrowserViewPostMessage : PostBrowserMessage
+    public class PostBrowserViewPostMessage<TPostModel> : PostBrowserMessage
+    where TPostModel : Post, new()
     {
-        public LiveJamPost Post { get; }
+        public TPostModel Post { get; }
 
-        public PostBrowserViewPostMessage(LiveJamPost post)
+        public PostBrowserViewPostMessage(TPostModel post)
             : base(PostBrowserAction.ViewPost)
         {
             Post = post;

@@ -1,13 +1,14 @@
 ﻿@using SnailbirdWeb.Models;
+@typeparam TPostModel where TPostModel : SnailbirdData.Models.Post.Post, new()
 
 @if(model != null)
 {   
     @if(CurrentMode == PostBrowserMode.Feed)
     {
-        <PostFeed Posts="@model.Feed.Posts" OnSelect="ViewPost"/>
+        <PostFeed TModel="TPostModel" Posts="@model.FeedModel.Posts" OnSelect="ViewPost"/>
     }
     else if (CurrentMode == PostBrowserMode.ViewPost)
     {
-        <FlexPost></FlexPost>
+        <ViewPost TPostModel="TPostModel" Post="@model.SelectedPostModel.Post" />
     }
 }

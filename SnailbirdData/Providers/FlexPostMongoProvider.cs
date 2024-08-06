@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace SnailbirdData.Providers
 {
-    public class PostMongoProvider : PostDatabaseProvider<MongoAdapter<LiveJamPost>, LiveJamPost>
+    public class FlexPostMongoProvider : PostDatabaseProvider<MongoAdapter<FlexPost>, FlexPost>
     {
-        public PostMongoProvider(MongoAdapter<LiveJamPost> dataAdapter) 
+        public FlexPostMongoProvider(MongoAdapter<FlexPost> dataAdapter) 
         : base(dataAdapter) { }
     }
 }

@@ -5,6 +5,7 @@ using DataAccess;
 using MongoDB.Driver;
 using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,13 +16,14 @@ var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQuer
         new MongoDataAccess(
             Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird")
                 .ConnectionString,
-                "snailbird-dev"
+                "snailbird"
             ),
         new MongoQueryBuilder()
 );
 
 //MongoAdapterFactory postAdapterFacotry = new MongoAdapterFactory();
-MongoAdapter<LiveJamPost> postAdapter = new MongoAdapter<LiveJamPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("posts"));
+MongoAdapter<LiveJamPost> liveJamPostAdapter = new MongoAdapter<LiveJamPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
+MongoAdapter<FlexPost> studioFlexPostAdapter = new MongoAdapter<FlexPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
 
 // Add services to the container.
 builder.Services
@@ -31,10 +33,16 @@ builder.Services
 builder.Services
     .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>
     (provider => {
-        return postAdapter;
+        return liveJamPostAdapter;
     })
-    .AddSingleton<IPostProvider<LiveJamPost>, PostMongoProvider>
-    (provider => new PostMongoProvider(postAdapter));
+    .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>
+    (provider => new LiveJamPostMongoProvider(liveJamPostAdapter))
+    .AddSingleton<IDataAdapter<FlexPost>, MongoAdapter<FlexPost>>
+    (provider => {
+        return studioFlexPostAdapter;
+    })
+    .AddSingleton<IPostProvider<FlexPost>, FlexPostMongoProvider>
+    (provider => new FlexPostMongoProvider(studioFlexPostAdapter));
     
 //.AddSingleton<IPostProvider, PostEmbeddedResourceProvider>();
 
