@@ -240,6 +240,10 @@ br {
         color: #3bb662;
     }
 
+.clickable:hover {
+    cursor: pointer;
+}
+
 @font-face {
     font-family: Quicksand;
     src: url('../font/Quicksand-Regular.otf');

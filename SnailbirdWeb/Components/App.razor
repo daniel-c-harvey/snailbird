@@ -9,7 +9,8 @@
     <meta name="google-site-verification" content="X9Mi71hau9xsJVo5Ej3EP4UER11N42Icfqd5nbudHK4" />  <!-- TODO update verification-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
-    @* <link rel="stylesheet" href="bootstrap/bootstrap.min.css" /> *@
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="SnailbirdWeb.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -17,7 +18,7 @@
 </head>
 
 <body>
-    <Routes />
+    <Routes @rendermode=RenderMode.InteractiveServer />
     <script src="_framework/blazor.web.js"></script>
 </body>
 

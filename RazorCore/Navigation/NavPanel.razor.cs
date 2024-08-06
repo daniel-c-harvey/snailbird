@@ -79,6 +79,7 @@ namespace RazorCore.Navigation
             }
         }
 
+        // todo DON'T USE CLASSES LIKE THIS
         protected void SetBackButtonClass()
         {
             if(modeHistory.Any())
