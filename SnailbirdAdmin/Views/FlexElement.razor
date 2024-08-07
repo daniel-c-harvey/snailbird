@@ -1,0 +1,39 @@
+﻿@using SnailbirdAdmin.ViewModels
+@using SnailbirdData.Models.Post
+
+@if (ViewModel?.Element != null)
+{   
+    <div class="sb-flex-element">
+        <div class="sb-flex-order">
+            <input type="number" value="@ViewModel.Element.Ordinal" />
+            <button type="button" class="btn btn-primary">
+                <span class="bi bi-trash"></span>
+            </button>
+            @if (ViewModel.Element is PostParagraph)
+            {
+                var paragraph = ViewModel.Element as PostParagraph;
+                <div>
+                    <h6>Paragraph</h6> @* todo make this changable *@
+                    <textarea class="form-control" type="text" @bind="@paragraph" />
+                </div>
+            } else if (ViewModel.Element is PostImage)
+            {
+                var image = ViewModel.Element as PostImage;
+                <div>
+                    <h6>Image</h6>
+                    <img src="@image.ImageURI" alt="@image.AltText" />
+                    <input class="form-control" type="url" @bind="@image.ImageURI" />
+                    <input class="form-control" type="url" @bind="@image.AltText" />
+                    <button type="button" class="btn btn-primary">
+                        <span class="bi bi-folder2"></span>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public FlexElementViewModel? ViewModel { get; set; }
+}

@@ -64,7 +64,7 @@ namespace SnailbirdAdmin
             .AddSingleton<IDataAccess<IMongoDatabase>,MongoDataAccess>(_ => dataAccess)
             .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>(_ => liveJamPostAdapter)
             .AddSingleton<IDataAdapter<FlexPost>, MongoAdapter<FlexPost>>(_ => flexPostAdapter)
-            .AddSingleton<IPostProvider<LiveJamPost>, PostMongoProvider>(provider => new PostMongoProvider(liveJamPostAdapter));
+            .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>(provider => new LiveJamPostMongoProvider(liveJamPostAdapter));
 
         }
     }
