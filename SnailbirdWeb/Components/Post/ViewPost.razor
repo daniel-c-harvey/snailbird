@@ -2,15 +2,25 @@
 
 @if (Post != null)
 {
-    @if (Post is SnailbirdData.Models.Post.LiveJamPost)
-    {
-        var liveJamPost = Post as SnailbirdData.Models.Post.LiveJamPost;
-        <LiveJamPost Post="@liveJamPost" OnSelect="post => OnSelectPost(post as TPostModel)" />
-    } else if (Post is SnailbirdData.Models.Post.FlexPost)
-    {
-        var flexPost = Post as SnailbirdData.Models.Post.FlexPost;
-        <FlexPost Post="@flexPost" OnSelect="post => OnSelectPost(post as TPostModel)"/>
-    }
+    <div class="post" id="@Post.ID">
+        <div class="content">
+            @if (Post is SnailbirdData.Models.Post.LiveJamPost)
+            {
+                var liveJamPost = Post as SnailbirdData.Models.Post.LiveJamPost;
+                <LiveJamPost Post="@liveJamPost" OnSelect="post => OnSelectPost(post as TPostModel)" />
+            } else if (Post is SnailbirdData.Models.Post.FlexPost)
+            {
+                var flexPost = Post as SnailbirdData.Models.Post.FlexPost;
+                <FlexPost Post="@flexPost" OnSelect="post => OnSelectPost(post as TPostModel)"/>
+            }
+        </div>
+        <div class="morecontent">
+            <input  class="expandpost" 
+                    type="button" 
+                    name="more" 
+                    value="More" />
+        </div>
+    </div>
 }
 
 @code {

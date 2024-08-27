@@ -1,26 +1,25 @@
-﻿<div class="post">
-    <h1 class="pink header">@Post.Title</h1>
-    <h3 class="aqua date header">@Post.PostDate.ToShortDateString()</h3>
-    <p>
-        @Post.Preamble
-    </p>
-    <div class="centeredimage">
-        <iframe class="youtubeframe"
-                src="@Post.VideoURL"
-                title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-        </iframe>
-    </div>
-    <ul class="songdetails">
-        @foreach(SnailbirdData.Models.Post.Instrument instrument in Post.Instruments)
-        {
-            <li>
-                <span class="instrument">@instrument.Name:</span> @instrument.Description
-            </li>
-        }
-</ul>
+﻿<h1 class="pink header">@Post.Title</h1>
+<h3 class="aqua date header">@Post.PostDate.ToShortDateString()</h3>
+<p>
+    @Post.Preamble
+</p>
+<div class="centeredimage">
+    <iframe class="youtubeframe"
+            src="@Post.VideoURL"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+    </iframe>
 </div>
+<ul class="songdetails">
+    @foreach(SnailbirdData.Models.Post.Instrument instrument in Post.Instruments)
+    {
+        <li>
+            <span class="instrument">@instrument.Name:</span> @instrument.Description
+        </li>
+    }
+</ul>
+
 @code {
         [Parameter]
         public SnailbirdData.Models.Post.LiveJamPost Post { get; set; } = default!;
