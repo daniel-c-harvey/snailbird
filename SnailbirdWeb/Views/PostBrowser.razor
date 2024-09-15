@@ -9,6 +9,8 @@
     }
     else if (CurrentMode == PostBrowserMode.ViewPost)
     {
-        <ViewPost TPostModel="TPostModel" Post="@model.SelectedPostModel.Post" />
+        <div class="sb-postframe">
+            <ViewPost TPostModel="TPostModel" Post="@model.SelectedPostModel.Post" />
+        </div>
     }
 }
