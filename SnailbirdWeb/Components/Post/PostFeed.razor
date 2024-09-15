@@ -1,4 +1,6 @@
-﻿@typeparam TModel where TModel : SnailbirdData.Models.Post.Post, new()
+﻿@using RazorCore;
+
+@typeparam TModel where TModel : SnailbirdData.Models.Post.Post, new()
 
 @if (Posts == null)
 {
@@ -6,12 +8,15 @@
 }
 else
 {    
-    @foreach(TModel post in Posts)
-    {
-        <ViewPost TPostModel="TModel" Post="@post" OnSelect="OnSelectPost"/>
-    }
+    <div class="sb-postframe">
+        @foreach(TModel post in Posts)
+        {
+            <Expandable>
+                <ViewPost TPostModel="TModel" Post="@post" OnSelect="OnSelectPost"/>
+            </Expandable>
+        }
+    </div>
 }
-
 
 @code {
     [Parameter]

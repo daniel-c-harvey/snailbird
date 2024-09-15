@@ -141,13 +141,16 @@ br {
     padding-bottom: 20px;
 }
 
-.post {
-    font-size: 0.9em;
+.sb-postframe {
     margin-left: auto;
     margin-right: auto;
     width: 80%;
     padding-top: 16px;
     padding-bottom: 10px;
+}
+
+.post {
+    font-size: 0.9em;
     mask-image: none;
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
@@ -181,34 +184,6 @@ br {
     width: 150px;
     height: 150px;
     margin: auto;
-}
-
-.morecontent {
-    padding: 8px;
-    margin-left: auto;
-    width: 60px;
-}
-
-.morecontent * {
-    margin: auto;
-    float: right;
-}
-
-.morecontent .expandpost {
-    width: 55px;
-    padding: 2px;
-    color: #c45ccf;
-    background-color: #10181d;
-    border: 0;
-    border-radius: 10px;
-    font-family: Titillium;
-    font-size: 1em;
-    font-weight: normal;
-}
-
-.morecontent .expandpost:hover {
-    font-weight: bold;
-    padding: 3px;
 }
 
 .mediaflow {
