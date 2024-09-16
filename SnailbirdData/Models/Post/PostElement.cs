@@ -45,6 +45,6 @@ namespace SnailbirdData.Models.Post
 
     public class PostInstrumentList : PostElement
     {
-        public IEnumerable<Instrument> Instruments { get; set; }
+        public IList<Instrument> Instruments { get; set; }
     }
 }

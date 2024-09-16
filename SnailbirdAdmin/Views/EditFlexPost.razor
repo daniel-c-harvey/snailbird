@@ -9,7 +9,8 @@
         @foreach (PostElement element in ViewModel.Post.Elements)
         {
             var viewModel = new FlexElementViewModel { Element = element };
-            <FlexElement ViewModel="@viewModel" />
+            <EditFlexElement ViewModel="@viewModel" />
+            <br />
         }
 
     </EditPost>
