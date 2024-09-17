@@ -1,0 +1,33 @@
+﻿#footerbox {
+    width: 100%;
+    margin: 0;
+    font-family: ImpactLabel;
+    color: #3F3F3F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    height: 56px;
+/*    margin-bottom: 24px;*/
+}
+
+ul.foot {
+    text-align: center;
+    margin: auto;
+}
+
+    ul.foot li {
+        display: inline;
+        color: #666699;
+        position: relative;
+    }
+
+    ul.foot a {
+        color: #666699;
+    }
+
+@font-face {
+    font-family: ImpactLabel;
+    src: url('../font/Impact_Label_Reversed.ttf');
+}

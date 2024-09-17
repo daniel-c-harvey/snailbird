@@ -13,17 +13,28 @@ namespace RazorCore
         [EditorRequired]
         public RenderFragment ChildContent { get; set; } = default!;
 
-        private static readonly Dictionary<bool, string> ExpandedStyleMap = new Dictionary<bool, string>() 
-        { 
-            { false, "rc-unexpanded" },
-            { true,  "rc-expanded" }
+        private static readonly Dictionary<bool, string> ExpandedStyleMap = new Dictionary<bool, string>()
+        {
+            { false, "rc-expandable-unexpanded" },
+            { true,  "rc-expandable-expanded" }
+        };
+
+        private static readonly Dictionary<bool, string> ExpandedTextMap = new Dictionary<bool, string>()
+        {
+            { false, "More" },
+            { true,  "Less" }
         };
 
         [Parameter]
         public bool Expanded { get; set; } = false;
 
         private string Style => ExpandedStyleMap[Expanded];
+        private string Text => ExpandedTextMap[Expanded];
 
-        private bool ToggleExpansion() => Expanded = !Expanded;
+        private void ToggleExpansion()
+        {
+            Expanded = !Expanded;
+            StateHasChanged();
+        }
     }
 }
