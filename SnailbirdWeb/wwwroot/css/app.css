@@ -151,10 +151,10 @@ br {
 
 .post {
     font-size: 0.9em;
-    mask-image: none;
+/*    mask-image: none;
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
-    mask-position: 0% 0%;
+    mask-position: 0% 0%;*/
 }
 
 .centeredimage {

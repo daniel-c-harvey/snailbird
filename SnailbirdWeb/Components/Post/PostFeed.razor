@@ -11,7 +11,7 @@ else
     <div class="sb-postframe">
         @foreach(TModel post in Posts)
         {
-            <Expandable>
+            <Expandable Expanded="@(post == Posts.FirstOrDefault())">
                 <ViewPost TPostModel="TModel" Post="@post" OnSelect="OnSelectPost"/>
             </Expandable>
         }

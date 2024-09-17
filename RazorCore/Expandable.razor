@@ -1,12 +1,12 @@
-﻿<div class="@Style">
-    <div class="rc-expandable-content">
+﻿<div class="rc-expandable-content">
+    <div class="@Style">
         @ChildContent
     </div>
     <div class="rc-expandable-morecontent">
         <input class="rc-expandable-expandpost"
                type="button"
-               name="more"
-               value="More"
-               onclick="@ToggleExpansion()" />
+               name="expand"
+               value="@Text"
+               @onclick="ToggleExpansion" />
     </div>
 </div>

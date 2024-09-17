@@ -5,12 +5,10 @@
 
 <PageTitle>Studio</PageTitle>
 
-<div id="main">
-    <NavPanel TMode="PostBrowserMode"
-              GetContext="GetPostBrowser">
-        <PostBrowser TPostModel="SnailbirdData.Models.Post.FlexPost" @ref="@postBrowser"/>
-    </NavPanel>
-</div>
+<NavPanel TMode="PostBrowserMode"
+            GetContext="GetPostBrowser">
+    <PostBrowser TPostModel="SnailbirdData.Models.Post.FlexPost" @ref="@postBrowser"/>
+</NavPanel>
 
 @code{
     private PostBrowser<SnailbirdData.Models.Post.FlexPost>? postBrowser;
