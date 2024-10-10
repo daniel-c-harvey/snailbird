@@ -1,4 +1,4 @@
-﻿<div class="main">
+﻿@page "/lab"
 
 <div class="post">
     <h2 class="aqua header">Snailbird Lab</h2>
@@ -6,6 +6,10 @@
         Welcome to the Lab!  Below you'll find a catalogue of software tools I have made or am developing for electronic musicians.
     </p>
 </div>
+
+
+<PostBrowser TPostModel="SnailbirdData.Models.Entities.LabFeedFlexPost" />
+
 <div class="post">
     <h3 class="teal header">Snailbird JSFX</h3>
     <p>
@@ -36,5 +40,4 @@
         I thought of creating a similar solution to embedding patching notes into a DAW track for reference during a live session.
     </p>
 
-    </div>
 </div>

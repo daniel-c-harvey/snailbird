@@ -3,6 +3,7 @@ using DataAccess;
 using SnailbirdData;
 using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
+using SnailbirdData.Models.Entities;
 using SnailbirdData.Providers;
 using MongoDB.Driver;
 
@@ -58,12 +59,14 @@ namespace SnailbirdAdmin
             );
 
             MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
-            MongoAdapter<FlexPost> flexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+            MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+            MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("labFeedFlexPost"));
 
             services
             .AddSingleton<IDataAccess<IMongoDatabase>,MongoDataAccess>(_ => dataAccess)
             .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>(_ => liveJamPostAdapter)
-            .AddSingleton<IDataAdapter<FlexPost>, MongoAdapter<FlexPost>>(_ => flexPostAdapter)
+            .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>(_ => studioFeedFlexPostAdapter)
+            .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>(_ => labFeedFlexPostAdapter)
             .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>(provider => new LiveJamPostMongoProvider(liveJamPostAdapter));
 
         }

@@ -1,13 +1,8 @@
 ﻿using Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnailbirdData.Models.Post
 {
-    public class FlexPost : Post
+    public abstract class FlexPost : Post
     {
         public IEnumerable<PostElement> Elements { get; set; }
 

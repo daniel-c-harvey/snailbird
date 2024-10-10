@@ -1,9 +1,5 @@
 ﻿using SnailbirdData.Models.Post;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SnailbirdData.Models.Entities;
 
 namespace SnailbirdData.Adapters
 {
@@ -11,7 +7,7 @@ namespace SnailbirdData.Adapters
     {
         public static FlexPost AdaptFlex(this LiveJamPost other) 
         {
-            var post = new FlexPost(
+            var post = new StudioFeedFlexPost(
                 other.ID,
                 other.Title,
                 other.PostDate,
