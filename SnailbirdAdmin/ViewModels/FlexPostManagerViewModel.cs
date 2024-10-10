@@ -3,9 +3,10 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels
 {
-    public class FlexPostManagerViewModel : PostManagerViewModel<FlexPost>
+    public class FlexPostManagerViewModel<TPost> : PostManagerViewModel<TPost>
+where TPost : FlexPost, new()
     {
-        public FlexPostManagerViewModel(IDataAdapter<FlexPost> postAdapter) 
+        public FlexPostManagerViewModel(IDataAdapter<TPost> postAdapter) 
         : base(postAdapter) 
         { }
     }

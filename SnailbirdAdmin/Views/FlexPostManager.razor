@@ -4,25 +4,10 @@
 @using SnailbirdAdmin.ViewModels;
 @using RazorCore;
 
-@* <PostManagerBase TView="FlexPostManagerViewModel" 
-                 TPost="FlexPost" 
-                 TEdit="EditFlexPostViewModel" 
-                 ViewModel="ViewModel">
-    <ViewComponent>
-        <FlexTable models="ViewModel.Model.Posts"
-                   TModel="FlexPost"
-                   />
-    </ViewComponent>
-    <AddComponent>
-        <EditFlexPost ViewModel="EditViewModel" />
-    </AddComponent>
-    <EditComponent>
-        <EditFlexPost ViewModel="AddViewModel" />
-    </EditComponent>
-</PostManagerBase>
- *@
-<PostManager TPost="FlexPost" 
-             TEdit="EditFlexPostViewModel" 
+@typeparam TPost where TPost : FlexPost, new()
+
+<PostManager TPost="TPost" 
+             TEdit="EditFlexPostViewModel<TPost>" 
              ViewModel="@ViewModel"
              AddViewModel="@AddViewModel"
              EditViewModel="@EditViewModel">
@@ -37,12 +22,12 @@
 @code
 {
     [Inject]
-    public IDataAdapter<FlexPost>? PostAdapter { get; set; }
+    public IDataAdapter<TPost>? PostAdapter { get; set; }
 
-    public FlexPostManagerViewModel? ViewModel { get; set; }
+    public FlexPostManagerViewModel<TPost>? ViewModel { get; set; }
 
-    protected EditFlexPostViewModel? EditViewModel { get; set; }
-    protected EditFlexPostViewModel? AddViewModel { get; set; }
+    protected EditFlexPostViewModel<TPost>? EditViewModel { get; set; }
+    protected EditFlexPostViewModel<TPost>? AddViewModel { get; set; }
 
     protected override void OnInitialized()
     {

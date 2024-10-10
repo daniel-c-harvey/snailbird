@@ -3,6 +3,8 @@
 @using SnailbirdData.Models.Post;
 @using RazorCore;
 
+@typeparam TPost where TPost : FlexPost, new()
+
 @if (ViewModel != null && ViewModel.Post != null)
 {
     <EditPost ViewModel="ViewModel">
@@ -11,7 +13,6 @@
             var viewModel = new FlexElementViewModel { Element = element };
             <FlexElement ViewModel="@viewModel" />
         }
-
     </EditPost>
 }
 else
@@ -20,5 +21,5 @@ else
 }
 @code {
     [Parameter]
-    public EditFlexPostViewModel? ViewModel { get; set; }
+    public EditFlexPostViewModel<TPost>? ViewModel { get; set; }
 }

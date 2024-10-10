@@ -16,7 +16,7 @@ var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQuer
         new MongoDataAccess(
             Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird")
                 .ConnectionString,
-                "snailbird"
+                "snailbird-dev"
             ),
         new MongoQueryBuilder()
 );
