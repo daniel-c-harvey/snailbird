@@ -7,13 +7,13 @@
 
 <NavPanel TMode="PostBrowserMode"
             GetContext="GetPostBrowser">
-    <PostBrowser TPostModel="SnailbirdData.Models.Post.FlexPost" @ref="@postBrowser"/>
+    <PostBrowser TPostModel="SnailbirdData.Models.Entities.StudioFeedFlexPost" @ref="@postBrowser" />
 </NavPanel>
 
-@code{
-    private PostBrowser<SnailbirdData.Models.Post.FlexPost>? postBrowser;
+@code {
+    private PostBrowser<SnailbirdData.Models.Entities.StudioFeedFlexPost>? postBrowser;
 
-    private PostBrowser<SnailbirdData.Models.Post.FlexPost> GetPostBrowser()
+    private PostBrowser<SnailbirdData.Models.Entities.StudioFeedFlexPost> GetPostBrowser()
     {
         if (postBrowser == null) throw new Exception("Post Browser not yet initialized.");
         

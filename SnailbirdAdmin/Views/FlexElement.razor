@@ -14,7 +14,7 @@
                 var paragraph = ViewModel.Element as PostParagraph;
                 <div>
                     <h6>Paragraph</h6> @* todo make this changable *@
-                    <textarea class="form-control" type="text" @bind="@paragraph" />
+                    <textarea class="form-control" type="text" @bind="@paragraph.Text" />
                 </div>
             } else if (ViewModel.Element is PostImage)
             {
