@@ -4,24 +4,12 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels
 {
-    public class EditFlexPostViewModel : EditPostViewModelBase<FlexPost, EditFlexPostViewModel>
+    public class EditFlexPostViewModel<TPost> : EditPostViewModelBase<TPost, EditFlexPostViewModel<TPost>>
+    where TPost : FlexPost, new()
     {
         private List<PostElement> _elements = new();
-        //public IEnumerable<Instrument> Instruments => _instruments;
 
-        //public static IColumnMap<PostElement> Columns = new ColumnMap<PostElement>()
-        //    .AddColumn("",
-        //        new ModelColumn<PostElement>(
-        //            post => IntConverter.ToString(post.Ordinal),
-        //            (post, value) => post.
-        //    );
-
-        public EditFlexPostViewModel(Action<FlexPost> onCommitPost) : base(onCommitPost) { }
-
-        //protected virtual IModelColumn<PostElement> PostElementMorpher(PostElement postElement)
-        //{
-
-        //}
+        public EditFlexPostViewModel(Action<TPost> onCommitPost) : base(onCommitPost) { }
 
         public void AddNewElement(PostElement element)
         {
