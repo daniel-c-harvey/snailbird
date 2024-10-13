@@ -4,16 +4,20 @@
 @using RazorCore;
 
 @typeparam TPost where TPost : FlexPost, new()
-
-@if (ViewModel != null && ViewModel.Post != null)
+@if (ViewModel != null)
 {
     <EditPost ViewModel="ViewModel">
-        @foreach (PostElement element in ViewModel.Post.Elements)
+        @foreach (PostElement element in ViewModel.Elements)
         {
             var viewModel = new FlexElementViewModel { Element = element };
             <EditFlexElement ViewModel="@viewModel" />
             <br />
         }
+        <div>
+            <button type="button" class="btn btn-primary" @onclick="@(e => ViewModel.AddNewElement(new PostParagraph()))">
+                <i class="bi bi-plus-circle"></i>
+            </button>
+        </div>
     </EditPost>
 }
 else
