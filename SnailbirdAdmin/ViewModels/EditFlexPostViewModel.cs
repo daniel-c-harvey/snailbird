@@ -1,6 +1,4 @@
-﻿using Core.Converters;
-using RazorCore;
-using SnailbirdData.Models.Post;
+﻿using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels
 {
@@ -8,6 +6,7 @@ namespace SnailbirdAdmin.ViewModels
     where TPost : FlexPost, new()
     {
         private List<PostElement> _elements = new();
+        public IList<PostElement> Elements => _elements;
 
         public EditFlexPostViewModel(Action<TPost> onCommitPost) : base(onCommitPost) { }
 
@@ -20,6 +19,12 @@ namespace SnailbirdAdmin.ViewModels
         public void RemoveElement(PostElement element)
         {
             _elements.Remove(element);
+        }
+
+        public override EditFlexPostViewModel<TPost> LoadPost(TPost post)
+        {
+            _elements = post.Elements.ToList();
+            return base.LoadPost(post);
         }
 
         public override void CommitPost()
