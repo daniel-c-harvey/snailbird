@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnailbirdWeb", "SnailbirdWe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnailbirdData", "SnailbirdData\SnailbirdData.csproj", "{9E5B0753-575D-4E76-AC6F-4CC39B607A5F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScratchConsole", "ScratchConsole\ScratchConsole.csproj", "{4A18C779-CDF0-4A76-970E-426AF6FF2325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnailbirdUtility", "ScratchConsole\SnailbirdUtility.csproj", "{4A18C779-CDF0-4A76-970E-426AF6FF2325}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "C:\lib\snailbird-web\Core\Core.csproj", "{9E5CD79C-CAC3-4641-AEEB-3D551CF2057B}"
 EndProject

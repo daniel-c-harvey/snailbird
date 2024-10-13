@@ -4,16 +4,16 @@ using SnailbirdData.Adapters;
 using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
 
-namespace SnailbirdAdmin.Converters
+namespace SnailbirdUtility.Converters
 {
     public static class LiveJamPostToFlexPostConverter
     {
-        public static void ConvertLiveJamPostToFlexPosts()
+        public static void ConvertLiveJamPostToFlexPosts(string databaseName)
         {
             var dataAccess = new MongoDataAccess
             (
                 Core.ConnectionStringTools.LoadFromFile("../../../.secrets/connections.json", "mongodb-snailbird-admin").ConnectionString,
-                "snailbird"
+                databaseName
             );
 
             var queryBuilder = new MongoQueryBuilder();
@@ -30,7 +30,7 @@ namespace SnailbirdAdmin.Converters
 
             IEnumerable<LiveJamPost> livejamposts = oldPostAdapter.GetPage(0, 10).Value.ToList();
 
-            foreach (LiveJamPost post in livejamposts) 
+            foreach (LiveJamPost post in livejamposts)
             {
                 flexPostAdapter.Insert(post.AdaptFlex());
                 newLiveJamPostAdapter.Insert(post);
