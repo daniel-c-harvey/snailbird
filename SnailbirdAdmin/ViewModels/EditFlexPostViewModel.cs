@@ -7,21 +7,9 @@ namespace SnailbirdAdmin.ViewModels
     public class EditFlexPostViewModel : EditPostViewModelBase<FlexPost, EditFlexPostViewModel>
     {
         private List<PostElement> _elements = new();
-        //public IEnumerable<Instrument> Instruments => _instruments;
-
-        //public static IColumnMap<PostElement> Columns = new ColumnMap<PostElement>()
-        //    .AddColumn("",
-        //        new ModelColumn<PostElement>(
-        //            post => IntConverter.ToString(post.Ordinal),
-        //            (post, value) => post.
-        //    );
+        public IList<PostElement> Elements => _elements;
 
         public EditFlexPostViewModel(Action<FlexPost> onCommitPost) : base(onCommitPost) { }
-
-        //protected virtual IModelColumn<PostElement> PostElementMorpher(PostElement postElement)
-        //{
-
-        //}
 
         public void AddNewElement(PostElement element)
         {
@@ -32,6 +20,12 @@ namespace SnailbirdAdmin.ViewModels
         public void RemoveElement(PostElement element)
         {
             _elements.Remove(element);
+        }
+
+        public override EditFlexPostViewModel LoadPost(FlexPost post)
+        {
+            _elements = post.Elements.ToList();
+            return base.LoadPost(post);
         }
 
         public override void CommitPost()
