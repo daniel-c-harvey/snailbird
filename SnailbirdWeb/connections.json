@@ -1,8 +1,0 @@
-{
-    "ConnectionStrings": [
-        {
-            "Name": "mongodb-snailbird-dev",
-            "ConnectionString": "mongodb://snailbird:Square%20Peg%20Cyber%20Dreams@157.245.4.123:27017/?authSource=admin&tls=false"
-        }
-    ]
-}
