@@ -9,14 +9,14 @@ namespace SnailbirdAdmin.ViewModels
 {
     public class FlexElementViewModel
     {
-        private static Dictionary<string, Type> ElementChoiceMap = new Dictionary<string, Type>
+        public static Dictionary<string, Type> ElementChoiceMap = new Dictionary<string, Type>
         {
-            { nameof(PostParagraph), typeof(PostParagraph) },
-            { nameof(PostImage), typeof(PostImage) },
-            { nameof(PostYouTubeEmbed), typeof(PostYouTubeEmbed) },
-            { nameof(PostInstrumentList), typeof(PostInstrumentList) }
+            { "Paragraph", typeof(FlexParagraph) },
+            { "Image", typeof(FlexImage) },
+            { "YouTube Embed", typeof(PostYouTubeEmbed) },
+            { "Instrument List", typeof(PostInstrumentList) }
         };
 
-        public PostElement? Element { get; set; }
+        public FlexElement? Element { get; set; }
     }
 }

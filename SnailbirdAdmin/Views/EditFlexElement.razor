@@ -6,22 +6,26 @@
     <div class="sb-flex-element">
         <div class="sb-flex-order">
             <input type="number" value="@ViewModel.Element.Ordinal" />
+            <select @onchange="x => Abc(x)">
+                @foreach (KeyValuePair<string, Type> elementType in FlexElementViewModel.ElementChoiceMap)
+                {
+                    <option value="@elementType.Value">@elementType.Key</option>
+                }
+            </select>
             <button type="button" class="btn btn-primary">
                 <span class="bi bi-trash"></span>
             </button>
         </div>
         <br />
         <div class="sb-flex-content">
-            @if (ViewModel.Element is PostParagraph paragraph)
+            @if (ViewModel.Element is FlexParagraph paragraph)
             {
                 <div>
-                    <h6>Paragraph</h6> @* todo make this changable *@
                     <textarea class="form-control" type="text" @bind="@paragraph.Text" />
                 </div>
-            } else if (ViewModel.Element is PostImage image)
+            } else if (ViewModel.Element is FlexImage image)
             {
                 <div>
-                    <h6>Image</h6>
                     <img src="@image.ImageURI" alt="@image.AltText" />
                     <input class="form-control" type="url" @bind="@image.ImageURI" />
                     <input class="form-control" type="url" @bind="@image.AltText" />
@@ -31,11 +35,9 @@
                 </div>
             } else if (ViewModel.Element is PostYouTubeEmbed youtubeEmbed)
             {
-                <h6> YouTube Embed</h6>
                 <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />
             } else if (ViewModel.Element is PostInstrumentList instrumentList)
             {
-                <h5>Intruments:</h5>
                 <NewRowTable TModel="Instrument"
                              models="instrumentList.Instruments"
                              columnMap="InstrumentColumns"
@@ -61,4 +63,6 @@
                     inst => inst.Description,
                     (inst, desc) => inst.Description = desc)
                 .MakeEditable());
+
+    private void Abc(ChangeEventArgs p) { }
 }

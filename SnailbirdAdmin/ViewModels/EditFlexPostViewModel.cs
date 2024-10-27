@@ -5,18 +5,18 @@ namespace SnailbirdAdmin.ViewModels
     public class EditFlexPostViewModel<TPost> : EditPostViewModelBase<TPost, EditFlexPostViewModel<TPost>>
     where TPost : FlexPost, new()
     {
-        private List<PostElement> _elements = new();
-        public IList<PostElement> Elements => _elements;
+        private List<FlexElementViewModel> _elements = new();
+        public IList<FlexElementViewModel> Elements => _elements;
 
         public EditFlexPostViewModel(Action<TPost> onCommitPost) : base(onCommitPost) { }
 
-        public void AddNewElement(PostElement element)
+        public void AddNewElement(FlexElementViewModel element)
         {
             _elements.Add(element);
         }
 
 
-        public void RemoveElement(PostElement element)
+        public void RemoveElement(FlexElementViewModel element)
         {
             _elements.Remove(element);
         }

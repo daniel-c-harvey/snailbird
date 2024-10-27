@@ -7,14 +7,14 @@
 @if (ViewModel != null)
 {
     <EditPost ViewModel="ViewModel">
-        @foreach (PostElement element in ViewModel.Elements)
+        @foreach (FlexElement element in ViewModel.Elements)
         {
             var viewModel = new FlexElementViewModel { Element = element };
             <EditFlexElement ViewModel="@viewModel" />
             <br />
         }
         <div>
-            <button type="button" class="btn btn-primary" @onclick="@(e => ViewModel.AddNewElement(new PostParagraph()))">
+            <button type="button" class="btn btn-primary" @onclick="@(e => ViewModel.AddNewElement(new FlexParagraph()))">
                 <i class="bi bi-plus-circle"></i>
             </button>
         </div>

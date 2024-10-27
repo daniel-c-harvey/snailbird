@@ -8,7 +8,7 @@ namespace SnailbirdData.Models.Entities
         : base()
         { }
 
-        public StudioFeedFlexPost(long ID, string title, DateTime date, IEnumerable<PostElement> elements)
+        public StudioFeedFlexPost(long ID, string title, DateTime date, IEnumerable<FlexElement> elements)
         : base(ID, title, date, elements)
         {}
     }
