@@ -11,9 +11,9 @@ namespace SnailbirdData.Adapters
                 other.ID,
                 other.Title,
                 other.PostDate,
-                new List<PostElement>
+                new List<FlexElement>
             {
-                new PostParagraph {Text = other.Preamble },
+                new FlexParagraph {Text = other.Preamble },
                 new PostYouTubeEmbed {VideosURL = other.VideoURL },
                 new PostInstrumentList { Instruments = new List<Instrument>((other.Instruments)) }
             });

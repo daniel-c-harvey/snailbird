@@ -2,12 +2,12 @@
 
 @if (Element != null)
 {
-    @if (Element is PostParagraph)
+    @if (Element is FlexParagraph)
     {
         <p>
             @this.PostParagraph.Text
         </p>
-    } else if (Element is PostImage)
+    } else if (Element is FlexImage)
     {
         <img class="centeredimage" src="@PostImage.ImageURI" alt="@PostImage.AltText" />
     } else if (Element is PostYouTubeEmbed)
@@ -35,10 +35,10 @@
 
 @code {
     [Parameter]
-    public SnailbirdData.Models.Post.PostElement? Element { get; set; }
+    public SnailbirdData.Models.Post.FlexElement? Element { get; set; }
 
-    protected PostParagraph PostParagraph => Element as PostParagraph ?? throw new ArgumentNullException(nameof(Element));
-    protected PostImage PostImage => Element as PostImage ?? throw new ArgumentNullException(nameof(Element));
+    protected FlexParagraph PostParagraph => Element as FlexParagraph ?? throw new ArgumentNullException(nameof(Element));
+    protected FlexImage PostImage => Element as FlexImage ?? throw new ArgumentNullException(nameof(Element));
     protected PostYouTubeEmbed PostYouTubeEmbed => Element as PostYouTubeEmbed ?? throw new ArgumentNullException(nameof(Element));
     protected PostInstrumentList PostInstrumentList => Element as PostInstrumentList ?? throw new ArgumentNullException(nameof(Element));
 
