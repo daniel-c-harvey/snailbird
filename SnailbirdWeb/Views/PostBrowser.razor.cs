@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Core;
+using DataAccess;
 using RazorCore.Navigation;
 using SnailbirdData.Models.Post;
-using SnailbirdData.DataAdapters;
 using SnailbirdWeb.Models;
 using SnailbirdWeb.Updates;
 using SnailbirdWeb.Messages;

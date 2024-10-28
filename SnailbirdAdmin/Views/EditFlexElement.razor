@@ -7,7 +7,7 @@
         <div class="sb-flex-order">
             <input type="number" value="@ViewModel.Element.Ordinal" />
             <select @onchange="x => Abc(x)">
-                @foreach (KeyValuePair<string, Type> elementType in FlexElementViewModel.ElementChoiceMap)
+                @foreach (KeyValuePair<string, Type> elementType in EditFlexElementViewModel.ElementChoiceMap)
                 {
                     <option value="@elementType.Value">@elementType.Key</option>
                 }
@@ -33,10 +33,10 @@
                         <span class="bi bi-folder2"></span>
                     </button>
                 </div>
-            } else if (ViewModel.Element is PostYouTubeEmbed youtubeEmbed)
+            } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
             {
                 <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />
-            } else if (ViewModel.Element is PostInstrumentList instrumentList)
+            } else if (ViewModel.Element is FlexInstrumentList instrumentList)
             {
                 <NewRowTable TModel="Instrument"
                              models="instrumentList.Instruments"
@@ -50,7 +50,7 @@
 
 @code {
     [Parameter]
-    public FlexElementViewModel? ViewModel { get; set; }
+    public EditFlexElementViewModel? ViewModel { get; set; }
 
     private static IColumnMap<Instrument> InstrumentColumns = new ColumnMap<Instrument>()
             .AddColumn("Name",

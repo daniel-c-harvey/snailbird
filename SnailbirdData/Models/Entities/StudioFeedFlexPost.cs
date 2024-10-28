@@ -1,4 +1,5 @@
-﻿using SnailbirdData.Models.Post;
+﻿using DataAccess;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Models.Entities
 {

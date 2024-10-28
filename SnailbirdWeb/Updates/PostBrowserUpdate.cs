@@ -1,4 +1,4 @@
-﻿using SnailbirdData.DataAdapters;
+﻿using DataAccess;
 using SnailbirdData.Models.Post;
 using SnailbirdWeb.Models;
 using SnailbirdWeb.Messages;

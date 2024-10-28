@@ -1,9 +1,9 @@
-﻿@using SnailbirdAdmin.ViewModels;
-@using SnailbirdAdmin.Models;
-@using SnailbirdData.DataAdapters
-@using SnailbirdData.Models.Post;
+﻿@using DataAccess;
 @using RazorCore;
 @using RazorCore.Navigation;
+@using SnailbirdData.Models.Post;
+@using SnailbirdAdmin.Models;
+@using SnailbirdAdmin.ViewModels;
 
 @typeparam TPost where TPost : Post, new()
 @typeparam TView where TView : PostManagerViewModel<TPost>

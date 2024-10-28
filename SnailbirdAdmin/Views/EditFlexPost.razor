@@ -1,4 +1,4 @@
-﻿@using SnailbirdData.DataAdapters;
+﻿@using DataAccess;
 @using SnailbirdAdmin.ViewModels;
 @using SnailbirdData.Models.Post;
 @using RazorCore;
@@ -7,14 +7,13 @@
 @if (ViewModel != null)
 {
     <EditPost ViewModel="ViewModel">
-        @foreach (FlexElement element in ViewModel.Elements)
+        @foreach (EditFlexElementViewModel element in ViewModel.Elements)
         {
-            var viewModel = new FlexElementViewModel { Element = element };
-            <EditFlexElement ViewModel="@viewModel" />
+            <EditFlexElement ViewModel="@element" />
             <br />
         }
         <div>
-            <button type="button" class="btn btn-primary" @onclick="@(e => ViewModel.AddNewElement(new FlexParagraph()))">
+            <button type="button" class="btn btn-primary" @onclick="@(e => ViewModel.AddNewElement(new EditFlexElementViewModel() {Element = new FlexParagraph() }))">
                 <i class="bi bi-plus-circle"></i>
             </button>
         </div>

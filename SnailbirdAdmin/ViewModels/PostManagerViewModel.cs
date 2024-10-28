@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
-using Core.Converters;
+﻿using Core.Converters;
+using DataAccess;
 using RazorCore.Navigation;
 using RazorCore;
 using SnailbirdAdmin.Messages;
 using SnailbirdAdmin.Models;
 using SnailbirdAdmin.Updates;
-using SnailbirdAdmin.Views;
-using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels

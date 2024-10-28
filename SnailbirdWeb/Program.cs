@@ -3,7 +3,7 @@ using SnailbirdData.Providers;
 using SnailbirdWeb.Components;
 using DataAccess;
 using MongoDB.Driver;
-using SnailbirdData.DataAdapters;
+using DataAccess;
 using SnailbirdData.Models.Post;
 using Microsoft.Extensions.DependencyInjection;
 
