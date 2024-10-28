@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="C:\lib\snailbird-web\Core\Core.csproj" />
+    <ProjectReference Include="C:\lib\NetBlocks\NetBlocks.csproj" />
   </ItemGroup>
 
 </Project>

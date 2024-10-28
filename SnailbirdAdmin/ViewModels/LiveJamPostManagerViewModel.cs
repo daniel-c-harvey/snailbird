@@ -1,4 +1,4 @@
-﻿using SnailbirdData.DataAdapters;
+﻿using DataAccess;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels

@@ -7,44 +7,34 @@ using System.Threading.Tasks;
 
 namespace SnailbirdData.Models.Post
 {
-
-    [BsonDiscriminator(RootClass = true)]
-    [BsonKnownTypes(typeof(FlexParagraph), 
-                    typeof(FlexImage), 
-                    typeof(PostYouTubeEmbed),
-                    typeof(PostInstrumentList))]
     public abstract class FlexElement
     {
-        public static IDictionary<string, string> PostElementTypeCaptions =
-            new Dictionary<string, string>
-            {
-                { nameof(FlexParagraph), "Paragraph"},
-                { nameof(FlexImage), "Image" },
-                { nameof(PostYouTubeEmbed), "YouTube Embed" },
-                { nameof(PostInstrumentList), "Instrument List" }
-            };
-
         public int Ordinal { get; set; }
+        public abstract string TypeCaption { get; }
     }
-    
+
     public class FlexParagraph : FlexElement
     {
+        public override string TypeCaption => "Paragraph";
         public string Text { get; set; }
     }
 
     public class FlexImage : FlexElement
     {
+        public override string TypeCaption => "Image";
         public string ImageURI { get; set; }
         public string AltText { get; set; }
     }
 
-    public class PostYouTubeEmbed : FlexElement
+    public class FlexYouTubeEmbed : FlexElement
     {
+        public override string TypeCaption => "YouTube Embed";
         public string VideosURL { get; set; }
     }
 
-    public class PostInstrumentList : FlexElement
+    public class FlexInstrumentList : FlexElement
     {
+        public override string TypeCaption => "Instrument List";
         public IList<Instrument> Instruments { get; set; }
     }
 }

@@ -1,16 +1,4 @@
-﻿using Core;
-using DataAccess;
-using MongoDB.Driver;
-using Newtonsoft.Json;
-using SnailbirdUtility.Converters;
-using SnailbirdData.Adapters;
-using SnailbirdData.DataAdapters;
-using SnailbirdData.Models.Post;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace ScratchConsole
 {
     public class Program
@@ -40,7 +28,7 @@ namespace ScratchConsole
 
             //var x = new MongoObject<LiveJamPost>() { Document = new LiveJamPost() { ID = 12345678} };
 
-            LiveJamPostToFlexPostConverter.ConvertLiveJamPostToFlexPosts("snailbird-dev");
+            //LiveJamPostToFlexPostConverter.ConvertLiveJamPostToFlexPosts("snailbird-dev");
 
             //Connections connections = 
             //    new Connections 
@@ -52,6 +40,19 @@ namespace ScratchConsole
             //        ] 
             //    };
             //ConnectionStringTools.SaveToFile("../../../.secrets/connections.json", connections);
+            Console.WriteLine(ObjectIDFromID(32));
+
+
+        }
+        private static byte[] ObjectIDFromID(long id)
+        {
+            byte[] hash = new byte[12];
+            foreach (int stage in new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 })
+            {
+                int shift = stage;
+                hash[stage] = (byte)((id & (0xFFL << shift)) >>> shift);
+            }
+            return hash;
         }
     }
 }

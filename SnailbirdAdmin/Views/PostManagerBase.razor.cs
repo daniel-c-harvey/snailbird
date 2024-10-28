@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SnailbirdAdmin.ViewModels;
-using SnailbirdData.DataAdapters;
+using DataAccess;
 using SnailbirdData.Models.Post;
+using SnailbirdAdmin.ViewModels;
 
 namespace SnailbirdAdmin.Views
 {

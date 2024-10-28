@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DataAccess;
-using SnailbirdData;
-using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Providers

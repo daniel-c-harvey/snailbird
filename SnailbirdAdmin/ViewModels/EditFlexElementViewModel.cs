@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace SnailbirdAdmin.ViewModels
 {
-    public class FlexElementViewModel
+    public class EditFlexElementViewModel
     {
         public static Dictionary<string, Type> ElementChoiceMap = new Dictionary<string, Type>
         {
             { "Paragraph", typeof(FlexParagraph) },
             { "Image", typeof(FlexImage) },
-            { "YouTube Embed", typeof(PostYouTubeEmbed) },
-            { "Instrument List", typeof(PostInstrumentList) }
+            { "YouTube Embed", typeof(FlexYouTubeEmbed) },
+            { "Instrument List", typeof(FlexInstrumentList) }
         };
 
-        public FlexElement? Element { get; set; }
+        public FlexElement Element { get; set; }
     }
 }

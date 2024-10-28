@@ -1,7 +1,5 @@
 using SnailbirdAdmin.Components;
 using DataAccess;
-using SnailbirdData;
-using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
 using SnailbirdData.Models.Entities;
 using SnailbirdData.Providers;
@@ -52,15 +50,9 @@ namespace SnailbirdAdmin
 
             var queryBuilder = new MongoQueryBuilder();
 
-            var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
-            (
-                dataAccess,
-                queryBuilder
-            );
-
-            MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
-            MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
-            MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("labFeedFlexPost"));
+            MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataAccess, queryBuilder, new DataSchema("studioLiveJamPost"));
+            MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter = new(dataAccess, queryBuilder, new DataSchema("studioFeedFlexPost"));
+            MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter = new(dataAccess, queryBuilder, new DataSchema("labFeedFlexPost"));
 
             services
             .AddSingleton<IDataAccess<IMongoDatabase>,MongoDataAccess>(_ => dataAccess)

@@ -1,7 +1,6 @@
 ﻿using DataAccess;
 using MongoDB.Driver;
 using SnailbirdData.Adapters;
-using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdUtility.Converters
