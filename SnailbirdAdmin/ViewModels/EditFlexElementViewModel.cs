@@ -1,4 +1,6 @@
-﻿using SnailbirdData.Models.Post;
+﻿using Amazon.Runtime.Internal.Transform;
+using Newtonsoft.Json.Serialization;
+using SnailbirdData.Models.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,33 +9,30 @@ using System.Threading.Tasks;
 
 namespace SnailbirdAdmin.ViewModels
 {
+    public class FlexElementChoice
+    {
+        public FlexElement Element { get; }
+        public Func<FlexElement> Build { get; }
+
+        public FlexElementChoice(FlexElement element)
+        {
+            Element = element;
+            Build = () => (FlexElement?)Activator.CreateInstance(type) ?? throw new Exception();
+        }
+    }
+
     public class EditFlexElementViewModel
     {
-        private static Dictionary<string, Func<FlexElement>> ElementChoiceMap = new Dictionary<string, Func<FlexElement>>
-        {
-            { "Paragraph",  () => new FlexParagraph() },
-            { "Image", () => new FlexImage() },
-            { "YouTube Embed", () => new FlexYouTubeEmbed() },
-            { "Instrument List", () => new FlexInstrumentList() }
-        };
-
-        public static IEnumerable<string> ElementChoices => ElementChoiceMap.Keys;
-
-        private FlexElement _element;
-        public FlexElement Element => _element;
+        public FlexElementChoice Choice { get; }
 
         public EditFlexElementViewModel(FlexElement element)
         {
-            _element = element;
+            Choice = new FlexElementChoice(element);
         }
 
-        public void ReplaceElement(string elementName)
+        public void ReplaceElement()
         {
-            Func<FlexElement>? build = null;
-            if (ElementChoiceMap.TryGetValue(elementName, out build))
-            {
-                _element = build();
-            }
+            
         }
     }
 }
