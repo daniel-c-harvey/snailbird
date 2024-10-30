@@ -9,14 +9,31 @@ namespace SnailbirdAdmin.ViewModels
 {
     public class EditFlexElementViewModel
     {
-        public static Dictionary<string, Type> ElementChoiceMap = new Dictionary<string, Type>
+        private static Dictionary<string, Func<FlexElement>> ElementChoiceMap = new Dictionary<string, Func<FlexElement>>
         {
-            { "Paragraph", typeof(FlexParagraph) },
-            { "Image", typeof(FlexImage) },
-            { "YouTube Embed", typeof(FlexYouTubeEmbed) },
-            { "Instrument List", typeof(FlexInstrumentList) }
+            { "Paragraph",  () => new FlexParagraph() },
+            { "Image", () => new FlexImage() },
+            { "YouTube Embed", () => new FlexYouTubeEmbed() },
+            { "Instrument List", () => new FlexInstrumentList() }
         };
 
-        public FlexElement Element { get; set; }
+        public static IEnumerable<string> ElementChoices => ElementChoiceMap.Keys;
+
+        private FlexElement _element;
+        public FlexElement Element => _element;
+
+        public EditFlexElementViewModel(FlexElement element)
+        {
+            _element = element;
+        }
+
+        public void ReplaceElement(string elementName)
+        {
+            Func<FlexElement>? build = null;
+            if (ElementChoiceMap.TryGetValue(elementName, out build))
+            {
+                _element = build();
+            }
+        }
     }
 }
