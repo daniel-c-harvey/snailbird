@@ -7,9 +7,9 @@
         <div class="sb-flex-order">
             <input type="number" value="@ViewModel.Element.Ordinal" />
             <select @onchange="x => Abc(x)">
-                @foreach (KeyValuePair<string, Type> elementType in EditFlexElementViewModel.ElementChoiceMap)
+                @foreach (string elementType in EditFlexElementViewModel.ElementChoices)
                 {
-                    <option value="@elementType.Value">@elementType.Key</option>
+                    <option value="@elementType">@elementType</option>
                 }
             </select>
             <button type="button" class="btn btn-primary">

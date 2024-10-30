@@ -23,7 +23,7 @@ namespace SnailbirdAdmin.ViewModels
 
         public override EditFlexPostViewModel<TPost> LoadPost(TPost post)
         {
-            _elements = post.Elements.Select(e => new EditFlexElementViewModel() { Element = e }).ToList();
+            _elements = post.Elements.Select(e => new EditFlexElementViewModel(e)).ToList();
             return base.LoadPost(post);
         }
 
