@@ -6,10 +6,10 @@
     <div class="sb-flex-element">
         <div class="sb-flex-order">
             <input type="number" value="@ViewModel.Element.Ordinal" />
-            <select @bind="@ViewModel.Element">
-                @foreach (FlexElementChoice elementType in EditFlexElementViewModel.ElementChoices)
+            <select @bind="@ViewModel.SelectedElementName">
+                @foreach (FlexElement prototype in EditFlexElementViewModel.Prototypes)
                 {
-                    <option value="@elementType">@elementType.Caption</option>
+                    <option value="@prototype.TypeCaption">@prototype.TypeCaption</option>
                 }
             </select>
             <button type="button" class="btn btn-primary">

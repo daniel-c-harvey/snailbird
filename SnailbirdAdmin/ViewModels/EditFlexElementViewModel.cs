@@ -1,38 +1,47 @@
-﻿using Amazon.Runtime.Internal.Transform;
-using Newtonsoft.Json.Serialization;
+﻿using NetBlocks;
 using SnailbirdData.Models.Post;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnailbirdAdmin.ViewModels
 {
-    public class FlexElementChoice
-    {
-        public FlexElement Element { get; }
-        public Func<FlexElement> Build { get; }
-
-        public FlexElementChoice(FlexElement element)
-        {
-            Element = element;
-            Build = () => (FlexElement?)Activator.CreateInstance(type) ?? throw new Exception();
-        }
-    }
-
     public class EditFlexElementViewModel
     {
-        public FlexElementChoice Choice { get; }
+        private FlexElement chosenElement;
+        public FlexElement Element
+        {
+            get => chosenElement;
+            protected set
+            {
+                chosenElement = value.Clone();
+                chosenElement.Ordinal = Ordinal;
+            }
+        }
+
+        private int Ordinal {  get; set; }
+
+        public string SelectedElementName
+        {
+            get => Element.TypeCaption;
+            set
+            {
+                FlexElement? prototype = Prototypes.FirstOrDefault(p => p.TypeCaption == value);
+                if (prototype != null)
+                {
+                    Element = prototype;
+                }
+            }
+        }
+
+        public static IEnumerable<FlexElement> Prototypes { get; }
+
+        static EditFlexElementViewModel()
+        {
+            Prototypes = Prototyper.PrototypeDerivedTypes<FlexElement>();
+        }
 
         public EditFlexElementViewModel(FlexElement element)
         {
-            Choice = new FlexElementChoice(element);
-        }
-
-        public void ReplaceElement()
-        {
-            
+            chosenElement = element;
+            Ordinal = element.Ordinal;
         }
     }
 }
