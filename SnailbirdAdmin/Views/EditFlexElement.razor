@@ -14,7 +14,7 @@
     <!-- Popup Section -->
     <div class="sb-flex-element">
         <div class="sb-flex-order">
-            <input type="number" value="@ViewModel.Element.Ordinal" />
+            <input type="number" @bind-value="@ViewModel.Ordinal" />
             <select @bind="@ViewModel.SelectedElementName">
                 @foreach (FlexElement prototype in EditFlexElementViewModel.Prototypes)
                 {
