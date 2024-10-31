@@ -1,8 +1,17 @@
-﻿@using SnailbirdAdmin.ViewModels
-@using SnailbirdData.Models.Post
+﻿@using NetBlocks
+@using RazorCore;
+@using SnailbirdAdmin.ViewModels;
+@using SnailbirdData.Models.Post;
 
 @if (ViewModel != null && ViewModel.Element != null)
 {   
+    <!-- Popup Section -->
+    <Modal @ref="changeConfirmation" 
+        HeaderText=""
+        BodyText="The contents of this element will be reset and replaced with a new blank element. Proceed?"
+        OnClose="@ViewModel.UpdateSelectedElement"/>
+
+    <!-- Popup Section -->
     <div class="sb-flex-element">
         <div class="sb-flex-order">
             <input type="number" value="@ViewModel.Element.Ordinal" />
@@ -64,5 +73,18 @@
                     (inst, desc) => inst.Description = desc)
                 .MakeEditable());
 
-    private void Abc(ChangeEventArgs p) { }
+    private Modal changeConfirmation;
+
+    protected override void OnInitialized()
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.ConfirmElementChange += ConfirmChange;
+        }
+    }
+
+    private void ConfirmChange(object sender, ConfirmEventArgs<string> args)
+    {
+        changeConfirmation.Open(args.NewValue);
+    }
 }

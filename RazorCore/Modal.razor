@@ -1,0 +1,65 @@
+@using NetBlocks
+@{
+    var showClass = IsVisible ? "show" : string.Empty;
+}
+
+<!-- Modal backdrop -->
+<div class="modal-backdrop @showClass" id="modalBackdrop"></div>
+
+<!-- Modal why is this invisible?  dimensions are zero? -->
+<div class="modal fade @showClass" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>@HeaderText</strong>
+            </div>
+            <div class="modal-body">
+                <p>@BodyText</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" @onclick="Confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback<ConfirmEventArgs<string>> OnClose { get; set; }
+
+    [Parameter]
+    public string? HeaderText { get; set; }
+
+    [Parameter]
+    public string? BodyText { get; set; }
+
+    private string newValue = string.Empty;
+
+    public void Open(string newValue)
+    {
+        this.newValue = newValue;
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    private void Confirm()
+    {
+        Close(new ConfirmEventArgs<string>(newValue) { Confirm = true });
+    }
+
+    private void Cancel()
+    {
+        Close(new ConfirmEventArgs<string>(newValue) { Confirm = false });
+    }
+
+    private void Close(ConfirmEventArgs<string> args)
+    {
+        IsVisible = false;
+        StateHasChanged();
+        OnClose.InvokeAsync(args);
+    }
+}
