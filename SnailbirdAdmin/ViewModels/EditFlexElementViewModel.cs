@@ -18,7 +18,11 @@ namespace SnailbirdAdmin.ViewModels
             }
         }
 
-        private int Ordinal {  get; set; }
+        public int Ordinal 
+        {
+            get => Element.Ordinal;
+            set => Element.Ordinal = value;
+        }
 
         public string SelectedElementName
         {
