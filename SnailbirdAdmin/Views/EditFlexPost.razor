@@ -26,4 +26,18 @@ else
 @code {
     [Parameter]
     public EditFlexPostViewModel<TPost>? ViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.ElementOrderChanged += OnElementOrderChanged;
+        }
+        base.OnInitialized();
+    }
+
+    private void OnElementOrderChanged(object? sender, EventArgs args)
+    {
+        StateHasChanged();
+    }
 }

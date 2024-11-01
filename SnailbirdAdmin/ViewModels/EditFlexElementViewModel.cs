@@ -6,6 +6,7 @@ namespace SnailbirdAdmin.ViewModels
     public class EditFlexElementViewModel
     {
         public event ConfirmEventHandler<string>? ConfirmElementChange;
+        public event EventHandler? OrdinalChanged;
 
         private FlexElement chosenElement;
         public FlexElement Element
@@ -21,7 +22,14 @@ namespace SnailbirdAdmin.ViewModels
         public int Ordinal 
         {
             get => Element.Ordinal;
-            set => Element.Ordinal = value;
+            set
+            {
+                if (Element.Ordinal != value)
+                {
+                    Element.Ordinal = value;
+                    OrdinalChanged?.Invoke(this, new EventArgs());
+                }
+            }
         }
 
         public string SelectedElementName
