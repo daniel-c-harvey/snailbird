@@ -79,5 +79,15 @@ namespace SnailbirdAdmin.ViewModels
             chosenElement = element;
             Ordinal = element.Ordinal;
         }
+
+        public void Ascend()
+        {
+            Ordinal--;
+        }
+        
+        public void Descend()
+        {
+            Ordinal++;
+        }
     }
 }
