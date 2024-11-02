@@ -14,18 +14,22 @@
     <!-- Element Section -->
     <div class="sb-flex-element">
         <div class="sb-flex-order">
-            <input type="number" @bind-value="@ViewModel.Ordinal" />
+            @* <input type="number" @bind-value="@ViewModel.Ordinal" /> *@
+            <div class="sb-flex-order-buttons">
+                <div class="top bi bi-chevron-compact-up" @onclick="@ViewModel.Ascend" />
+                <div class="bottom bi bi-chevron-compact-down" @onclick="@ViewModel.Descend" />
+            </div>
             <select @bind="@ViewModel.SelectedElementName">
                 @foreach (FlexElement prototype in EditFlexElementViewModel.Prototypes)
                 {
                     <option value="@prototype.TypeCaption">@prototype.TypeCaption</option>
                 }
             </select>
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-danger btn-sm">
                 <span class="bi bi-trash"></span>
             </button>
         </div>
-        <br />
+        <hr />
         <div class="sb-flex-content">
             @if (ViewModel.Element is FlexParagraph paragraph)
             {
