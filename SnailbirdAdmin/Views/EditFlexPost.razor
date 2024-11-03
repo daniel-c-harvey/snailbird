@@ -13,7 +13,7 @@
             <br />
         }
         <div>
-            <button type="button" class="btn btn-primary" @onclick="@(e => ViewModel.AddNewElement(new EditFlexElementViewModel(new FlexParagraph())))">
+            <button type="button" class="btn btn-primary" @onclick="AddNewElement">
                 <i class="bi bi-plus-circle"></i>
             </button>
         </div>
@@ -31,13 +31,21 @@ else
     {
         if (ViewModel != null)
         {
-            ViewModel.ElementOrderChanged += OnElementOrderChanged;
+            ViewModel.ElementChanged += OnElementChanged;
         }
         base.OnInitialized();
     }
 
-    private void OnElementOrderChanged(object? sender, EventArgs args)
+    private void OnElementChanged(object? sender, EventArgs args)
     {
         StateHasChanged();
+    }
+
+    private void AddNewElement()
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.AddNewElement(new EditFlexElementViewModel(new FlexParagraph()));
+        }
     }
 }

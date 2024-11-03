@@ -9,7 +9,7 @@ namespace SnailbirdAdmin.ViewModels
         private List<EditFlexElementViewModel> _elements = new();
         public IList<EditFlexElementViewModel> Elements => _elements;
         
-        public event EventHandler? ElementOrderChanged;
+        public event EventHandler? ElementChanged;
 
         public EditFlexPostViewModel(Action<TPost> onCommitPost) : base(onCommitPost) { }
 
@@ -17,7 +17,6 @@ namespace SnailbirdAdmin.ViewModels
         {
             _elements.Add(element);
         }
-
 
         public void RemoveElement(EditFlexElementViewModel element)
         {
@@ -30,10 +29,23 @@ namespace SnailbirdAdmin.ViewModels
                                      .OrderBy(vm => vm.Ordinal)
                                      .ToList();
             
-            // Register reordering events
-            Elements.Apply(vm => vm.OrdinalChanged += OnElementOrdinalChanged);
+            // Register reordering & delete events
+            Elements.Apply(vm =>
+            {
+                vm.OrdinalChanged += OnElementOrdinalChanged;
+                vm.DeleteClicked += OnDeleteClicked;
+            });
 
             return base.LoadPost(post);
+        }
+
+        private void OnDeleteClicked(object? sender, EventArgs e)
+        {
+            if (sender is EditFlexElementViewModel deletedElement)
+            {
+                RemoveElement(deletedElement);
+                ElementChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private void OnElementOrdinalChanged(object? sender, EventArgs e)
@@ -47,7 +59,7 @@ namespace SnailbirdAdmin.ViewModels
                     Elements.Remove(movedElement);
                     Elements.Insert(movedElement.Ordinal - 1, movedElement);
                     replacedElement.Ordinal = Elements.IndexOf(replacedElement) + 1;
-                    ElementOrderChanged?.Invoke(this, new EventArgs());
+                    ElementChanged?.Invoke(this, new EventArgs());
                 }
             }
         }
