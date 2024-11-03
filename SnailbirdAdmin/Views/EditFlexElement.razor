@@ -15,8 +15,8 @@
     <div class="sb-flex-element">
         <div class="sb-flex-order">
             <div class="sb-flex-order-buttons">
-                <div class="top bi bi-chevron-compact-up" @onclick="@ViewModel.Ascend" />
-                <div class="bottom bi bi-chevron-compact-down" @onclick="@ViewModel.Descend" />
+                <div class="top bi bi-chevron-compact-up" @onclick="@ViewModel.RaiseAscend" />
+                <div class="bottom bi bi-chevron-compact-down" @onclick="@ViewModel.RaiseDescend" />
             </div>
             <select @bind="@ViewModel.SelectedElementName">
                 @foreach (FlexElement prototype in EditFlexElementViewModel.Prototypes)

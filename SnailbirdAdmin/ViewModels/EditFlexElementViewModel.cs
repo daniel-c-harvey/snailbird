@@ -6,7 +6,8 @@ namespace SnailbirdAdmin.ViewModels
     public class EditFlexElementViewModel
     {
         public event ConfirmEventHandler<string>? ConfirmElementChange;
-        public event EventHandler? OrdinalChanged;
+        public event EventHandler? Ascend;
+        public event EventHandler? Descend;
         public event EventHandler? DeleteClicked;
 
         private FlexElement chosenElement;
@@ -16,20 +17,6 @@ namespace SnailbirdAdmin.ViewModels
             protected set
             {
                 chosenElement = value.Clone();
-                chosenElement.Ordinal = Ordinal;
-            }
-        }
-
-        public int Ordinal 
-        {
-            get => Element.Ordinal;
-            set
-            {
-                if (Element.Ordinal != value)
-                {
-                    Element.Ordinal = value;
-                    OrdinalChanged?.Invoke(this, new EventArgs());
-                }
             }
         }
 
@@ -52,17 +39,16 @@ namespace SnailbirdAdmin.ViewModels
         public EditFlexElementViewModel(FlexElement element)
         {
             chosenElement = element;
-            Ordinal = element.Ordinal;
         }
 
-        public void Ascend()
+        public void RaiseAscend()
         {
-            Ordinal--;
+            Ascend?.Invoke(this, EventArgs.Empty);
         }
         
-        public void Descend()
+        public void RaiseDescend()
         {
-            Ordinal++;
+            Descend?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnConfirmSelectedElement(string value)
