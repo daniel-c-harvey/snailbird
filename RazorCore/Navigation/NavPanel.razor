@@ -1,11 +1,16 @@
 ﻿@typeparam TMode
 
+@{
+    bool backButtonEnabled = Context?.Navigator.CanNavigateBack ?? false;
+    string backButtonClass = backButtonEnabled ? "btn btn-outline-primary" : "btn btn-outline-secondary";
+}
+
 <div class="nav-panel">
     <div class="nav-bar">
         <button type="button" 
                 class="@backButtonClass" 
                 @onclick="OnNavigateBack"
-                disabled="@(!modeHistory.Any())">
+                disabled="@(!backButtonEnabled)">
             <i class="bi bi-arrow-left" />
         </button>
     </div>

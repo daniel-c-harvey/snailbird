@@ -14,27 +14,35 @@ namespace RazorCore.Navigation
 
         public TMode CurrentMode => Model.CurrentMode;
 
-        public event ModeChangeEventHandler<TMode>? ModeAdvancing;
-        public event ModeChangeEventHandler<TMode> ModeChanged;
+        public event ModeChangeEventHandler<TMode>? ModeChanged;
+
+        public bool CanNavigateBack => modeHistory.Any();
+
+        protected Stack<TMode> modeHistory = new Stack<TMode>();
 
         public Navigator(TModel model)
         {
             Model = model;
         }
 
-        public void OnForward()
+        public void NavigateForward(TMode newMode)
         {
-            if (ModeAdvancing != null)
+            if (Model.CurrentMode != null)
             {
-                ModeAdvancing(new ModeChangeEventArgs<TMode>(Model.CurrentMode));
-                OnChange();
+                modeHistory.Push(Model.CurrentMode);
             }
+            Model.CurrentMode = newMode;
+            OnChange();
         }
 
-        public void OnBack(TMode mode)
+        public void NavigateBack()
         {
-            Model.CurrentMode = mode;
-            OnChange();
+            TMode? newMode;
+            if (modeHistory.TryPop(out newMode))
+            {
+                Model.CurrentMode = newMode;
+                OnChange();
+            }
         }
 
         protected void OnChange()

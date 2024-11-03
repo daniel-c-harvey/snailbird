@@ -6,66 +6,28 @@ using SnailbirdData.Models.Post;
 using SnailbirdWeb.Models;
 using SnailbirdWeb.Updates;
 using SnailbirdWeb.Messages;
+using SnailbirdWeb.ViewModels;
 
 namespace SnailbirdWeb.Views
 {
-    public partial class PostBrowser<TPostModel> : INavigable<PostBrowserMode>
+    public partial class PostBrowser<TPostModel>
     where TPostModel : Post, new()
     {
-        #region "Members"
         [Inject]
-        public IDataAdapter<TPostModel> PostAdapter { get; set; }
+        public IDataAdapter<TPostModel>? PostAdapter { get; set; }
 
-        private PostBrowserModel<TPostModel>? model;
-        private PostBrowserUpdate<TPostModel>? update;
-        private void InitModel()
-        {
-            model = new(PostBrowserMode.Feed);
-            update = new(PostAdapter);
-            update.Update(model, new PostBrowserGetFeedMessage(new Page(0, 25)));
-        }
-        #endregion
+        [Parameter]
+        public PostBrowserViewModel<TPostModel>? ViewModel { get; set; }
 
-        #region "Event Handlers"
         protected override void OnInitialized()
         {
-            InitModel();
-            InitNavigation();
-        }
-        #endregion
-
-        #region "View Model"
-        private void ViewPost(TPostModel post)
-        {
-            if (update != null && model != null) 
-            {
-                BeforeModeChange();
-                update.Update(model, new PostBrowserViewPostMessage<TPostModel>(post));
-            }
-        }
-        #endregion
-
-        #region "INavigable"
-        private void InitNavigation()
-        {
-            Navigator = new Navigator<PostBrowserMode, PostBrowserModel<TPostModel>>(model);
-            Navigator.ModeChanged += (_) => ModeChanged();
+            if (ViewModel != null) ViewModel.Navigator.ModeChanged += ModeChanged;
+            base.OnInitialized();
         }
 
-        public INavigator<PostBrowserMode> Navigator { get; private set; }
-        private PostBrowserMode CurrentMode => model.CurrentMode;
-        private void BeforeModeChange()
-        {
-            if (model != null)
-            {
-                Navigator.OnForward();
-            }
-        }
-
-        public void ModeChanged()
+        private void ModeChanged(ModeChangeEventArgs<PostBrowserMode> args)
         {
             StateHasChanged();
         }
-        #endregion
     }
 }

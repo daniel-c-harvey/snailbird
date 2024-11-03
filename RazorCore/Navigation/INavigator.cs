@@ -16,9 +16,11 @@
     {
         TMode CurrentMode { get; }
 
-        event ModeChangeEventHandler<TMode> ModeAdvancing;
         event ModeChangeEventHandler<TMode> ModeChanged;
-        void OnForward();
-        void OnBack(TMode mode);
+
+        bool CanNavigateBack { get; }
+
+        void NavigateForward(TMode newMode);
+        void NavigateBack();
     }
 }

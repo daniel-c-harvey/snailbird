@@ -1,23 +1,37 @@
-﻿@using RazorCore.Navigation;
+﻿@using DataAccess;
+@using RazorCore.Navigation;
+@using SnailbirdData.Models.Entities;
 @using SnailbirdWeb.Models;
+@using SnailbirdWeb.ViewModels;
 
 @page "/studio"
+
+@inject IDataAdapter<StudioFeedFlexPost> postAdapter;
 
 <PageTitle>Studio</PageTitle>
 
 <NavPanel TMode="PostBrowserMode"
             GetContext="GetPostBrowser">
-    <PostBrowser TPostModel="SnailbirdData.Models.Entities.StudioFeedFlexPost" @ref="@postBrowser" />
+    <PostBrowser @ref="@postBrowser" 
+                 TPostModel="StudioFeedFlexPost" 
+                 ViewModel="@ViewModel"/>
 </NavPanel>
 
 @code {
-    private PostBrowser<SnailbirdData.Models.Entities.StudioFeedFlexPost>? postBrowser;
+    private PostBrowser<StudioFeedFlexPost>? postBrowser;
+    private PostBrowserViewModel<StudioFeedFlexPost>? ViewModel;
 
-    private PostBrowser<SnailbirdData.Models.Entities.StudioFeedFlexPost> GetPostBrowser()
+    protected override void OnInitialized()
+    {
+        ViewModel = new(postAdapter);
+        base.OnInitialized();
+    }
+
+    private INavigable<PostBrowserMode> GetPostBrowser()
     {
         if (postBrowser == null) throw new Exception("Post Browser not yet initialized.");
         
-        return postBrowser;
+        return postBrowser.ViewModel;
     }
 }
 
