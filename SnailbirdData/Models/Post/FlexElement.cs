@@ -5,7 +5,7 @@ namespace SnailbirdData.Models.Post
 {
     public abstract class FlexElement : IClonable<FlexElement>
     {
-        public int Ordinal { get; set; }
+        //public int Ordinal { get; set; }
         public abstract string TypeCaption { get; }
 
         public abstract FlexElement Clone();

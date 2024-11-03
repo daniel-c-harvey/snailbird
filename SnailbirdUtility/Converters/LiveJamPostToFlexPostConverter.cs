@@ -31,7 +31,7 @@ namespace SnailbirdUtility.Converters
 
             foreach (LiveJamPost post in livejamposts)
             {
-                flexPostAdapter.Insert(post.AdaptFlex());
+                //flexPostAdapter.Insert(post.AdaptFlex());
                 newLiveJamPostAdapter.Insert(post);
             }
         }

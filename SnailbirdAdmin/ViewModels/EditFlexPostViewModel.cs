@@ -25,14 +25,13 @@ namespace SnailbirdAdmin.ViewModels
 
         public override EditFlexPostViewModel<TPost> LoadPost(TPost post)
         {
-            _elements = post.Elements.Select(e => new EditFlexElementViewModel(e))
-                                     .OrderBy(vm => vm.Ordinal)
-                                     .ToList();
+            _elements = post.Elements.Select(e => new EditFlexElementViewModel(e)).ToList();
             
             // Register reordering & delete events
             Elements.Apply(vm =>
             {
-                vm.OrdinalChanged += OnElementOrdinalChanged;
+                vm.Ascend += OnElementAscend;
+                vm.Descend += OnElementDescend;
                 vm.DeleteClicked += OnDeleteClicked;
             });
 
@@ -48,20 +47,36 @@ namespace SnailbirdAdmin.ViewModels
             }
         }
 
-        private void OnElementOrdinalChanged(object? sender, EventArgs e)
+        private void OnElementAscend(object? sender, EventArgs e)
         {
             // re-order the elements.  can probably do a swap with the adjacent elements
-            if (sender is EditFlexElementViewModel movedElement) 
+            if (sender is EditFlexElementViewModel movedElement)
             {
-                var replacedElement = Elements.FirstOrDefault(vm => vm.Ordinal == movedElement.Ordinal && !Object.ReferenceEquals(vm, movedElement));
-                if (replacedElement != null)
+                int newIndex = Elements.IndexOf(movedElement) - 1;
+                if (newIndex >= 0)
                 {
-                    Elements.Remove(movedElement);
-                    Elements.Insert(movedElement.Ordinal - 1, movedElement);
-                    replacedElement.Ordinal = Elements.IndexOf(replacedElement) + 1;
-                    ElementChanged?.Invoke(this, new EventArgs());
+                    OnElementReorder(movedElement, newIndex);
                 }
             }
+        }
+
+        private void OnElementDescend(object? sender, EventArgs e)
+        {
+            if (sender is EditFlexElementViewModel movedElement)
+            {
+                int newIndex = Elements.IndexOf(movedElement) + 1;
+                if (newIndex < Elements.Count)
+                {
+                    OnElementReorder(movedElement, newIndex);
+                }
+            }
+        }
+
+        private void OnElementReorder(EditFlexElementViewModel movedElement, int newIndex)
+        {
+            Elements.Remove(movedElement);
+            Elements.Insert(newIndex, movedElement);
+            ElementChanged?.Invoke(this, new EventArgs());
         }
 
         public override void CommitPost()
