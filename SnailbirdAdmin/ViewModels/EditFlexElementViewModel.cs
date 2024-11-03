@@ -7,6 +7,7 @@ namespace SnailbirdAdmin.ViewModels
     {
         public event ConfirmEventHandler<string>? ConfirmElementChange;
         public event EventHandler? OrdinalChanged;
+        public event EventHandler? DeleteClicked;
 
         private FlexElement chosenElement;
         public FlexElement Element
@@ -39,33 +40,7 @@ namespace SnailbirdAdmin.ViewModels
             {
                 OnConfirmSelectedElement(value);
             }
-        }
-
-        private void OnConfirmSelectedElement(string value)
-        {
-            // check for changes in the element before replacing
-            if (!Element.Equals(Prototypes.First(p => p.TypeCaption == Element.TypeCaption)))
-            {
-                ConfirmEventArgs<string> args = new(value);
-                ConfirmElementChange?.Invoke(this, args);
-            }
-        }
-        
-        public void UpdateSelectedElement(ConfirmEventArgs<string> args)
-        {
-            if (!args.Confirm)
-            {
-                // Unconfirmed, abort
-                return;
-            }
-            
-            // Proceed in replacing the element
-            FlexElement? newPrototype = Prototypes.FirstOrDefault(p => p.TypeCaption == args.NewValue);
-            if (newPrototype != null)
-            {
-                Element = newPrototype;
-            }
-        }
+        }        
 
         public static IEnumerable<FlexElement> Prototypes { get; }
 
@@ -88,6 +63,37 @@ namespace SnailbirdAdmin.ViewModels
         public void Descend()
         {
             Ordinal++;
+        }
+
+        private void OnConfirmSelectedElement(string value)
+        {
+            // check for changes in the element before replacing
+            if (!Element.Equals(Prototypes.First(p => p.TypeCaption == Element.TypeCaption)))
+            {
+                ConfirmEventArgs<string> args = new(value);
+                ConfirmElementChange?.Invoke(this, args);
+            }
+        }
+
+        public void UpdateSelectedElement(ConfirmEventArgs<string> args)
+        {
+            if (!args.Confirm)
+            {
+                // Unconfirmed, abort
+                return;
+            }
+
+            // Proceed in replacing the element
+            FlexElement? newPrototype = Prototypes.FirstOrDefault(p => p.TypeCaption == args.NewValue);
+            if (newPrototype != null)
+            {
+                Element = newPrototype;
+            }
+        }
+
+        public void RaiseDeleteClicked()
+        {
+            DeleteClicked?.Invoke(this, new EventArgs());
         }
     }
 }
