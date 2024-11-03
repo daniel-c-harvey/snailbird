@@ -12,20 +12,11 @@ namespace RazorCore.Navigation
         public Func<INavigable<TMode>>? GetContext { get; set; }
 
         private INavigable<TMode>? Context;
-        protected Stack<TMode> modeHistory = new Stack<TMode>();
-
-        private string backButtonClass = "btn btn-outline-secondary";
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
             InitNavigation();
-            InitStyles();
-        }
-
-        private void InitStyles()
-        {
-            SetBackButtonClass();
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -39,23 +30,22 @@ namespace RazorCore.Navigation
 
                 if (Context is null) throw new ArgumentNullException(nameof(Context));
 
-                Context.Navigator.ModeAdvancing += OnModeChange;
+                Context.Navigator.ModeChanged += OnModeChange;
             }
         }
 
         protected void OnModeChange(ModeChangeEventArgs<TMode> args)
         {
-            modeHistory.Push(args.oldMode);
-            SetBackButtonClass();
+            StateHasChanged();
         }
 
         protected void OnNavigateBack(MouseEventArgs e)
         {
-            TMode? newMode;
-            if (Context is not null && modeHistory.TryPop(out newMode))
+            
+            if (Context != null)
             {
-                Context.Navigator.OnBack(newMode);
-                SetBackButtonClass();
+                Context.Navigator.NavigateBack();
+                StateHasChanged();
             }
         }
 
@@ -77,16 +67,6 @@ namespace RazorCore.Navigation
                 // todo interrupt naviagting away from a dirty page
                 //StateHasChanged();
             }
-        }
-
-        // todo DON'T USE CLASSES LIKE THIS
-        protected void SetBackButtonClass()
-        {
-            if(modeHistory.Any())
-                backButtonClass = "btn btn-outline-primary";
-            else
-                backButtonClass = "btn btn-outline-secondary";
-            StateHasChanged();
         }
     }
 }

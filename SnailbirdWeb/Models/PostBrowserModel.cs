@@ -4,10 +4,12 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdWeb.Models
 {
-    public enum PostBrowserMode
+    public class PostBrowserMode : Enumeration<PostBrowserMode>
     {
-        Feed,
-        ViewPost
+        public static PostBrowserMode Feed = new(1, nameof(Feed));
+        public static PostBrowserMode ViewPost = new(2, nameof(ViewPost));
+
+        public PostBrowserMode(int id, string name) : base(id, name) { }
     }
 
     public class PostBrowserFeedModel<TPostModel>
@@ -42,9 +44,8 @@ namespace SnailbirdWeb.Models
         public PostBrowserViewPostModel<TPostModel> SelectedPostModel { get; set; }
         public PostBrowserFeedModel<TPostModel> FeedModel { get; set; }
         
-        public PostBrowserModel(PostBrowserMode currentMode)
+        public PostBrowserModel()
         {
-            CurrentMode = currentMode;
             SelectedPostModel = new PostBrowserViewPostModel<TPostModel>(new TPostModel());
             FeedModel = new(new Page(0, 0), new List<TPostModel>());
         }

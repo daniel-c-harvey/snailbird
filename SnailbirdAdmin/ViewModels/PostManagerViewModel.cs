@@ -13,28 +13,19 @@ namespace SnailbirdAdmin.ViewModels
         where TPost : Post, new()
     {
         #region "Members"
-        public PostManagerUpdate<TPost> Update;
-        public PostManagerModel<TPost> Model;
+        public PostManagerModel<TPost> Model { get; set; }
+        private PostManagerUpdate<TPost> Update;
         
         public PostManagerViewModel(IDataAdapter<TPost> postAdapter)
         {
-            Init(postAdapter);
-        }
-
-        protected virtual void Init(IDataAdapter<TPost> postAdapter)
-        {
             InitColumnMap();
-            InitModel(postAdapter);
-            InitNavigation();
-        }
 
-        protected virtual void InitModel(IDataAdapter<TPost> PostAdapter)
-        {
-            Update = new(PostAdapter);
-            Model = new(PostManagerMode.View);
-            Model = Update.Update(Model, new PostManagerGetPostsMessage(1, 25));
+            Model = new();
+            Update = new(postAdapter);
+            Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(Model);
+            
+            Model = Update.Update(Model, new PostManagerGetPostsMessage(1, 25), Navigator);
         }
-
 
         public IColumnMap<TPost> Columns = default!;
         protected virtual void InitColumnMap()
@@ -61,8 +52,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                BeforeModeChange();
-                Update.Update(Model, new PostManagerAddMessage<TPost>(post));
+                Update.Update(Model, new PostManagerAddMessage<TPost>(post), Navigator);
             }
         }
 
@@ -70,8 +60,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                BeforeModeChange();
-                Update.Update(Model, new PostManagerEditMessage<TPost>(post));
+                Update.Update(Model, new PostManagerEditMessage<TPost>(post), Navigator);
             }
         }
 
@@ -79,7 +68,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                Update.Update(Model, new PostManagerDeleteMessage<TPost>(post));
+                Update.Update(Model, new PostManagerDeleteMessage<TPost>(post), Navigator);
             }
         }
 
@@ -87,8 +76,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                BeforeModeChange();
-                Update.Update(Model, new PostManagerSaveNewMessage<TPost>(post));
+                Update.Update(Model, new PostManagerSaveNewMessage<TPost>(post), Navigator);
             }
         }
 
@@ -96,8 +84,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                BeforeModeChange();
-                Update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post));
+                Update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post), Navigator);
             }
         }
         #endregion
@@ -105,24 +92,11 @@ namespace SnailbirdAdmin.ViewModels
         #region "INavigable"
         public INavigator<PostManagerMode> Navigator { get; protected set; }
 
-        protected virtual void InitNavigation()
-        {
-            if (Model is null) throw new ArgumentNullException(nameof(Model));
-            Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(Model);
-        }
-
         public PostManagerMode CurrentMode {
             get
             {
                 if (Model is null) throw new ArgumentNullException(nameof(Model));
                 return Model.CurrentMode;
-            }
-        }
-        protected void BeforeModeChange()
-        {
-            if (Model != null)
-            {
-                Navigator.OnForward();
             }
         }
         #endregion

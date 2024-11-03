@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using DataAccess;
 using SnailbirdData.Models.Post;
 using Microsoft.Extensions.DependencyInjection;
+using SnailbirdData.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +22,9 @@ var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQuer
         new MongoQueryBuilder()
 );
 
-//MongoAdapterFactory postAdapterFacotry = new MongoAdapterFactory();
-MongoAdapter<LiveJamPost> liveJamPostAdapter = new MongoAdapter<LiveJamPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
-MongoAdapter<FlexPost> studioFlexPostAdapter = new MongoAdapter<FlexPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
+MongoAdapter<StudioFeedFlexPost> studioFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+MongoAdapter<LabFeedFlexPost> labFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
 
 // Add services to the container.
 builder.Services
@@ -32,19 +33,12 @@ builder.Services
 
 builder.Services
     .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>
-    (provider => {
-        return liveJamPostAdapter;
-    })
-    .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>
-    (provider => new LiveJamPostMongoProvider(liveJamPostAdapter))
-    .AddSingleton<IDataAdapter<FlexPost>, MongoAdapter<FlexPost>>
-    (provider => {
-        return studioFlexPostAdapter;
-    })
-    .AddSingleton<IPostProvider<FlexPost>, FlexPostMongoProvider>
-    (provider => new FlexPostMongoProvider(studioFlexPostAdapter));
+    (_ => liveJamPostAdapter)
+    .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>
+    (_ => studioFlexPostAdapter)
+    .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>
+    (_ => labFlexPostAdapter);
     
-//.AddSingleton<IPostProvider, PostEmbeddedResourceProvider>();
 
 var app = builder.Build();
 
