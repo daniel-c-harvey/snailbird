@@ -10,7 +10,7 @@ using SnailbirdData.Models.Post;
 namespace SnailbirdAdmin.ViewModels
 {
     public class PostManagerViewModel<TPost> : INavigable<PostManagerMode>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
     {
         #region "Members"
         public PostManagerModel<TPost> Model { get; set; }

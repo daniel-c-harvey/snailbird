@@ -4,7 +4,7 @@ using SnailbirdData.Models.Post;
 namespace SnailbirdAdmin.ViewModels
 {
     public class EditFlexPostViewModel<TPost> : EditPostViewModelBase<TPost, EditFlexPostViewModel<TPost>>
-    where TPost : FlexPost, new()
+    where TPost : FlexPost<TPost>, new()
     {
         private List<EditFlexElementViewModel> _elements = new();
         public IList<EditFlexElementViewModel> Elements => _elements;

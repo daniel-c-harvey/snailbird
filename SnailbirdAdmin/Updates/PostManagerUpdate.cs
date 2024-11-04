@@ -10,7 +10,7 @@ using static MongoDB.Driver.WriteConcern;
 namespace SnailbirdAdmin.Updates
 {
     public class PostManagerUpdate<TPost>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
     {
         private IDataAdapter<TPost> PostAdapter { get; }
         private INavigator<PostManagerMode> Navigator { get; }
@@ -63,7 +63,8 @@ namespace SnailbirdAdmin.Updates
             model.Post = message.Post;
             model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
             Navigator.NavigateForward(PostManagerMode.Add)
-                     .ConfirmBeforeNavigateAway(message.ConfirmationModel);
+                     .ConfirmBeforeNavigateAway(message.ConfirmationModel, 
+                                                (_, args) => args.IsConfirmed = model.IsPostModified);
         }
 
         private void EditPost(PostManagerModel<TPost> model,
@@ -71,7 +72,8 @@ namespace SnailbirdAdmin.Updates
         {
             model.Post = message.Post;
             Navigator.NavigateForward(PostManagerMode.Edit)
-                     .ConfirmBeforeNavigateAway(message.ConfirmationModel);
+                     .ConfirmBeforeNavigateAway(message.ConfirmationModel,
+                                                (_, args) => args.IsConfirmed = model.IsPostModified);
         }
 
         private void DeletePost(PostManagerModel<TPost> model,
@@ -89,6 +91,7 @@ namespace SnailbirdAdmin.Updates
             if (PostAdapter is not null)
             {
                 PostAdapter.Insert(message.Post);
+                model.PostCommitted();
                 Navigator.NavigateBack();
             }
         }
@@ -99,6 +102,7 @@ namespace SnailbirdAdmin.Updates
             if (PostAdapter is not null)
             {
                 PostAdapter.Update(message.Post);
+                model.PostCommitted();
                 Navigator.NavigateBack();
             }
         }

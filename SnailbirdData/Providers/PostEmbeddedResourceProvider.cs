@@ -6,7 +6,7 @@ using SnailbirdData.Models.Post;
 namespace SnailbirdData.Providers
 {
     public class PostEmbeddedResourceProvider<TPost> : IPostProvider<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         public TPost GetPost(int id)
         {
