@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace RazorCore.Confirmation
 {
-    public class ConfirmationModel
+    public class PromptModel
     {
         public string HeaderText { get; }
         public string BodyText { get; }
         public Func<bool>? PromptCondition { get; }
 
-        public ConfirmationModel( string headerText, string bodyText, Func<bool>? promptCondition = null)
+        public PromptModel( string headerText, string bodyText, Func<bool>? promptCondition = null)
         {
             HeaderText = headerText;
             BodyText = bodyText;
@@ -22,9 +22,9 @@ namespace RazorCore.Confirmation
         }
     }
 
-    public class ConfirmationViewModel
+    public class PromptViewModel
     {
-        public ConfirmationModel? Model { get; set; }
+        public PromptModel? Model { get; set; }
         public Action<ConfirmEventArgs>? OnClose { get; set; }
 
         public bool IsConfigured => Model != null;
