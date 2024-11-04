@@ -1,6 +1,6 @@
 @using Core
 
-@if (ViewModel?.Model != null)
+@if (ViewModel?.Prompt != null)
 {
     var showClass = IsVisible ? "show" : string.Empty;
 
@@ -11,10 +11,10 @@
     <div class="modal-dialog  @showClass">
         <div class="modal-content">
             <div class="modal-header">
-                <strong>@ViewModel.Model.HeaderText</strong>
+                <strong>@ViewModel.Prompt.HeaderText</strong>
             </div>
             <div class="modal-body">
-                <p>@ViewModel.Model.BodyText</p>
+                <p>@ViewModel.Prompt.BodyText</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
@@ -36,7 +36,7 @@
         if (ViewModel != null)
         {
             // Only prompt if the condition is met or unset, otherwise bypass to affirmative confirmation.
-            if (ViewModel.Model != null && (ViewModel.Model.PromptCondition?.Invoke() ?? true))
+            if (ViewModel.PromptCondition?.Invoke() ?? true)
             {   
                 IsVisible = true;
                 StateHasChanged();

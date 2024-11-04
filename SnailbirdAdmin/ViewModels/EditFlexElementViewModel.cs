@@ -62,7 +62,7 @@ namespace SnailbirdAdmin.ViewModels
             // check for changes in the element before replacing
             if (!Element.Equals(Prototypes.First(p => p.TypeCaption == Element.TypeCaption)))
             {
-                ConfirmationViewModel.Model = new("Confirm Element Replacement",
+                ConfirmationViewModel.Prompt = new("Confirm Element Replacement",
                                                   "The contents of this element will be reset and replaced with a new blank element. Proceed?");
                 ConfirmationViewModel.OnClose = UpdateSelectedElement;
                 ConfirmElementChange?.Invoke(this, new ConfirmEventArgs());

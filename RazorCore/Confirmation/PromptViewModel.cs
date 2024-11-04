@@ -12,27 +12,28 @@ namespace RazorCore.Confirmation
     {
         public string HeaderText { get; }
         public string BodyText { get; }
-        public Func<bool>? PromptCondition { get; }
 
-        public PromptModel( string headerText, string bodyText, Func<bool>? promptCondition = null)
+        public PromptModel( string headerText, string bodyText)
         {
             HeaderText = headerText;
             BodyText = bodyText;
-            PromptCondition = promptCondition;
         }
     }
 
     public class PromptViewModel
     {
-        public PromptModel? Model { get; set; }
+        public PromptModel? Prompt { get; set; }
         public Action<ConfirmEventArgs>? OnClose { get; set; }
 
-        public bool IsConfigured => Model != null;
+        public Func<bool>? PromptCondition { get; set; }
+
+        public bool IsConfigured => Prompt != null;
 
         public void Reset()
         {
-            Model = null;
+            Prompt = null;
             OnClose = null;
+            PromptCondition = null;
         }
     }
 }
