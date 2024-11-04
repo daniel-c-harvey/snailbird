@@ -1,8 +1,11 @@
-﻿using DataAccess;
+﻿using Core;
+using DataAccess;
+using RazorCore.Confirmation;
 using RazorCore.Navigation;
 using SnailbirdAdmin.Messages;
 using SnailbirdAdmin.Models;
 using SnailbirdData.Models.Post;
+using static MongoDB.Driver.WriteConcern;
 
 namespace SnailbirdAdmin.Updates
 {
@@ -10,25 +13,26 @@ namespace SnailbirdAdmin.Updates
         where TPost : Post, new()
     {
         private IDataAdapter<TPost> PostAdapter { get; }
+        private INavigator<PostManagerMode> Navigator { get; }
 
-        public PostManagerUpdate(IDataAdapter<TPost> postAdapter)
+        public PostManagerUpdate(IDataAdapter<TPost> postAdapter, INavigator<PostManagerMode> navigator)
         {
             PostAdapter = postAdapter;
+            Navigator = navigator;
         }
 
         public PostManagerModel<TPost> Update(PostManagerModel<TPost> model,
-                                              PostManagerMessage message,
-                                              INavigator<PostManagerMode> navigator)
+                                              PostManagerMessage message)
         {
             switch (message.Action)
             {
                 case PostManagerAction.Add:
                     var addMessage = message as PostManagerAddMessage<TPost>;
-                    if (addMessage is not null) AddPost(model, addMessage, navigator);
+                    if (addMessage is not null) AddPost(model, addMessage);
                     break;
                 case PostManagerAction.Edit:
                     var editMessage = message as PostManagerEditMessage<TPost>;
-                    if (editMessage is not null) EditPost(model, editMessage, navigator);
+                    if (editMessage is not null) EditPost(model, editMessage);
                     break;
                 case PostManagerAction.Delete:
                     var deleteMessage = message as PostManagerDeleteMessage<TPost>;
@@ -36,15 +40,15 @@ namespace SnailbirdAdmin.Updates
                     break;
                 case PostManagerAction.SaveNew:
                     var saveNewMessage = message as PostManagerSaveNewMessage<TPost>;
-                    if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage, navigator);
+                    if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage);
                     break;
                 case PostManagerAction.SaveExisting:
                     var saveMessage = message as PostManagerSaveExistingMessage<TPost>;
-                    if (saveMessage  is not null) SavePost(model, saveMessage, navigator);
+                    if (saveMessage  is not null) SavePost(model, saveMessage);
                     break;
                 case PostManagerAction.GetPosts:
                     var getMessage = message as PostManagerGetPostsMessage;
-                    if (getMessage is not null) GetPosts(model, getMessage, navigator);
+                    if (getMessage is not null) GetPosts(model, getMessage);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -54,20 +58,20 @@ namespace SnailbirdAdmin.Updates
         }
 
         private void AddPost(PostManagerModel<TPost> model,
-                             PostManagerAddMessage<TPost> message,
-                             INavigator<PostManagerMode> navigator)
+                             PostManagerAddMessage<TPost> message)
         {
-            model.Post = message.NewPost;
+            model.Post = message.Post;
             model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
-            RegisterForwardNavigation(navigator, PostManagerMode.Add);
+            Navigator.NavigateForward(PostManagerMode.Add)
+                     .ConfirmBeforeNavigateAway(message.ConfirmationModel);
         }
 
         private void EditPost(PostManagerModel<TPost> model,
-                              PostManagerEditMessage<TPost> message,
-                              INavigator<PostManagerMode> navigator)
+                              PostManagerEditMessage<TPost> message)
         {
             model.Post = message.Post;
-            RegisterForwardNavigation(navigator, PostManagerMode.Edit);
+            Navigator.NavigateForward(PostManagerMode.Edit)
+                     .ConfirmBeforeNavigateAway(message.ConfirmationModel);
         }
 
         private void DeletePost(PostManagerModel<TPost> model,
@@ -80,30 +84,27 @@ namespace SnailbirdAdmin.Updates
         }
 
         private void SaveNewPost(PostManagerModel<TPost> model,
-                                 PostManagerSaveNewMessage<TPost> message,
-                                 INavigator<PostManagerMode> navigator)
+                                 PostManagerSaveNewMessage<TPost> message)
         {
             if (PostAdapter is not null)
             {
                 PostAdapter.Insert(message.Post);
-                RegisterBackNavigation(navigator);
+                Navigator.NavigateBack();
             }
         }
 
         private void SavePost(PostManagerModel<TPost> model,
-                              PostManagerSaveExistingMessage<TPost> message,
-                              INavigator<PostManagerMode> navigator)
+                              PostManagerSaveExistingMessage<TPost> message)
         {
             if (PostAdapter is not null)
             {
                 PostAdapter.Update(message.Post);
-                RegisterBackNavigation(navigator);
+                Navigator.NavigateBack();
             }
         }
 
         private void GetPosts(PostManagerModel<TPost> model,
-                              PostManagerGetPostsMessage message,
-                              INavigator<PostManagerMode> navigator)
+                              PostManagerGetPostsMessage message)
         {
             if (PostAdapter is not null)
             {
@@ -111,19 +112,9 @@ namespace SnailbirdAdmin.Updates
                 if (results.Success)
                 {
                     model.Posts = results.Value;
-                    RegisterForwardNavigation(navigator, PostManagerMode.View);
+                    Navigator.NavigateForward(PostManagerMode.View);
                 }
             }
-        }
-
-        private void RegisterForwardNavigation(INavigator<PostManagerMode> navigator, PostManagerMode newMode)
-        {
-            navigator.NavigateForward(newMode);
-        }
-
-        protected void RegisterBackNavigation(INavigator<PostManagerMode> navigator)
-        {
-            navigator.NavigateBack();
         }
     }
 }

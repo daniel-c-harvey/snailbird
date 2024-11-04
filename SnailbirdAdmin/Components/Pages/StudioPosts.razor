@@ -8,15 +8,4 @@
 
 <PageTitle>Studio Posts</PageTitle>
 
-<NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
-    <FlexPostManager TPost="StudioFeedFlexPost" @ref="postManager" />
-</NavPanel>
-
-@code {
-    private FlexPostManager<StudioFeedFlexPost> postManager = default!;
-
-    private INavigable<PostManagerMode> GetPostManager()
-    {
-        return postManager.ViewModel;
-    }
-}
+<FlexPostManager TPost="StudioFeedFlexPost" />

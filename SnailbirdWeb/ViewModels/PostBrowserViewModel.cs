@@ -11,8 +11,8 @@ namespace SnailbirdWeb.ViewModels
     public class PostBrowserViewModel<TPostModel> : INavigable<PostBrowserMode>
     where TPostModel : Post, new()
     {
-        public PostBrowserModel<TPostModel>? Model { get; set; }
-        private PostBrowserUpdate<TPostModel>? Update;
+        public PostBrowserModel<TPostModel> Model { get; set; }
+        private PostBrowserUpdate<TPostModel> Update;
 
         public PostBrowserViewModel(IDataAdapter<TPostModel> postAdapter)
         {

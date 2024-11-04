@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Core;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -7,31 +8,22 @@ namespace RazorCore.Navigation
     public partial class NavPanel<TMode>
     {
         [Parameter]
-        public RenderFragment? ChildContent { get; set; }
+        public RenderFragment<INavigable<TMode>>? ChildContent { get; set; }
+
         [Parameter]
-        public Func<INavigable<TMode>>? GetContext { get; set; }
+        public required INavigable<TMode> ViewModel { get; set; }
 
-        private INavigable<TMode>? Context;
+        [Parameter]
+        public EventCallback<ModeChangeEventArgs<TMode>> OnModeChanged { get; set; }
 
-        protected override void OnInitialized()
+        private Confirmation.Confirmation confirmation;
+
+        protected override void OnParametersSet()
         {
-            base.OnInitialized();
             InitNavigation();
-        }
-
-        protected override void OnAfterRender(bool firstRender)
-        {
-            base.OnAfterRender(firstRender);
-            if (firstRender)
-            {
-                if (GetContext is null) throw new ArgumentNullException(nameof(GetContext));
-
-                Context = GetContext();
-
-                if (Context is null) throw new ArgumentNullException(nameof(Context));
-
-                Context.Navigator.ModeChanged += OnModeChange;
-            }
+            ViewModel.Navigator.ModeChanged += OnModeChange;
+            ViewModel.Navigator.ConfirmNavigate += OpenConfirmation;
+            base.OnParametersSet();
         }
 
         protected void OnModeChange(ModeChangeEventArgs<TMode> args)
@@ -42,9 +34,9 @@ namespace RazorCore.Navigation
         protected void OnNavigateBack(MouseEventArgs e)
         {
             
-            if (Context != null)
+            if (ViewModel != null)
             {
-                Context.Navigator.NavigateBack();
+                ViewModel.Navigator.NavigateBack();
                 StateHasChanged();
             }
         }
@@ -59,6 +51,13 @@ namespace RazorCore.Navigation
             }
         }
 
+        private void OpenConfirmation(object sender, ConfirmEventArgs e)
+        {
+            if (confirmation != null)
+            {
+                confirmation.Open();
+            }
+        }
 
         protected void HandleLocationChange(object? sender, LocationChangedEventArgs e)
         {

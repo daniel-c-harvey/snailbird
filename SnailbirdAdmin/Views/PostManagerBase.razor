@@ -11,7 +11,7 @@
 
 @if (ViewComponent != null && ViewModel != null)
 {
-    @if (ViewModel.CurrentMode == PostManagerMode.View)
+    if (ViewModel.CurrentMode == PostManagerMode.View)
     {
         @ViewComponent(ViewModel)
     }

@@ -1,4 +1,7 @@
-﻿namespace RazorCore.Navigation
+﻿using Core;
+using RazorCore.Confirmation;
+
+namespace RazorCore.Navigation
 {
     public class ModeChangeEventArgs<TMode> : EventArgs
     {
@@ -17,10 +20,14 @@
         TMode CurrentMode { get; }
 
         event ModeChangeEventHandler<TMode> ModeChanged;
+        event ConfirmEventHandler ConfirmNavigate;
+
+        ConfirmationViewModel NavigateAwayConfirmationViewModel { get; }
 
         bool CanNavigateBack { get; }
 
-        void NavigateForward(TMode newMode);
-        void NavigateBack();
+        INavigator<TMode> NavigateForward(TMode newMode);
+        INavigator<TMode> NavigateBack();
+        INavigator<TMode> ConfirmBeforeNavigateAway(ConfirmationModel model);
     }
 }
