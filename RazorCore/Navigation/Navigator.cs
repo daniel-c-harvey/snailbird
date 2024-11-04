@@ -13,7 +13,7 @@ namespace RazorCore.Navigation
         where TModel : IMode<TMode>
     {
         public TModel Model { get; }
-        public ConfirmationViewModel NavigateAwayConfirmationViewModel { get; }
+        public PromptViewModel NavigateAwayConfirmationViewModel { get; }
 
         public event ModeChangeEventHandler<TMode>? ModeChanged;
         public event ConfirmEventHandler? ConfirmNavigate;
@@ -88,7 +88,7 @@ namespace RazorCore.Navigation
             }
         }
 
-        public INavigator<TMode> ConfirmBeforeNavigateAway(ConfirmationModel model)
+        public INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model)
         {
             NavigateAwayConfirmationViewModel.Model = model;
             return this;

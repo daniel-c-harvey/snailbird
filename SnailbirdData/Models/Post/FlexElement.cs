@@ -3,7 +3,7 @@ using NetBlocks;
 
 namespace SnailbirdData.Models.Post
 {
-    public abstract class FlexElement : IClonable<FlexElement>
+    public abstract class FlexElement : ICloneable<FlexElement>
     {
         //public int Ordinal { get; set; }
         public abstract string TypeCaption { get; }
