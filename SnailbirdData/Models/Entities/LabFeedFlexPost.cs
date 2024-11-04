@@ -8,5 +8,16 @@ namespace SnailbirdData.Models.Entities
         public LabFeedFlexPost()
         : base()
         { }
+
+        public override Post.Post Clone()
+        {
+            return new LabFeedFlexPost()
+            {
+                ID = ID,
+                Title = Title,
+                PostDate = PostDate,
+                Elements = Elements
+            };
+        }
     }
 }
