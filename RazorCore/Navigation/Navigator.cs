@@ -90,7 +90,7 @@ namespace RazorCore.Navigation
 
         public INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model)
         {
-            NavigateAwayConfirmationViewModel.Model = model;
+            NavigateAwayConfirmationViewModel.Prompt = model;
             return this;
         }
 
