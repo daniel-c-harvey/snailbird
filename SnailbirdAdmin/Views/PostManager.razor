@@ -10,20 +10,22 @@
 
 @if (ViewModel != null && AddComponent != null && EditComponent != null)
 {
-    <PostManagerBase TPost="TPost"
-                     TEdit="TEdit"
-                     TView="PostManagerViewModel<TPost>"
-                     ViewModel="ViewModel"
-                     AddComponent="AddComponent"
-                     AddViewModel="AddViewModel"
-                     EditComponent="EditComponent"
-                     EditViewModel="EditViewModel">
-        <ViewComponent Context="viewModel">
-            <NewRowTable TModel="TPost"
-                         models="viewModel.Model.Posts"
-                         columnMap="viewModel.Columns"
-                         OnAdd="viewModel.AddPost"
-                         OnDelete="viewModel.DeletePost" />
-        </ViewComponent>
-    </PostManagerBase>
+    <NavPanel TMode="PostManagerMode" ViewModel="@ViewModel">
+        <PostManagerBase TPost="TPost"
+                         TEdit="TEdit"
+                         TView="PostManagerViewModel<TPost>"
+                         ViewModel="ViewModel"
+                         AddComponent="AddComponent"
+                         AddViewModel="AddViewModel"
+                         EditComponent="EditComponent"
+                         EditViewModel="EditViewModel">
+            <ViewComponent Context="viewModel">
+                <NewRowTable TModel="TPost"
+                             models="viewModel.Model.Posts"
+                             columnMap="viewModel.Columns"
+                             OnAdd="viewModel.AddPost"
+                             OnDelete="viewModel.DeletePost" />
+            </ViewComponent>
+        </PostManagerBase>
+    </NavPanel>
 }

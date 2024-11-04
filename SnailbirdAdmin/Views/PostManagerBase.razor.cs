@@ -2,6 +2,8 @@
 using DataAccess;
 using SnailbirdData.Models.Post;
 using SnailbirdAdmin.ViewModels;
+using Core;
+using RazorCore.Confirmation;
 
 namespace SnailbirdAdmin.Views
 {
@@ -25,11 +27,13 @@ namespace SnailbirdAdmin.Views
         [Parameter]
         public TEdit? EditViewModel { get; set; }
 
-
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            if (ViewModel != null) ViewModel.Navigator.ModeChanged += (_) => ModeChanged();
+            if (ViewModel != null)
+            {
+                ViewModel.Navigator.ModeChanged += (_) => ModeChanged();
+            }
         }
 
         public void ModeChanged()

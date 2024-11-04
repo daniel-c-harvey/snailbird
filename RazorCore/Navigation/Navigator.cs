@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RazorCore.Confirmation;
 
 namespace RazorCore.Navigation
 {
@@ -11,11 +13,12 @@ namespace RazorCore.Navigation
         where TModel : IMode<TMode>
     {
         public TModel Model { get; }
-
-        public TMode CurrentMode => Model.CurrentMode;
+        public ConfirmationViewModel NavigateAwayConfirmationViewModel { get; }
 
         public event ModeChangeEventHandler<TMode>? ModeChanged;
+        public event ConfirmEventHandler? ConfirmNavigate;
 
+        public TMode CurrentMode => Model.CurrentMode;
         public bool CanNavigateBack => modeHistory.Any();
 
         protected Stack<TMode> modeHistory = new Stack<TMode>();
@@ -23,26 +26,72 @@ namespace RazorCore.Navigation
         public Navigator(TModel model)
         {
             Model = model;
+            NavigateAwayConfirmationViewModel = new();
         }
 
-        public void NavigateForward(TMode newMode)
+        private TMode? _nextMode;
+        public INavigator<TMode> NavigateForward(TMode newMode)
         {
-            if (Model.CurrentMode != null)
+            _nextMode = newMode;
+            if (NavigateAwayConfirmationViewModel.IsConfigured && ConfirmNavigate != null)
             {
-                modeHistory.Push(Model.CurrentMode);
+                NavigateAwayConfirmationViewModel.OnClose = OnNavigateForward;
+                ConfirmNavigate?.Invoke(this, new ConfirmEventArgs());
             }
-            Model.CurrentMode = newMode;
-            OnChange();
+            else
+            {
+                OnNavigateForward(new ConfirmEventArgs() { IsConfirmed = true });
+            }
+            return this;
         }
 
-        public void NavigateBack()
+        private void OnNavigateForward(ConfirmEventArgs args)
         {
-            TMode? newMode;
-            if (modeHistory.TryPop(out newMode))
+            if (args.IsConfirmed && _nextMode != null)
             {
-                Model.CurrentMode = newMode;
+                if (Model.CurrentMode != null)
+                {
+                    modeHistory.Push(Model.CurrentMode);
+                }
+                Model.CurrentMode = _nextMode;
+                _nextMode = default;
+                NavigateAwayConfirmationViewModel.Reset();
                 OnChange();
             }
+        }
+
+        public INavigator<TMode> NavigateBack()
+        {
+            if (NavigateAwayConfirmationViewModel.IsConfigured && ConfirmNavigate != null)
+            {
+                NavigateAwayConfirmationViewModel.OnClose = OnNavigateBack;
+                ConfirmNavigate?.Invoke(this, new ConfirmEventArgs());
+            }
+            else
+            {
+                OnNavigateBack(new ConfirmEventArgs() { IsConfirmed = true });
+            }
+            return this;
+        }
+
+        private void OnNavigateBack(ConfirmEventArgs args)
+        {
+            if (args.IsConfirmed)
+            {
+                TMode? newMode;
+                if (modeHistory.TryPop(out newMode))
+                {
+                    Model.CurrentMode = newMode;
+                    NavigateAwayConfirmationViewModel.Reset();
+                    OnChange();
+                }
+            }
+        }
+
+        public INavigator<TMode> ConfirmBeforeNavigateAway(ConfirmationModel model)
+        {
+            NavigateAwayConfirmationViewModel.Model = model;
+            return this;
         }
 
         protected void OnChange()

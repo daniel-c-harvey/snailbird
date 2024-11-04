@@ -1,28 +1,39 @@
-﻿@typeparam TMode
+﻿@using RazorCore.Confirmation;
+
+@typeparam TMode
 
 @{
-    bool backButtonEnabled = Context?.Navigator.CanNavigateBack ?? false;
+    bool backButtonEnabled = ViewModel.Navigator.CanNavigateBack;
     string backButtonClass = backButtonEnabled ? "btn btn-outline-primary" : "btn btn-outline-secondary";
 }
 
-<div class="nav-panel">
-    <div class="nav-bar">
-        <button type="button" 
-                class="@backButtonClass" 
-                @onclick="OnNavigateBack"
-                disabled="@(!backButtonEnabled)">
-            <i class="bi bi-arrow-left" />
-        </button>
+@if (ViewModel != null && ViewModel.Navigator != null )
+{
+    <Confirmation @ref = "confirmation" ViewModel = "@ViewModel.Navigator.NavigateAwayConfirmationViewModel" />
+}
+
+@if (ViewModel != null)
+{
+
+    <div class="nav-panel">
+        <div class="nav-bar">
+            <button type="button" 
+                    class="@backButtonClass" 
+                    @onclick="OnNavigateBack"
+                    disabled="@(!backButtonEnabled)">
+                <i class="bi bi-arrow-left" />
+            </button>
+        </div>
+        <div class="nav-body">
+            @if (ChildContent is null || ViewModel is null)
+            {
+                <span>Loading...</span>
+            }
+            else
+            {
+                @ChildContent(ViewModel)
+            }
+        </div>
     </div>
-    <div class="nav-body">
-        @if (ChildContent is null)
-        {
-            <span>Loading...</span>
-        }
-        else
-        {
-            @ChildContent
-        }
-    </div>
-</div>
+}
 

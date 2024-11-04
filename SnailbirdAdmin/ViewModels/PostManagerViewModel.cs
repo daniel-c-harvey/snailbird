@@ -21,10 +21,10 @@ namespace SnailbirdAdmin.ViewModels
             InitColumnMap();
 
             Model = new();
-            Update = new(postAdapter);
             Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(Model);
+            Update = new(postAdapter, Navigator);
             
-            Model = Update.Update(Model, new PostManagerGetPostsMessage(1, 25), Navigator);
+            Model = Update.Update(Model, new PostManagerGetPostsMessage(1, 25));
         }
 
         public IColumnMap<TPost> Columns = default!;
@@ -52,7 +52,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                Update.Update(Model, new PostManagerAddMessage<TPost>(post), Navigator);
+                Update.Update(Model, new PostManagerAddMessage<TPost>(post));
             }
         }
 
@@ -60,7 +60,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                Update.Update(Model, new PostManagerEditMessage<TPost>(post), Navigator);
+                Update.Update(Model, new PostManagerEditMessage<TPost>(post));
             }
         }
 
@@ -68,7 +68,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                Update.Update(Model, new PostManagerDeleteMessage<TPost>(post), Navigator);
+                Update.Update(Model, new PostManagerDeleteMessage<TPost>(post));
             }
         }
 
@@ -76,7 +76,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                Update.Update(Model, new PostManagerSaveNewMessage<TPost>(post), Navigator);
+                Update.Update(Model, new PostManagerSaveNewMessage<TPost>(post));
             }
         }
 
@@ -84,7 +84,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             if (Update != null && Model != null)
             {
-                Update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post), Navigator);
+                Update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post));
             }
         }
         #endregion

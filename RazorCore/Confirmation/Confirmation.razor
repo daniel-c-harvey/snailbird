@@ -1,0 +1,64 @@
+@using Core
+
+@if (ViewModel?.Model != null)
+{
+    var showClass = IsVisible ? "show" : string.Empty;
+
+    <!-- Modal backdrop -->
+    <div class="modal-backdrop @showClass" id="modalBackdrop"></div>
+
+    <!-- Modal why is this invisible?  dimensions are zero? -->
+    <div class="modal-dialog  @showClass">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>@ViewModel.Model.HeaderText</strong>
+            </div>
+            <div class="modal-body">
+                <p>@ViewModel.Model.BodyText</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" @onclick="Confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public required ConfirmationViewModel ViewModel { get; set; }
+
+    public void Open()
+    {
+        if (ViewModel != null)
+        {
+            // Only prompt if the condition is met or unset, otherwise bypass to affirmative confirmation.
+            if (ViewModel.Model != null && (ViewModel.Model.PromptCondition?.Invoke() ?? true))
+            {   
+                IsVisible = true;
+                StateHasChanged();
+            }
+            else { ViewModel.OnClose?.Invoke(ConfirmEventArgs.Confirm); }
+        }
+    }
+
+    private void Confirm()
+    {
+        Close(ConfirmEventArgs.Confirm);
+    }
+
+    private void Cancel()
+    {
+        Close(ConfirmEventArgs.Deny);
+    }
+
+    private void Close(ConfirmEventArgs args)
+    {
+        IsVisible = false;
+        StateHasChanged();
+        ViewModel.OnClose?.Invoke(args);
+    }
+}

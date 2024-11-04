@@ -1,14 +1,19 @@
-﻿using NetBlocks;
+﻿using Core;
+using Microsoft.AspNetCore.Components;
+using NetBlocks;
+using RazorCore.Confirmation;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels
 {
     public class EditFlexElementViewModel
     {
-        public event ConfirmEventHandler<string>? ConfirmElementChange;
+        public event ConfirmEventHandler? ConfirmElementChange;
+        public event EventHandler? ElementChanged;
         public event EventHandler? Ascend;
         public event EventHandler? Descend;
         public event EventHandler? DeleteClicked;
+        public ConfirmationViewModel ConfirmationViewModel { get; }
 
         private FlexElement chosenElement;
         public FlexElement Element
@@ -20,14 +25,15 @@ namespace SnailbirdAdmin.ViewModels
             }
         }
 
+        private string? _newElementName;
         public string SelectedElementName
         {
             get => Element.TypeCaption;
             set
             {
-                OnConfirmSelectedElement(value);
+                OnSetSelectedElement(value);
             }
-        }        
+        }
 
         public static IEnumerable<FlexElement> Prototypes { get; }
 
@@ -39,6 +45,7 @@ namespace SnailbirdAdmin.ViewModels
         public EditFlexElementViewModel(FlexElement element)
         {
             chosenElement = element;
+            ConfirmationViewModel = new();
         }
 
         public void RaiseAscend()
@@ -50,30 +57,38 @@ namespace SnailbirdAdmin.ViewModels
         {
             Descend?.Invoke(this, EventArgs.Empty);
         }
-
-        private void OnConfirmSelectedElement(string value)
+        private void OnSetSelectedElement(string value)
         {
+            _newElementName = value;
             // check for changes in the element before replacing
             if (!Element.Equals(Prototypes.First(p => p.TypeCaption == Element.TypeCaption)))
             {
-                ConfirmEventArgs<string> args = new(value);
-                ConfirmElementChange?.Invoke(this, args);
+                ConfirmationViewModel.Model = new("Confirm Element Replacement",
+                                                  "The contents of this element will be reset and replaced with a new blank element. Proceed?");
+                ConfirmationViewModel.OnClose = UpdateSelectedElement;
+                ConfirmElementChange?.Invoke(this, new ConfirmEventArgs());
+            }
+            else
+            {
+                // no changes to confirm, go ahead
+                UpdateSelectedElement(new ConfirmEventArgs() { IsConfirmed = true });
             }
         }
 
-        public void UpdateSelectedElement(ConfirmEventArgs<string> args)
+        private void UpdateSelectedElement(ConfirmEventArgs args)
         {
-            if (!args.Confirm)
+            if (!args.IsConfirmed)
             {
                 // Unconfirmed, abort
                 return;
             }
 
             // Proceed in replacing the element
-            FlexElement? newPrototype = Prototypes.FirstOrDefault(p => p.TypeCaption == args.NewValue);
+            FlexElement? newPrototype = Prototypes.FirstOrDefault(p => p.TypeCaption == _newElementName);
             if (newPrototype != null)
             {
                 Element = newPrototype;
+                ElementChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 

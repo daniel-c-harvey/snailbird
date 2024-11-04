@@ -1,4 +1,5 @@
-﻿using SnailbirdData.Models.Post;
+﻿using RazorCore.Confirmation;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.Messages
 {
@@ -17,18 +18,6 @@ namespace SnailbirdAdmin.Messages
         protected PostManagerMessage(PostManagerAction action) : base(action) { }
     }
 
-    public class PostManagerAddMessage<TPost> : PostManagerMessage
-        where TPost : Post
-    {
-        public TPost NewPost { get; }
-
-        public PostManagerAddMessage(TPost newPost)
-        : base(PostManagerAction.Add)
-        {
-            NewPost = newPost;
-        }
-    }
-
     public abstract class PostManagerPostMessage<TPost> : PostManagerMessage
         where TPost : Post
     {
@@ -41,11 +30,34 @@ namespace SnailbirdAdmin.Messages
         }
     }
 
+    public class PostManagerAddMessage<TPost> : PostManagerPostMessage<TPost>
+        where TPost : Post
+    {
+        public ConfirmationModel ConfirmationModel { get; }
+
+        public PostManagerAddMessage(TPost post)
+        : base(PostManagerAction.Add, post) 
+        {
+            ConfirmationModel = new("Adding Post", "The post being added has unsaved changes.  " +
+                                                    "Proceeding will abandon those changes.  " +
+                                                    "Proceed?");
+        }
+    }
+
     public class PostManagerEditMessage<TPost> : PostManagerPostMessage<TPost>
         where TPost : Post
     {
+        public ConfirmationModel ConfirmationModel { get; }
+
         public PostManagerEditMessage(TPost post)
-        : base(PostManagerAction.Edit, post) { }
+        : base(PostManagerAction.Edit, post)
+        {
+            ConfirmationModel = new("Editing Post", 
+                                    "The post being edited has unsaved changes.  " +
+                                    "Proceeding will abandon those changes.  " +
+                                    "Proceed?"
+                                    ); // todo add a function to the message which takes the post and evaluates whether the prompt is necessary
+        }
     }
 
     public class PostManagerDeleteMessage<TPost> : PostManagerPostMessage<TPost>

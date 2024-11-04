@@ -5,12 +5,12 @@
 @using RazorCore;
 
 @typeparam TPost where TPost : FlexPost, new()
-
+    
 <PostManager TPost="TPost" 
-             TEdit="EditFlexPostViewModel<TPost>" 
-             ViewModel="@ViewModel"
-             AddViewModel="@AddViewModel"
-             EditViewModel="@EditViewModel">
+                TEdit="EditFlexPostViewModel<TPost>" 
+                ViewModel="@ViewModel"
+                AddViewModel="@AddViewModel"
+                EditViewModel="@EditViewModel">
     <AddComponent Context="viewModel">
         <EditFlexPost ViewModel="viewModel" />
     </AddComponent>
