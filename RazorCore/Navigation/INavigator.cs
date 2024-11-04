@@ -22,12 +22,12 @@ namespace RazorCore.Navigation
         event ModeChangeEventHandler<TMode> ModeChanged;
         event ConfirmEventHandler ConfirmNavigate;
 
-        ConfirmationViewModel NavigateAwayConfirmationViewModel { get; }
+        PromptViewModel NavigateAwayConfirmationViewModel { get; }
 
         bool CanNavigateBack { get; }
 
         INavigator<TMode> NavigateForward(TMode newMode);
         INavigator<TMode> NavigateBack();
-        INavigator<TMode> ConfirmBeforeNavigateAway(ConfirmationModel model);
+        INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model);
     }
 }

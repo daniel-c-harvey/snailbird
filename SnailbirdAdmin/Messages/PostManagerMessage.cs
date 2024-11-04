@@ -33,7 +33,7 @@ namespace SnailbirdAdmin.Messages
     public class PostManagerAddMessage<TPost> : PostManagerPostMessage<TPost>
         where TPost : Post
     {
-        public ConfirmationModel ConfirmationModel { get; }
+        public PromptModel ConfirmationModel { get; }
 
         public PostManagerAddMessage(TPost post)
         : base(PostManagerAction.Add, post) 
@@ -47,16 +47,16 @@ namespace SnailbirdAdmin.Messages
     public class PostManagerEditMessage<TPost> : PostManagerPostMessage<TPost>
         where TPost : Post
     {
-        public ConfirmationModel ConfirmationModel { get; }
+        public PromptModel ConfirmationModel { get; }
 
         public PostManagerEditMessage(TPost post)
         : base(PostManagerAction.Edit, post)
         {
+            Post original = post.Clone();
             ConfirmationModel = new("Editing Post", 
                                     "The post being edited has unsaved changes.  " +
                                     "Proceeding will abandon those changes.  " +
-                                    "Proceed?"
-                                    ); // todo add a function to the message which takes the post and evaluates whether the prompt is necessary
+                                    "Proceed?"); // todo add a function to the message which takes the post and evaluates whether the prompt is necessary
         }
     }
 

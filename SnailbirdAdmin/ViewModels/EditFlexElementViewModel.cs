@@ -1,5 +1,4 @@
 ﻿using Core;
-using Microsoft.AspNetCore.Components;
 using NetBlocks;
 using RazorCore.Confirmation;
 using SnailbirdData.Models.Post;
@@ -13,7 +12,7 @@ namespace SnailbirdAdmin.ViewModels
         public event EventHandler? Ascend;
         public event EventHandler? Descend;
         public event EventHandler? DeleteClicked;
-        public ConfirmationViewModel ConfirmationViewModel { get; }
+        public PromptViewModel ConfirmationViewModel { get; }
 
         private FlexElement chosenElement;
         public FlexElement Element
