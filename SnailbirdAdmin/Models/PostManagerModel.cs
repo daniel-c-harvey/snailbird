@@ -14,11 +14,25 @@ namespace SnailbirdAdmin.Models
     }
 
     public class PostManagerModel<TPost> : IMode<PostManagerMode>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
     {
         public IEnumerable<TPost> Posts { get; set; }
-        public TPost Post { get; set; }
+
+        private TPost _post = default!;
+        private TPost? _originalPost;
+        public TPost Post 
+        {
+            get => _post;
+            set
+            {
+                _post = value;
+                PostCommitted();
+            }
+        }
+
+        public TPost? OriginalPost => _originalPost;
         public PostManagerMode CurrentMode { get; set; } = default!;
+        public bool IsPostModified => !Post.Equals(OriginalPost);
 
         public PostManagerModel()
         {
@@ -32,9 +46,9 @@ namespace SnailbirdAdmin.Models
             Post = post;
         }
 
-        public TPost CurrentPost()
+        public void PostCommitted()
         {
-            return Post;
+            _originalPost = _post.Clone();
         }
     }
 }

@@ -3,13 +3,13 @@ using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Models.Entities
 {
-    public class StudioFeedFlexPost : FlexPost, IEntity
+    public class StudioFeedFlexPost : FlexPost<StudioFeedFlexPost>, IEntity
     {
         public StudioFeedFlexPost() 
         : base()
         { }
 
-        public override Post.Post Clone()
+        public override StudioFeedFlexPost Clone()
         {
             return new StudioFeedFlexPost()
             {

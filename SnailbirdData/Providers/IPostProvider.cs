@@ -8,7 +8,7 @@ using SnailbirdData.Models.Post;
 namespace SnailbirdData.Providers
 {
     public interface IPostProvider<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         TPost GetPost(int id);
         IEnumerable<TPost> GetRecentPosts(int pageIndex, int pageLength);

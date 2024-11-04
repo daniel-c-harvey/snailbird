@@ -8,7 +8,7 @@ using RazorCore.Confirmation;
 namespace SnailbirdAdmin.Views
 {
     public partial class PostManagerBase<TPost, TView, TEdit>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
         where TView : PostManagerViewModel<TPost>
         where TEdit : EditPostViewModelBase<TPost, TEdit>
     {

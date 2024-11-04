@@ -3,7 +3,7 @@
 @using SnailbirdData.Models.Post;
 @using RazorCore;
 
-@typeparam TPost where TPost : FlexPost, new()
+@typeparam TPost where TPost : FlexPost<TPost>, new()
 @if (ViewModel != null)
 {
     <EditPost ViewModel="ViewModel">

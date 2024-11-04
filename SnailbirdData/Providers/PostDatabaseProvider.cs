@@ -5,7 +5,7 @@ namespace SnailbirdData.Providers
 {
     public abstract class PostDatabaseProvider<TDataAdapter, TPost> : IPostProvider<TPost>
         where TDataAdapter : IDataAdapter<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         TDataAdapter DataAdapter { get; set; }
 

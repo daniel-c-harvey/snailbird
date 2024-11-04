@@ -6,7 +6,7 @@ using SnailbirdAdmin.ViewModels;
 namespace SnailbirdAdmin.Views
 {
     public partial class PostManager<TPost, TEdit>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
         where TEdit : EditPostViewModelBase<TPost, TEdit>
     {
         [Inject]

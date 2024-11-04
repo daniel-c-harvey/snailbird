@@ -5,7 +5,7 @@
 @using SnailbirdAdmin.Models;
 @using SnailbirdAdmin.ViewModels;
 
-@typeparam TPost where TPost : Post, new()
+@typeparam TPost where TPost : Post<TPost>, new()
 @typeparam TView where TView : PostManagerViewModel<TPost>
 @typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
 

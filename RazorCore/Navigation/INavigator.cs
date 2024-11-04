@@ -1,4 +1,5 @@
 ﻿using Core;
+using Microsoft.AspNetCore.Components;
 using RazorCore.Confirmation;
 
 namespace RazorCore.Navigation
@@ -21,7 +22,7 @@ namespace RazorCore.Navigation
 
         event ModeChangeEventHandler<TMode> ModeChanged;
         event ConfirmEventHandler ConfirmNavigate;
-
+        event ConfirmEventHandler PromptBeforeNavigate;
         PromptViewModel NavigateAwayConfirmationViewModel { get; }
 
         bool CanNavigateBack { get; }
@@ -29,5 +30,6 @@ namespace RazorCore.Navigation
         INavigator<TMode> NavigateForward(TMode newMode);
         INavigator<TMode> NavigateBack();
         INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model);
+        INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model, ConfirmEventHandler promptCondition);
     }
 }

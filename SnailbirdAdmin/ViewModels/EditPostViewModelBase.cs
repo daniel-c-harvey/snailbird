@@ -3,7 +3,7 @@
 namespace SnailbirdAdmin.ViewModels
 {
     public abstract class EditPostViewModelBase<TPost, TSelf>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
         where TSelf : EditPostViewModelBase<TPost, TSelf>
     {
         public TPost? Post { get; set; }

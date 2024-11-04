@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RazorCore.Confirmation;
+using System.Reflection;
 
 namespace RazorCore.Navigation
 {
@@ -17,6 +18,7 @@ namespace RazorCore.Navigation
 
         public event ModeChangeEventHandler<TMode>? ModeChanged;
         public event ConfirmEventHandler? ConfirmNavigate;
+        public event ConfirmEventHandler? PromptBeforeNavigate;
 
         public TMode CurrentMode => Model.CurrentMode;
         public bool CanNavigateBack => modeHistory.Any();
@@ -33,7 +35,7 @@ namespace RazorCore.Navigation
         public INavigator<TMode> NavigateForward(TMode newMode)
         {
             _nextMode = newMode;
-            if (NavigateAwayConfirmationViewModel.IsConfigured && ConfirmNavigate != null)
+            if (NavigateAwayConfirmationViewModel.IsConfigured && ConfirmNavigate != null && ShouldPrompt())
             {
                 NavigateAwayConfirmationViewModel.OnClose = OnNavigateForward;
                 ConfirmNavigate?.Invoke(this, new ConfirmEventArgs());
@@ -55,14 +57,14 @@ namespace RazorCore.Navigation
                 }
                 Model.CurrentMode = _nextMode;
                 _nextMode = default;
-                NavigateAwayConfirmationViewModel.Reset();
+                ResetConfirmationPrompt();
                 OnChange();
             }
         }
 
         public INavigator<TMode> NavigateBack()
         {
-            if (NavigateAwayConfirmationViewModel.IsConfigured && ConfirmNavigate != null)
+            if (NavigateAwayConfirmationViewModel.IsConfigured && ConfirmNavigate != null && ShouldPrompt())
             {
                 NavigateAwayConfirmationViewModel.OnClose = OnNavigateBack;
                 ConfirmNavigate?.Invoke(this, new ConfirmEventArgs());
@@ -82,16 +84,40 @@ namespace RazorCore.Navigation
                 if (modeHistory.TryPop(out newMode))
                 {
                     Model.CurrentMode = newMode;
-                    NavigateAwayConfirmationViewModel.Reset();
+                    ResetConfirmationPrompt();
                     OnChange();
                 }
             }
         }
 
+        private void ResetConfirmationPrompt()
+        {
+            NavigateAwayConfirmationViewModel.Reset();
+            PromptBeforeNavigate = null;
+        }
+
+        private bool ShouldPrompt()
+        {
+            ConfirmEventArgs shouldPrompt = new();
+            PromptBeforeNavigate?.Invoke(this, shouldPrompt);
+            return shouldPrompt.IsConfirmed;
+        }
+
         public INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model)
         {
+            return ConfirmBeforeNavigateAway(model, null);
+        }
+
+        public INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model, ConfirmEventHandler? confirmEventHandler)
+        {
             NavigateAwayConfirmationViewModel.Prompt = model;
+            if (confirmEventHandler != null) PromptBeforeNavigate += confirmEventHandler;
             return this;
+        }
+
+        private static void Confirm(object? sender, ConfirmEventArgs args)
+        {
+            args.IsConfirmed = true;
         }
 
         protected void OnChange()

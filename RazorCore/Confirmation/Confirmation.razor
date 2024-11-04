@@ -33,16 +33,8 @@
 
     public void Open()
     {
-        if (ViewModel != null)
-        {
-            // Only prompt if the condition is met or unset, otherwise bypass to affirmative confirmation.
-            if (ViewModel.PromptCondition?.Invoke() ?? true)
-            {   
-                IsVisible = true;
-                StateHasChanged();
-            }
-            else { ViewModel.OnClose?.Invoke(ConfirmEventArgs.Confirm); }
-        }
+        IsVisible = true;
+        StateHasChanged();
     }
 
     private void Confirm()

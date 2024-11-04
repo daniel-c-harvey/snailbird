@@ -19,7 +19,7 @@ namespace SnailbirdAdmin.Messages
     }
 
     public abstract class PostManagerPostMessage<TPost> : PostManagerMessage
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         public TPost Post { get; }
 
@@ -31,7 +31,7 @@ namespace SnailbirdAdmin.Messages
     }
 
     public class PostManagerAddMessage<TPost> : PostManagerPostMessage<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         public PromptModel ConfirmationModel { get; }
 
@@ -45,14 +45,13 @@ namespace SnailbirdAdmin.Messages
     }
 
     public class PostManagerEditMessage<TPost> : PostManagerPostMessage<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         public PromptModel ConfirmationModel { get; }
 
         public PostManagerEditMessage(TPost post)
         : base(PostManagerAction.Edit, post)
         {
-            Post original = post.Clone();
             ConfirmationModel = new("Editing Post", 
                                     "The post being edited has unsaved changes.  " +
                                     "Proceeding will abandon those changes.  " +
@@ -61,21 +60,21 @@ namespace SnailbirdAdmin.Messages
     }
 
     public class PostManagerDeleteMessage<TPost> : PostManagerPostMessage<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         public PostManagerDeleteMessage(TPost post)
         : base(PostManagerAction.Delete, post) { }
     }
 
     public class PostManagerSaveNewMessage<TPost> : PostManagerPostMessage<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         public PostManagerSaveNewMessage(TPost post)
         : base(PostManagerAction.SaveNew, post) { }
     }
 
     public class PostManagerSaveExistingMessage<TPost> : PostManagerPostMessage<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         public PostManagerSaveExistingMessage(TPost post)
         : base(PostManagerAction.SaveExisting, post) { }

@@ -3,7 +3,7 @@
 @using SnailbirdData.Models.Post;
 @using RazorCore;
 
-@typeparam TPost where TPost : Post, new()
+@typeparam TPost where TPost : Post<TPost>, new()
 @typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
 
 @if (ViewModel?.Post == null)

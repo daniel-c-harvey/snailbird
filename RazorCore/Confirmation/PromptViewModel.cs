@@ -25,15 +25,12 @@ namespace RazorCore.Confirmation
         public PromptModel? Prompt { get; set; }
         public Action<ConfirmEventArgs>? OnClose { get; set; }
 
-        public Func<bool>? PromptCondition { get; set; }
-
         public bool IsConfigured => Prompt != null;
 
         public void Reset()
         {
             Prompt = null;
             OnClose = null;
-            PromptCondition = null;
         }
     }
 }
