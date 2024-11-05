@@ -14,13 +14,13 @@
                 <strong>@ViewModel.PromptMessage.HeaderText</strong>
             </div>
             <div class="modal-body">
-                <p>@ViewModel.PromptMessage.BodyText</p>
+                @ViewModel.PromptMessage.BodyText
             </div>
             <div class="modal-footer">
                 @foreach (PromptChoice choice in ViewModel.Choices)
                 {
                     <button type="button" 
-                            class="btn btn-secondary" 
+                            class="btn btn-sm @choice.CssClass" 
                             @onclick="_ => Close(choice)">
                         @choice.Label
                     </button>

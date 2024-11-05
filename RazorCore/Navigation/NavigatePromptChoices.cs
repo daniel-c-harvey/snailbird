@@ -5,8 +5,8 @@ namespace RazorCore.Navigation
 {
     public class NavigatePromptChoices : Enumeration
     {
-        public static NavigatePromptChoices Cancel = new(1, "Cancel", "btn-outline-danger");
-        public static NavigatePromptChoices Discard = new(2, "Discard", "btn-outline-secondary");
+        public static NavigatePromptChoices Cancel = new(1, "Cancel", "btn-outline-secondary");
+        public static NavigatePromptChoices Discard = new(2, "Discard", "btn-danger");
         public static NavigatePromptChoices Save = new(3, "Save", "btn-primary");
 
         public PromptChoice Choice { get; set; }

@@ -38,9 +38,9 @@ namespace SnailbirdAdmin.Messages
         public PostManagerAddMessage(TPost post)
         : base(PostManagerAction.Add, post) 
         {
-            ConfirmationModel = new("Adding Post", "The post being added has unsaved changes.  " +
-                                                    "Proceeding will abandon those changes.  " +
-                                                    "Proceed?");
+            ConfirmationModel = new("Adding Post", 
+                                    "The post being added has unsaved changes.  " +
+                                    "How to proceed?");
         }
     }
 
@@ -54,8 +54,7 @@ namespace SnailbirdAdmin.Messages
         {
             ConfirmationModel = new("Editing Post", 
                                     "The post being edited has unsaved changes.  " +
-                                    "Proceeding will abandon those changes.  " +
-                                    "Proceed?"); // todo add a function to the message which takes the post and evaluates whether the prompt is necessary
+                                    "How to proceed?");
         }
     }
 
