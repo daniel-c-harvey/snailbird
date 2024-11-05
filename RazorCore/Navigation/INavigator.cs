@@ -15,21 +15,19 @@ namespace RazorCore.Navigation
     }
 
     public delegate void ModeChangeEventHandler<TMode>(ModeChangeEventArgs<TMode> args);
-
     public interface INavigator<TMode>
     {
         TMode CurrentMode { get; }
+        PromptViewModel NavigateConfirmationViewModel { get; }
+        bool CanNavigateBack { get; }
 
         event ModeChangeEventHandler<TMode> ModeChanged;
-        event ConfirmEventHandler ConfirmNavigate;
+        event EventHandler ConfirmPrompt;
         event ConfirmEventHandler PromptBeforeNavigate;
-        PromptViewModel NavigateAwayConfirmationViewModel { get; }
-
-        bool CanNavigateBack { get; }
 
         INavigator<TMode> NavigateForward(TMode newMode);
         INavigator<TMode> NavigateBack();
-        INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model);
-        INavigator<TMode> ConfirmBeforeNavigateAway(PromptModel model, ConfirmEventHandler promptCondition);
+        INavigator<TMode> ConfirmBeforeNavigateAway(PromptMessage model);
+        INavigator<TMode> ConfirmBeforeNavigateAway(PromptMessage model, ConfirmEventHandler promptCondition);
     }
 }

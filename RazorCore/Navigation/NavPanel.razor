@@ -9,7 +9,7 @@
 
 @if (ViewModel != null && ViewModel.Navigator != null )
 {
-    <Confirmation @ref = "confirmation" ViewModel = "@ViewModel.Navigator.NavigateAwayConfirmationViewModel" />
+    <Prompt @ref="confirmation" ViewModel="@ViewModel.Navigator.NavigateConfirmationViewModel" />
 }
 
 @if (ViewModel != null)
