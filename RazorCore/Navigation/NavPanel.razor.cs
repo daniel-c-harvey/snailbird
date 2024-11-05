@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
+using RazorCore.Confirmation;
 
 namespace RazorCore.Navigation
 {
@@ -13,16 +14,13 @@ namespace RazorCore.Navigation
         [Parameter]
         public required INavigable<TMode> ViewModel { get; set; }
 
-        [Parameter]
-        public EventCallback<ModeChangeEventArgs<TMode>> OnModeChanged { get; set; }
-
-        private Confirmation.Confirmation confirmation;
+        private Confirmation.Prompt confirmation;
 
         protected override void OnParametersSet()
         {
             InitNavigation();
             ViewModel.Navigator.ModeChanged += OnModeChange;
-            ViewModel.Navigator.ConfirmNavigate += OpenConfirmation;
+            ViewModel.Navigator.ConfirmPrompt += OpenConfirmation;
             base.OnParametersSet();
         }
 
@@ -51,7 +49,7 @@ namespace RazorCore.Navigation
             }
         }
 
-        private void OpenConfirmation(object sender, ConfirmEventArgs e)
+        private void OpenConfirmation(object? sender, EventArgs e)
         {
             if (confirmation != null)
             {

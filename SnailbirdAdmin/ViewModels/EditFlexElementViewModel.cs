@@ -12,7 +12,7 @@ namespace SnailbirdAdmin.ViewModels
         public event EventHandler? Ascend;
         public event EventHandler? Descend;
         public event EventHandler? DeleteClicked;
-        public PromptViewModel ConfirmationViewModel { get; }
+        public ConfirmViewModel ConfirmationViewModel { get; }
 
         private FlexElement chosenElement;
         public FlexElement Element
@@ -62,7 +62,7 @@ namespace SnailbirdAdmin.ViewModels
             // check for changes in the element before replacing
             if (!Element.Equals(Prototypes.First(p => p.TypeCaption == Element.TypeCaption)))
             {
-                ConfirmationViewModel.Prompt = new("Confirm Element Replacement",
+                ConfirmationViewModel.PromptMessage = new("Confirm Element Replacement",
                                                   "The contents of this element will be reset and replaced with a new blank element. Proceed?");
                 ConfirmationViewModel.OnClose = UpdateSelectedElement;
                 ConfirmElementChange?.Invoke(this, new ConfirmEventArgs());

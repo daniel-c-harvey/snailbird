@@ -33,7 +33,7 @@ namespace SnailbirdAdmin.Messages
     public class PostManagerAddMessage<TPost> : PostManagerPostMessage<TPost>
         where TPost : Post<TPost>
     {
-        public PromptModel ConfirmationModel { get; }
+        public PromptMessage ConfirmationModel { get; }
 
         public PostManagerAddMessage(TPost post)
         : base(PostManagerAction.Add, post) 
@@ -47,7 +47,7 @@ namespace SnailbirdAdmin.Messages
     public class PostManagerEditMessage<TPost> : PostManagerPostMessage<TPost>
         where TPost : Post<TPost>
     {
-        public PromptModel ConfirmationModel { get; }
+        public PromptMessage ConfirmationModel { get; }
 
         public PostManagerEditMessage(TPost post)
         : base(PostManagerAction.Edit, post)
