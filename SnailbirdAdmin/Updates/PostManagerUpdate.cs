@@ -5,7 +5,6 @@ using RazorCore.Navigation;
 using SnailbirdAdmin.Messages;
 using SnailbirdAdmin.Models;
 using SnailbirdData.Models.Post;
-using static MongoDB.Driver.WriteConcern;
 
 namespace SnailbirdAdmin.Updates
 {
@@ -60,8 +59,15 @@ namespace SnailbirdAdmin.Updates
         private void AddPost(PostManagerModel<TPost> model,
                              PostManagerAddMessage<TPost> message)
         {
+            // update model with new post
             model.Post = message.Post;
             model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
+
+            // set the Save action if there is a dirty nav
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] =
+                () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
+
+            // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
             Navigator.NavigateForward(PostManagerMode.Add)
                      .ConfirmBeforeNavigateAway(message.ConfirmationModel, 
                                                 (_, args) => args.IsConfirmed = model.IsPostModified);
@@ -70,7 +76,14 @@ namespace SnailbirdAdmin.Updates
         private void EditPost(PostManagerModel<TPost> model,
                               PostManagerEditMessage<TPost> message)
         {
+            // update the post to be edited
             model.Post = message.Post;
+
+            // set the Save action if there is a navigation away from this edit
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] = 
+                () => Update(model, new PostManagerSaveExistingMessage<TPost>(model.Post));
+
+            // navigate to the Edit page and assign the dirty away-navigation prompt
             Navigator.NavigateForward(PostManagerMode.Edit)
                      .ConfirmBeforeNavigateAway(message.ConfirmationModel,
                                                 (_, args) => args.IsConfirmed = model.IsPostModified);

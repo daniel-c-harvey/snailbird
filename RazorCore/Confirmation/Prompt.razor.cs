@@ -26,7 +26,14 @@ namespace RazorCore.Confirmation
         {
             IsVisible = false;
             StateHasChanged();
-            ViewModel.OnClose?.Invoke(new ResultEventArgs<PromptChoice>(choice));
+            ViewModel.Choices[choice]?.Invoke();
+        }
+        
+        private void Close(Action command)
+        {
+            IsVisible = false;
+            StateHasChanged();
+            command.Invoke();
         }
     }
 }
