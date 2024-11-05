@@ -43,36 +43,4 @@ namespace RazorCore.Confirmation
             OnClose = null;
         }
     }
-
-    public class PromptChoice
-    {
-        public int ID { get; }
-        public string Label { get; }
-        public string CssClass { get; }
-
-        public PromptChoice(int id, string label, string cssClass)
-        {
-            ID = id;
-            Label = label;
-            CssClass = cssClass;
-        }
-    }
-
-
-    public class PromptViewModel : ModalViewModel
-    {
-        public Action<ResultEventArgs<PromptChoice>>? OnClose { get; set; }
-        public IEnumerable<PromptChoice> Choices { get; }
-
-        public PromptViewModel(IEnumerable<PromptChoice> choices)
-        {
-            Choices = choices;
-        }
-
-        public override void Reset()
-        {
-            base.Reset();
-            OnClose = null;
-        }
-    }
 }

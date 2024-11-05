@@ -44,19 +44,19 @@ namespace RazorCore.Navigation
             _nextMode = newMode;
             if (NavigateConfirmationViewModel.IsConfigured && ConfirmPrompt != null && ShouldPrompt())
             {
-                NavigateConfirmationViewModel.OnClose = OnNavigateForward;
+                NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] = OnNavigateForward;
                 ConfirmPrompt?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                OnNavigateForward(new ResultEventArgs<PromptChoice>(NavigatePromptChoices.Discard.Choice));
+                OnNavigateForward();
             }
             return this;
         }
 
-        private void OnNavigateForward(ResultEventArgs<PromptChoice> args)
+        private void OnNavigateForward()
         {
-            if (args.Result.ID != NavigatePromptChoices.Cancel.Id && _nextMode != null)
+            if (_nextMode != null)
             {
                 if (Model.CurrentMode != null)
                 {
@@ -73,27 +73,24 @@ namespace RazorCore.Navigation
         {
             if (NavigateConfirmationViewModel.IsConfigured && ConfirmPrompt != null && ShouldPrompt())
             {
-                NavigateConfirmationViewModel.OnClose = OnNavigateBack;
+                NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] = OnNavigateBack;
                 ConfirmPrompt?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                OnNavigateBack(new ResultEventArgs<PromptChoice>(NavigatePromptChoices.Discard.Choice));
+                OnNavigateBack();
             }
             return this;
         }
 
-        private void OnNavigateBack(ResultEventArgs<PromptChoice> args)
+        private void OnNavigateBack()
         {
-            if (args.Result.ID == NavigatePromptChoices.Discard.Choice.ID)
+            TMode? newMode;
+            if (modeHistory.TryPop(out newMode))
             {
-                TMode? newMode;
-                if (modeHistory.TryPop(out newMode))
-                {
-                    Model.CurrentMode = newMode;
-                    ResetConfirmationPrompt();
-                    OnChange();
-                }
+                Model.CurrentMode = newMode;
+                ResetConfirmationPrompt();
+                OnChange();
             }
         }
 

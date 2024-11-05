@@ -17,11 +17,11 @@
                 @ViewModel.PromptMessage.BodyText
             </div>
             <div class="modal-footer">
-                @foreach (PromptChoice choice in ViewModel.Choices)
-                {
+                @foreach (PromptChoice choice in ViewModel.Choices.Keys)
+                {                    
                     <button type="button" 
-                            class="btn btn-sm @choice.CssClass" 
-                            @onclick="_ => Close(choice)">
+                        class="btn btn-sm @choice.CssClass" 
+                        @onclick="_ => Close(choice)">
                         @choice.Label
                     </button>
                 }
