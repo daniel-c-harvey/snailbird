@@ -1,4 +1,6 @@
 ﻿using Core;
+using NetBlocks;
+using static NetBlocks.Event;
 
 namespace RazorCore.Confirmation
 {
@@ -30,11 +32,11 @@ namespace RazorCore.Confirmation
 
     public class PromptViewModel : ModalViewModel
     {
-        public Dictionary<PromptChoice, Action?> Choices { get; }
+        public Dictionary<PromptChoice, EventBase?> Choices { get; }
 
         public PromptViewModel(IEnumerable<PromptChoice> choices)
         {
-            Choices = new(choices.Select(choice => new KeyValuePair<PromptChoice, Action?>(choice, null)));
+            Choices = new(choices.Select(choice => new KeyValuePair<PromptChoice, EventBase?>(choice, null)));
         }
 
         public override void Reset()

@@ -64,8 +64,10 @@ namespace SnailbirdAdmin.Updates
             model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
 
             // set the Save action if there is a dirty nav
-            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] =
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
                 () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
+                () => ResetPost(model);
 
             // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
             Navigator.NavigateForward(PostManagerMode.Add)
@@ -73,15 +75,22 @@ namespace SnailbirdAdmin.Updates
                                                 (_, args) => args.IsConfirmed = model.IsPostModified);
         }
 
+        private void ResetPost(PostManagerModel<TPost> model)
+        {
+            model.Post = model.OriginalPost;
+        }
+
         private void EditPost(PostManagerModel<TPost> model,
                               PostManagerEditMessage<TPost> message)
         {
             // update the post to be edited
-            model.Post = message.Post;
+            model.Post = message.Post.Clone();
 
             // set the Save action if there is a navigation away from this edit
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] = 
                 () => Update(model, new PostManagerSaveExistingMessage<TPost>(model.Post));
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
+                () => ResetPost(model);
 
             // navigate to the Edit page and assign the dirty away-navigation prompt
             Navigator.NavigateForward(PostManagerMode.Edit)
@@ -104,7 +113,7 @@ namespace SnailbirdAdmin.Updates
             if (PostAdapter is not null)
             {
                 PostAdapter.Insert(message.Post);
-                model.PostCommitted();
+                model.Post = message.Post;
                 Navigator.NavigateBack();
             }
         }
@@ -115,7 +124,7 @@ namespace SnailbirdAdmin.Updates
             if (PostAdapter is not null)
             {
                 PostAdapter.Update(message.Post);
-                model.PostCommitted();
+                model.Post = message.Post;
                 Navigator.NavigateBack();
             }
         }

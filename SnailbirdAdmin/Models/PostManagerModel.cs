@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core;
 using RazorCore.Navigation;
 using SnailbirdData.Models.Post;
 
@@ -19,18 +20,26 @@ namespace SnailbirdAdmin.Models
         public IEnumerable<TPost> Posts { get; set; }
 
         private TPost _post = default!;
-        private TPost? _originalPost;
+        private TPost _originalPost = default!;
         public TPost Post 
         {
             get => _post;
             set
             {
                 _post = value;
-                PostCommitted();
+                _originalPost = _post.Clone();
+                
+                var posts = Posts.ToList();
+                var z = posts.FirstOrDefault(p => p.ID == _post.ID);
+                if (z != null)
+                {
+                    posts[posts.IndexOf(z)] = _post;
+                    Posts = posts;
+                }
             }
         }
 
-        public TPost? OriginalPost => _originalPost;
+        public TPost OriginalPost => _originalPost;
         public PostManagerMode CurrentMode { get; set; } = default!;
         public bool IsPostModified => !Post.Equals(OriginalPost);
 
@@ -44,11 +53,6 @@ namespace SnailbirdAdmin.Models
         {
             Posts = posts;
             Post = post;
-        }
-
-        public void PostCommitted()
-        {
-            _originalPost = _post.Clone();
         }
     }
 }

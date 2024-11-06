@@ -44,7 +44,7 @@ namespace RazorCore.Navigation
             _nextMode = newMode;
             if (NavigateConfirmationViewModel.IsConfigured && ConfirmPrompt != null && ShouldPrompt())
             {
-                NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] = OnNavigateForward;
+                NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] += OnNavigateForward;
                 ConfirmPrompt?.Invoke(this, EventArgs.Empty);
             }
             else
@@ -73,7 +73,7 @@ namespace RazorCore.Navigation
         {
             if (NavigateConfirmationViewModel.IsConfigured && ConfirmPrompt != null && ShouldPrompt())
             {
-                NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] = OnNavigateBack;
+                NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] += OnNavigateBack;
                 ConfirmPrompt?.Invoke(this, EventArgs.Empty);
             }
             else
