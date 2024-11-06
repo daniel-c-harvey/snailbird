@@ -37,8 +37,14 @@ namespace SnailbirdAdmin.ViewModels
 
         public override EditLiveJamPostViewModel LoadPost(LiveJamPost post)
         {
-            _instruments = post.Instruments.ToList();
-            return base.LoadPost(post);
+            base.LoadPost(post);
+            
+            if (Post != null)
+            {
+                _instruments = Post.Instruments.ToList();
+            }
+
+            return this;
         }
 
         public override void CommitPost()

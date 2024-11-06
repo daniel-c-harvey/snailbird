@@ -13,16 +13,7 @@ namespace SnailbirdAdmin.ViewModels
         public event EventHandler? Descend;
         public event EventHandler? DeleteClicked;
         public ConfirmViewModel ConfirmationViewModel { get; }
-
-        private FlexElement chosenElement;
-        public FlexElement Element
-        {
-            get => chosenElement;
-            protected set
-            {
-                chosenElement = value.Clone();
-            }
-        }
+        public FlexElement Element { get; protected set; }
 
         private string? _newElementName;
         public string SelectedElementName
@@ -43,7 +34,7 @@ namespace SnailbirdAdmin.ViewModels
 
         public EditFlexElementViewModel(FlexElement element)
         {
-            chosenElement = element;
+            Element = element;
             ConfirmationViewModel = new();
         }
 
@@ -86,7 +77,7 @@ namespace SnailbirdAdmin.ViewModels
             FlexElement? newPrototype = Prototypes.FirstOrDefault(p => p.TypeCaption == _newElementName);
             if (newPrototype != null)
             {
-                Element = newPrototype;
+                Element = newPrototype.Clone();
                 ElementChanged?.Invoke(this, EventArgs.Empty);
             }
         }

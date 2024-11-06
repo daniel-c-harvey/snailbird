@@ -25,17 +25,22 @@ namespace SnailbirdAdmin.ViewModels
 
         public override EditFlexPostViewModel<TPost> LoadPost(TPost post)
         {
-            _elements = post.Elements.Select(e => new EditFlexElementViewModel(e)).ToList();
+            base.LoadPost(post);
             
-            // Register reordering & delete events
-            Elements.Apply(vm =>
+            if (Post != null)
             {
-                vm.Ascend += OnElementAscend;
-                vm.Descend += OnElementDescend;
-                vm.DeleteClicked += OnDeleteClicked;
-            });
+                _elements = Post.Elements.Select(e => new EditFlexElementViewModel(e)).ToList();
+            
+                // Register reordering & delete events
+                Elements.Apply(vm =>
+                {
+                    vm.Ascend += OnElementAscend;
+                    vm.Descend += OnElementDescend;
+                    vm.DeleteClicked += OnDeleteClicked;
+                });
+            }
 
-            return base.LoadPost(post);
+            return this;
         }
 
         private void OnDeleteClicked(object? sender, EventArgs e)

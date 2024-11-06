@@ -4,6 +4,7 @@
 @using RazorCore;
 
 @typeparam TPost where TPost : FlexPost<TPost>, new()
+
 @if (ViewModel != null)
 {
     <EditPost ViewModel="ViewModel">

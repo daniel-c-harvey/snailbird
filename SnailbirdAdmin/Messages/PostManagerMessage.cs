@@ -11,6 +11,7 @@ namespace SnailbirdAdmin.Messages
         SaveNew,
         SaveExisting,
         GetPosts,
+        ResetPosts,
     }
 
     public abstract class PostManagerMessage : MessageBase<PostManagerAction>
@@ -91,5 +92,10 @@ namespace SnailbirdAdmin.Messages
             Page = page;
             PageSize = pageSize;
         }
+    }
+
+    public class PostManagerResetPostMessage : PostManagerMessage
+    {
+        public PostManagerResetPostMessage() : base(PostManagerAction.ResetPosts) { }
     }
 }
