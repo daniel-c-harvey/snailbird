@@ -13,7 +13,7 @@ namespace SnailbirdWeb.Models
     }
 
     public class PostBrowserFeedModel<TPostModel>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         public Page Page { get; set; }
         public IEnumerable<TPostModel> Posts { get; set; }
@@ -26,7 +26,7 @@ namespace SnailbirdWeb.Models
     }
 
     public class PostBrowserViewPostModel<TPostModel>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         public TPostModel Post { get; set; }
 
@@ -37,7 +37,7 @@ namespace SnailbirdWeb.Models
     }
 
     public class PostBrowserModel<TPostModel> : IMode<PostBrowserMode>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         public PostBrowserMode CurrentMode { get; set; }
         

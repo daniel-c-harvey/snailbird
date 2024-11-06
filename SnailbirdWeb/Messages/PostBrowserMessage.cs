@@ -27,7 +27,7 @@ namespace SnailbirdWeb.Messages
     }
 
     public class PostBrowserViewPostMessage<TPostModel> : PostBrowserMessage
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         public TPostModel Post { get; }
 
