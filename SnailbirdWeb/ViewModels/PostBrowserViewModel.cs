@@ -9,7 +9,7 @@ using SnailbirdWeb.Updates;
 namespace SnailbirdWeb.ViewModels
 {
     public class PostBrowserViewModel<TPostModel> : INavigable<PostBrowserMode>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         public PostBrowserModel<TPostModel> Model { get; set; }
         private PostBrowserUpdate<TPostModel> Update;

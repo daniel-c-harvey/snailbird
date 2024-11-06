@@ -11,7 +11,7 @@ using SnailbirdWeb.ViewModels;
 namespace SnailbirdWeb.Views
 {
     public partial class PostBrowser<TPostModel>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         [Inject]
         public IDataAdapter<TPostModel>? PostAdapter { get; set; }

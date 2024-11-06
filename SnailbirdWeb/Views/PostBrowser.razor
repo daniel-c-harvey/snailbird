@@ -1,5 +1,5 @@
 ﻿@using SnailbirdWeb.Models;
-@typeparam TPostModel where TPostModel : SnailbirdData.Models.Post.Post, new()
+@typeparam TPostModel where TPostModel : SnailbirdData.Models.Post.Post<TPostModel>, new()
 
 @if(ViewModel != null)
 {   

@@ -7,7 +7,7 @@ using RazorCore.Navigation;
 namespace SnailbirdWeb.Updates
 {
     public class PostBrowserUpdate<TPostModel>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         private IDataAdapter<TPostModel> PostAdapter { get; }
 
