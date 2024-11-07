@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Components;
 using NetBlocks;
 using System.Text;
 
-namespace RazorCore
+namespace RazorCore.Markup
 {
     public partial class MarkupTextArea
     {
         private string _markdownText = default!;
         private string _processedText = default!;
-        
+
         [Parameter]
         public required string Text
         {
@@ -53,7 +53,7 @@ namespace RazorCore
         private static void processHyperlinkAtIndex(StringBuilder processor, MarkupExpander expander, ref ExpansionBuilder expansion, int index)
         {
             // Mark elements for replacement
-            if(expansion.OnDeck == null)
+            if (expansion.OnDeck == null)
             {
                 expansion.BeginNewSpan();
             }
@@ -71,8 +71,8 @@ namespace RazorCore
                 else if (expansion.OnDeck.End == null && expansion.Spans.Count() < 2)
                 {
                     if (processor[index] == ']' &&
-                        (index > 0 && processor[index - 1] != '\\') &&
-                        (index < processor.Length - 1 && processor[index + 1] == '('))
+                        index > 0 && processor[index - 1] != '\\' &&
+                        index < processor.Length - 1 && processor[index + 1] == '(')
                     {
                         expansion.OnDeck.End = index;
                         expansion.OnDeck.Content = processor.Substring(expansion.OnDeck.Start.Value,
@@ -84,10 +84,10 @@ namespace RazorCore
                 else if (expansion.OnDeck.Start != null && expansion.OnDeck.End == null)
                 {
                     if (processor[index] == ')' &&
-                         (index > 0 && processor[index - 1] != '\\'))
+                         index > 0 && processor[index - 1] != '\\')
                     {
                         expansion.OnDeck.End = index;
-                        expansion.OnDeck.Content = processor.Substring(expansion.OnDeck.Start.Value, 
+                        expansion.OnDeck.Content = processor.Substring(expansion.OnDeck.Start.Value,
                                                                         expansion.OnDeck.End.Value);
                     }
                 }
