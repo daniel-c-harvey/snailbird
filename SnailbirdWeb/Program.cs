@@ -10,17 +10,15 @@ using SnailbirdData.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
 var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
-    (
-        new MongoDataAccess(
-            Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird")
-                .ConnectionString,
-                "snailbird-dev"
-            ),
-        new MongoQueryBuilder()
+(
+    new MongoDataAccess(
+            builder.Configuration[$"Connections:{builder.Configuration["ActiveConnection"]}:ConnectionString"],
+            builder.Configuration[$"Connections:{builder.Configuration["ActiveConnection"]}:Name"]
+        ),
+    new MongoQueryBuilder()
 );
+
 
 MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
 MongoAdapter<StudioFeedFlexPost> studioFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
