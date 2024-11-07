@@ -16,6 +16,8 @@
     @if (ViewModel.Element != null)
     {   
         <div class="sb-flex-element">
+        
+            <!-- Flex Element Header -->
             <div class="sb-flex-order">
                 <div class="sb-flex-order-buttons">
                     <div class="top bi bi-chevron-compact-up" @onclick="@ViewModel.RaiseAscend" />
@@ -31,13 +33,13 @@
                     <span class="bi bi-trash"></span>
                 </button>
             </div>
+
             <hr />
+
             <div class="sb-flex-content">
                 @if (ViewModel.Element is FlexParagraph paragraph)
                 {
-                    <div>
-                        <textarea class="form-control" type="text" @bind="@paragraph.Text" />
-                    </div>
+                    <MarkupTextArea Text="@paragraph.Text" PreviewMarkup="true" />
                 } else if (ViewModel.Element is FlexImage image)
                 {
                     <div>
