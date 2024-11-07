@@ -39,7 +39,7 @@
             <div class="sb-flex-content">
                 @if (ViewModel.Element is FlexParagraph paragraph)
                 {
-                    <EditFlexParagraph />
+                    <MarkupTextArea Text="@paragraph.Text" PreviewMarkup="true" />
                 } else if (ViewModel.Element is FlexImage image)
                 {
                     <div>

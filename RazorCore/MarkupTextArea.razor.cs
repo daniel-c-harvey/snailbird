@@ -11,7 +11,7 @@ namespace RazorCore
         private string _processedText = default!;
         
         [Parameter]
-        public required string Text 
+        public required string Text
         {
             get => _processedText;
             set
@@ -21,6 +21,9 @@ namespace RazorCore
                 StateHasChanged();
             }
         }
+
+        [Parameter]
+        public bool PreviewMarkup { get; set; } = false;
 
         public string RawText
         {
