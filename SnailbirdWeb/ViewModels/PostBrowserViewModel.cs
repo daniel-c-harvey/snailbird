@@ -1,5 +1,5 @@
-﻿using Core;
-using DataAccess;
+﻿using DataAccess;
+using NetBlocks.Models;
 using RazorCore.Navigation;
 using SnailbirdData.Models.Post;
 using SnailbirdWeb.Messages;

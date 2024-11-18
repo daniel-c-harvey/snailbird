@@ -1,7 +1,4 @@
-﻿
-using Core;
-
-namespace RazorCore
+﻿namespace RazorCore
 {
     public interface IModelColumn<TModel>
     {

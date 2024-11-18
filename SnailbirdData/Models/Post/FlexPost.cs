@@ -1,7 +1,4 @@
-﻿using Core;
-using SnailbirdData.Models.Entities;
-
-namespace SnailbirdData.Models.Post
+﻿namespace SnailbirdData.Models.Post
 {
     public abstract class FlexPost<TPost> : Post<TPost>
     where TPost : Post<TPost>
