@@ -1,5 +1,4 @@
-﻿using Core;
-using DataAccess;
+﻿using DataAccess;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Models.Entities

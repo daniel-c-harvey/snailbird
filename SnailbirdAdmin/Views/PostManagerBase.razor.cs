@@ -2,8 +2,6 @@
 using DataAccess;
 using SnailbirdData.Models.Post;
 using SnailbirdAdmin.ViewModels;
-using Core;
-using RazorCore.Confirmation;
 
 namespace SnailbirdAdmin.Views
 {

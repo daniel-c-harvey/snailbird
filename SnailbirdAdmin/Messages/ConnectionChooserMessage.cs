@@ -1,5 +1,4 @@
-﻿using Core;
-using DataAccess;
+﻿using DataAccess;
 using SnailbirdAdmin.Messages;
 
 namespace SnailbirdAdmin
