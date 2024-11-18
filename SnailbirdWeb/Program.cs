@@ -17,7 +17,9 @@ if (connectionSecrets == null)
     return;
 }
 
-Connection? connection = connectionSecrets.Connections?.FirstOrDefault(c => c.Name.Equals(connectionSecrets.ActiveConnection, StringComparison.OrdinalIgnoreCase));
+Connection? connection = connectionSecrets.Connections?
+                         .FirstOrDefault(c => c.ConnectionName.Equals(connectionSecrets.ActiveConnectionName, 
+                                                                      StringComparison.OrdinalIgnoreCase));
 
 if (connection == null)
 {
@@ -30,7 +32,7 @@ try
 { 
     dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
     (
-        new MongoDataAccess(connection.ConnectionString, connection.Name),
+        new MongoDataAccess(connection.ConnectionString, connection.DatabaseName),
         new MongoQueryBuilder()
     );
 }
