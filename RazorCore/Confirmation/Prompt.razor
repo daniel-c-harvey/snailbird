@@ -1,0 +1,29 @@
+﻿@if (ViewModel?.PromptMessage != null)
+{
+    var showClass = IsVisible ? "show" : string.Empty;
+
+    <!-- Modal backdrop -->
+    <div class="modal-backdrop @showClass" id="modalBackdrop"></div>
+
+    <!-- Modal window -->
+    <div class="modal-dialog  @showClass">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>@ViewModel.PromptMessage.HeaderText</strong>
+            </div>
+            <div class="modal-body">
+                @ViewModel.PromptMessage.BodyText
+            </div>
+            <div class="modal-footer">
+                @foreach (PromptChoice choice in ViewModel.Choices.Keys)
+                {                    
+                    <button type="button" 
+                        class="btn btn-sm @choice.CssClass" 
+                        @onclick="_ => Close(choice)">
+                        @choice.Label
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+}

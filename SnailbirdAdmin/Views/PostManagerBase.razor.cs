@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SnailbirdAdmin.ViewModels;
-using SnailbirdData.DataAdapters;
+using DataAccess;
 using SnailbirdData.Models.Post;
+using SnailbirdAdmin.ViewModels;
 
 namespace SnailbirdAdmin.Views
 {
     public partial class PostManagerBase<TPost, TView, TEdit>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
         where TView : PostManagerViewModel<TPost>
         where TEdit : EditPostViewModelBase<TPost, TEdit>
     {
@@ -25,11 +25,13 @@ namespace SnailbirdAdmin.Views
         [Parameter]
         public TEdit? EditViewModel { get; set; }
 
-
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            if (ViewModel != null) ViewModel.Navigator.ModeChanged += (_) => ModeChanged();
+            if (ViewModel != null)
+            {
+                ViewModel.Navigator.ModeChanged += (_) => ModeChanged();
+            }
         }
 
         public void ModeChanged()

@@ -1,16 +1,20 @@
-﻿<h1 class="pink header clickable" @onclick="OnHeaderClick">@Post.Title</h1>
+﻿@using SnailbirdData.Models.Post
+
+@typeparam TPost where TPost : Post<TPost>
+
+<h1 class="pink header clickable" @onclick="OnHeaderClick">@Post.Title</h1>
 <h3 class="aqua date header">@Post.PostDate.ToShortDateString()</h3>
-@foreach (SnailbirdData.Models.Post.PostElement element in Post.Elements)
+@foreach (SnailbirdData.Models.Post.FlexElement element in Post.Elements)
 {
-    <PostElement Element="@element" ></PostElement>
+    <FlexElement Element="@element" ></FlexElement>
 }
 
 @code {
     [Parameter]
-    public SnailbirdData.Models.Post.FlexPost Post { get; set; } = default!;
+    public SnailbirdData.Models.Post.FlexPost<TPost> Post { get; set; } = default!;
 
     [Parameter]
-    public EventCallback<SnailbirdData.Models.Post.FlexPost> OnSelect { get; set; }
+    public EventCallback<SnailbirdData.Models.Post.FlexPost<TPost>> OnSelect { get; set; }
 
     private async Task OnHeaderClick(MouseEventArgs e)
     {

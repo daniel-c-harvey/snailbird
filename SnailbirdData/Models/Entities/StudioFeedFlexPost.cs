@@ -1,15 +1,23 @@
-﻿using SnailbirdData.Models.Post;
+﻿using DataAccess;
+using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Models.Entities
 {
-    public class StudioFeedFlexPost : FlexPost, IEntity
+    public class StudioFeedFlexPost : FlexPost<StudioFeedFlexPost>, IEntity
     {
         public StudioFeedFlexPost() 
         : base()
         { }
 
-        public StudioFeedFlexPost(long ID, string title, DateTime date, IEnumerable<PostElement> elements)
-        : base(ID, title, date, elements)
-        {}
+        public override StudioFeedFlexPost Clone()
+        {
+            return new StudioFeedFlexPost()
+            {
+                ID = ID,
+                PostDate = PostDate,
+                Title = Title,
+                Elements = Elements.Select(x => x.Clone())
+            };
+        }
     }
 }

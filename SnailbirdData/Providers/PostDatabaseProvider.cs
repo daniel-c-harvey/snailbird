@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DataAccess;
-using SnailbirdData;
-using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Providers
 {
     public abstract class PostDatabaseProvider<TDataAdapter, TPost> : IPostProvider<TPost>
         where TDataAdapter : IDataAdapter<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         TDataAdapter DataAdapter { get; set; }
 

@@ -1,29 +1,50 @@
 using Microsoft.AspNetCore.HttpOverrides;
-using SnailbirdData.Providers;
 using SnailbirdWeb.Components;
 using DataAccess;
 using MongoDB.Driver;
-using SnailbirdData.DataAdapters;
 using SnailbirdData.Models.Post;
-using Microsoft.Extensions.DependencyInjection;
+using SnailbirdData.Models.Entities;
+using SnailbirdWeb.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
+ConnectionSecrets? connectionSecrets = builder.Configuration.Get<ConnectionSecrets>();
 
+if (connectionSecrets == null)
+{
+    Console.WriteLine("Unable to load connection secrets");
+    return;
+}
 
-var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
+Connection? connection = connectionSecrets.Connections?
+                         .FirstOrDefault(c => c.ConnectionName.Equals(connectionSecrets.ActiveConnectionName, 
+                                                                      StringComparison.OrdinalIgnoreCase));
+
+if (connection == null)
+{
+    Console.WriteLine("Active connection does not point to a valid connection string");
+    return;
+}
+
+DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder> dataResources;
+try
+{ 
+    dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
     (
-        new MongoDataAccess(
-            Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird")
-                .ConnectionString,
-                "snailbird-dev"
-            ),
+        new MongoDataAccess(connection.ConnectionString, connection.DatabaseName),
         new MongoQueryBuilder()
-);
+    );
+}
+catch (Exception e)
+{
+    Console.WriteLine($"Error encountered while initializing database connection:\r\n{e.Message}");
+    return;
+}
 
-//MongoAdapterFactory postAdapterFacotry = new MongoAdapterFactory();
-MongoAdapter<LiveJamPost> liveJamPostAdapter = new MongoAdapter<LiveJamPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
-MongoAdapter<FlexPost> studioFlexPostAdapter = new MongoAdapter<FlexPost>(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
+MongoAdapter<StudioFeedFlexPost> studioFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+MongoAdapter<LabFeedFlexPost> labFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
 
 // Add services to the container.
 builder.Services
@@ -32,19 +53,12 @@ builder.Services
 
 builder.Services
     .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>
-    (provider => {
-        return liveJamPostAdapter;
-    })
-    .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>
-    (provider => new LiveJamPostMongoProvider(liveJamPostAdapter))
-    .AddSingleton<IDataAdapter<FlexPost>, MongoAdapter<FlexPost>>
-    (provider => {
-        return studioFlexPostAdapter;
-    })
-    .AddSingleton<IPostProvider<FlexPost>, FlexPostMongoProvider>
-    (provider => new FlexPostMongoProvider(studioFlexPostAdapter));
+    (_ => liveJamPostAdapter)
+    .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>
+    (_ => studioFlexPostAdapter)
+    .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>
+    (_ => labFlexPostAdapter);
     
-//.AddSingleton<IPostProvider, PostEmbeddedResourceProvider>();
 
 var app = builder.Build();
 

@@ -1,16 +1,16 @@
-﻿@using SnailbirdData.DataAdapters
+﻿@using DataAccess
 @using SnailbirdData.Models.Post;
 @using SnailbirdAdmin.Models;
 @using SnailbirdAdmin.ViewModels;
 @using RazorCore;
 
-@typeparam TPost where TPost : FlexPost, new()
-
+@typeparam TPost where TPost : FlexPost<TPost>, new()
+    
 <PostManager TPost="TPost" 
-             TEdit="EditFlexPostViewModel<TPost>" 
-             ViewModel="@ViewModel"
-             AddViewModel="@AddViewModel"
-             EditViewModel="@EditViewModel">
+                TEdit="EditFlexPostViewModel<TPost>" 
+                ViewModel="@ViewModel"
+                AddViewModel="@AddViewModel"
+                EditViewModel="@EditViewModel">
     <AddComponent Context="viewModel">
         <EditFlexPost ViewModel="viewModel" />
     </AddComponent>

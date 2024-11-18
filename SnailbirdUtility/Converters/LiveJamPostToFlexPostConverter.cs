@@ -1,7 +1,8 @@
 ﻿using DataAccess;
 using MongoDB.Driver;
+using NetBlocks.Models;
 using SnailbirdData.Adapters;
-using SnailbirdData.DataAdapters;
+using SnailbirdData.Models.Entities;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdUtility.Converters
@@ -12,7 +13,7 @@ namespace SnailbirdUtility.Converters
         {
             var dataAccess = new MongoDataAccess
             (
-                Core.ConnectionStringTools.LoadFromFile("../../../.secrets/connections.json", "mongodb-snailbird-admin").ConnectionString,
+                ConnectionStringTools.LoadFromFile("../../../.secrets/connections.json", "mongodb-snailbird-admin").ConnectionString,
                 databaseName
             );
 
@@ -26,13 +27,14 @@ namespace SnailbirdUtility.Converters
 
             MongoAdapter<LiveJamPost> oldPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("posts"));
             MongoAdapter<LiveJamPost> newLiveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
-            MongoAdapter<FlexPost> flexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+            MongoAdapter<StudioFeedFlexPost> studioPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+            MongoAdapter<LabFeedFlexPost> labPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("labFeedFlexPost"));
 
             IEnumerable<LiveJamPost> livejamposts = oldPostAdapter.GetPage(0, 10).Value.ToList();
 
             foreach (LiveJamPost post in livejamposts)
             {
-                flexPostAdapter.Insert(post.AdaptFlex());
+                //flexPostAdapter.Insert(post.AdaptFlex());
                 newLiveJamPostAdapter.Insert(post);
             }
         }

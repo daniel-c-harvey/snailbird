@@ -1,32 +1,24 @@
-﻿using Core;
-
-namespace SnailbirdData.Models.Post
+﻿namespace SnailbirdData.Models.Post
 {
-    public abstract class FlexPost : Post
+    public abstract class FlexPost<TPost> : Post<TPost>
+    where TPost : Post<TPost>
     {
-        public IEnumerable<PostElement> Elements { get; set; }
+        public IEnumerable<FlexElement> Elements { get; set; }
 
         public FlexPost()
         { 
-            Elements = new List<PostElement>();
+            Elements = new List<FlexElement>();
         }
 
-        public FlexPost(long ID, string title, DateTime date, IEnumerable<PostElement> elements)
+        public override bool Equals(object? obj)
         {
-            this.ID = ID;
-            Title = title;
-            PostDate = date;
-            Elements = Order(elements);
+            var other = obj as FlexPost<TPost>;
+            return base.Equals(other) && Elements.SequenceEqual(other.Elements);
         }
 
-        private static IEnumerable<PostElement> Order(IEnumerable<PostElement> elements) 
+        public override int GetHashCode()
         {
-            foreach (var element in elements.ZipCounted()) 
-            {
-                element.Entity.Ordinal = element.Ordinal;
-            }
-
-            return elements;
+            return Elements.Aggregate(base.GetHashCode(), (sofar, next) => sofar ^ next.GetHashCode());
         }
     }
 }

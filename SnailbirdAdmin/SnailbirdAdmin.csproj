@@ -4,18 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>bf3fe2b0-a8d6-424f-8ee0-2f2c6e0798fd</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="ViewModels\EditPostViewModel.cs" />
-    <Compile Remove="Views\FlexPostManager.cs" />
-    <Compile Remove="Views\OLDLiveJamPostManager.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Components\Pages\Posts.razor" />
-    <Content Remove="Views\OLDPostManager.razor" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include=".secrets\connections.json" />
@@ -25,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RazorCore\RazorCore.csproj" />
     <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
-    <ProjectReference Include="C:\lib\snailbird-web\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="C:\lib\DataBlocks\DataBlocks.csproj" />
   </ItemGroup>
 
 

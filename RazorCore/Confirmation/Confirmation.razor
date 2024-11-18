@@ -1,0 +1,56 @@
+@using NetBlocks.Models
+
+@if (ViewModel?.PromptMessage != null)
+{
+    var showClass = IsVisible ? "show" : string.Empty;
+
+    <!-- Modal backdrop -->
+    <div class="modal-backdrop @showClass" id="modalBackdrop"></div>
+
+    <!-- Modal why is this invisible?  dimensions are zero? -->
+    <div class="modal-dialog  @showClass">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>@ViewModel.PromptMessage.HeaderText</strong>
+            </div>
+            <div class="modal-body">
+                <p>@ViewModel.PromptMessage.BodyText</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" @onclick="Confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public required ConfirmViewModel ViewModel { get; set; }
+
+    public void Open()
+    {
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    private void Confirm()
+    {
+        Close(ConfirmEventArgs.Confirm);
+    }
+
+    private void Cancel()
+    {
+        Close(ConfirmEventArgs.Deny);
+    }
+
+    private void Close(ConfirmEventArgs args)
+    {
+        IsVisible = false;
+        StateHasChanged();
+        ViewModel.OnClose?.Invoke(args);
+    }
+}

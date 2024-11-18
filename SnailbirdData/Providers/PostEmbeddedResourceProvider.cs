@@ -1,16 +1,17 @@
 ﻿using System.Reflection;
 using System.Text.RegularExpressions;
+using NetBlocks.Utilities;
 using Newtonsoft.Json;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdData.Providers
 {
     public class PostEmbeddedResourceProvider<TPost> : IPostProvider<TPost>
-        where TPost : Post
+        where TPost : Post<TPost>
     {
         public TPost GetPost(int id)
         {
-            string json = Core.FileLoader.LoadResourceFileAsString(Assembly.GetExecutingAssembly(), 
+            string json = FileLoader.LoadResourceFileAsString(Assembly.GetExecutingAssembly(), 
                                                                    $"SnailbirdData.Data.Posts.post{id}.json");
             
             TPost? obj = JsonConvert.DeserializeObject<TPost>(json);

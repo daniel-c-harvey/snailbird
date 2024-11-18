@@ -1,9 +1,9 @@
-﻿@using SnailbirdData.DataAdapters;
+﻿@using DataAccess;
 @using SnailbirdAdmin.ViewModels;
 @using SnailbirdData.Models.Post;
 @using RazorCore;
 
-@typeparam TPost where TPost : Post, new()
+@typeparam TPost where TPost : Post<TPost>, new()
 @typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
 
 @if (ViewModel?.Post == null)
@@ -26,7 +26,7 @@ else
     <hr />
     <div>
         <button type="button" class="btn btn-primary" @onclick="@(e => ViewModel.CommitPost())">
-            <span class="bi bi-floppy"></span>
+            Save <span class="bi bi-floppy"></span>
         </button>
     </div>
 </div>

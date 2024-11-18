@@ -1,19 +1,21 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DataAccess;
+using RazorCore.Navigation;
 using SnailbirdAdmin.Messages;
 using SnailbirdAdmin.Models;
 using SnailbirdData.Models.Post;
-using SnailbirdData.DataAdapters;
 
 namespace SnailbirdAdmin.Updates
 {
     public class PostManagerUpdate<TPost>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
     {
         private IDataAdapter<TPost> PostAdapter { get; }
+        private INavigator<PostManagerMode> Navigator { get; }
 
-        public PostManagerUpdate(IDataAdapter<TPost> postAdapter)
+        public PostManagerUpdate(IDataAdapter<TPost> postAdapter, INavigator<PostManagerMode> navigator)
         {
             PostAdapter = postAdapter;
+            Navigator = navigator;
         }
 
         public PostManagerModel<TPost> Update(PostManagerModel<TPost> model,
@@ -55,16 +57,43 @@ namespace SnailbirdAdmin.Updates
         private void AddPost(PostManagerModel<TPost> model,
                              PostManagerAddMessage<TPost> message)
         {
-            model.Post = message.NewPost;
+            // update model with new post
+            model.Post = message.Post;
             model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
-            model.CurrentMode = PostManagerMode.Add;
+
+            // set the Save action if there is a dirty nav
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
+                () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
+                () => ResetPost(model);
+
+            // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
+            Navigator.NavigateForward(PostManagerMode.Add)
+                     .ConfirmBeforeNavigateAway(message.ConfirmationModel, 
+                                                (_, args) => args.IsConfirmed = model.IsPostModified);
+        }
+
+        private void ResetPost(PostManagerModel<TPost> model)
+        {
+            model.Post = model.OriginalPost;
         }
 
         private void EditPost(PostManagerModel<TPost> model,
                               PostManagerEditMessage<TPost> message)
         {
-            model.Post = message.Post;
-            model.CurrentMode = PostManagerMode.Edit;
+            // update the post to be edited
+            model.Post = message.Post.Clone();
+
+            // set the Save action if there is a navigation away from this edit
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] = 
+                () => Update(model, new PostManagerSaveExistingMessage<TPost>(model.Post));
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
+                () => ResetPost(model);
+
+            // navigate to the Edit page and assign the dirty away-navigation prompt
+            Navigator.NavigateForward(PostManagerMode.Edit)
+                     .ConfirmBeforeNavigateAway(message.ConfirmationModel,
+                                                (_, args) => args.IsConfirmed = model.IsPostModified);
         }
 
         private void DeletePost(PostManagerModel<TPost> model,
@@ -82,8 +111,9 @@ namespace SnailbirdAdmin.Updates
             if (PostAdapter is not null)
             {
                 PostAdapter.Insert(message.Post);
+                model.Post = message.Post;
+                Navigator.NavigateBack();
             }
-            model.CurrentMode = PostManagerMode.View;
         }
 
         private void SavePost(PostManagerModel<TPost> model,
@@ -92,8 +122,9 @@ namespace SnailbirdAdmin.Updates
             if (PostAdapter is not null)
             {
                 PostAdapter.Update(message.Post);
+                model.Post = message.Post;
+                Navigator.NavigateBack();
             }
-            model.CurrentMode = PostManagerMode.View;
         }
 
         private void GetPosts(PostManagerModel<TPost> model,
@@ -105,6 +136,7 @@ namespace SnailbirdAdmin.Updates
                 if (results.Success)
                 {
                     model.Posts = results.Value;
+                    Navigator.NavigateForward(PostManagerMode.View);
                 }
             }
         }

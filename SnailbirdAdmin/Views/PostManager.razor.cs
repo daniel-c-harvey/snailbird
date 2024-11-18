@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SnailbirdAdmin.ViewModels;
-using SnailbirdAdmin.Views;
-using SnailbirdData.DataAdapters;
+using DataAccess;
 using SnailbirdData.Models.Post;
-using System.Diagnostics.Contracts;
+using SnailbirdAdmin.ViewModels;
 
 namespace SnailbirdAdmin.Views
 {
     public partial class PostManager<TPost, TEdit>
-        where TPost : Post, new()
+        where TPost : Post<TPost>, new()
         where TEdit : EditPostViewModelBase<TPost, TEdit>
     {
         [Inject]

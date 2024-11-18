@@ -7,15 +7,4 @@
 
 <PageTitle>Live Jam Posts</PageTitle>
 
-<NavPanel TMode="PostManagerMode" GetContext="GetPostManager">
-    <LiveJamPostManager @ref="postManager" />
-</NavPanel>
-
-@code {
-    private LiveJamPostManager postManager = default!;
-
-    private INavigable<PostManagerMode> GetPostManager()
-    {
-        return postManager.ViewModel;
-    }
-}
+<LiveJamPostManager />

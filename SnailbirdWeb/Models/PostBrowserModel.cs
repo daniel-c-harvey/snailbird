@@ -1,17 +1,20 @@
-﻿using Core;
+﻿using NetBlocks.Models;
+using NetBlocks.Utilities;
 using RazorCore.Navigation;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdWeb.Models
 {
-    public enum PostBrowserMode
+    public class PostBrowserMode : Enumeration<PostBrowserMode>
     {
-        Feed,
-        ViewPost
+        public static PostBrowserMode Feed = new(1, nameof(Feed));
+        public static PostBrowserMode ViewPost = new(2, nameof(ViewPost));
+
+        public PostBrowserMode(int id, string name) : base(id, name) { }
     }
 
     public class PostBrowserFeedModel<TPostModel>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         public Page Page { get; set; }
         public IEnumerable<TPostModel> Posts { get; set; }
@@ -24,7 +27,7 @@ namespace SnailbirdWeb.Models
     }
 
     public class PostBrowserViewPostModel<TPostModel>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         public TPostModel Post { get; set; }
 
@@ -35,16 +38,15 @@ namespace SnailbirdWeb.Models
     }
 
     public class PostBrowserModel<TPostModel> : IMode<PostBrowserMode>
-    where TPostModel : Post, new()
+    where TPostModel : Post<TPostModel>, new()
     {
         public PostBrowserMode CurrentMode { get; set; }
         
         public PostBrowserViewPostModel<TPostModel> SelectedPostModel { get; set; }
         public PostBrowserFeedModel<TPostModel> FeedModel { get; set; }
         
-        public PostBrowserModel(PostBrowserMode currentMode)
+        public PostBrowserModel()
         {
-            CurrentMode = currentMode;
             SelectedPostModel = new PostBrowserViewPostModel<TPostModel>(new TPostModel());
             FeedModel = new(new Page(0, 0), new List<TPostModel>());
         }

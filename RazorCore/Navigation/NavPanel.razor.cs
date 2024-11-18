@@ -7,55 +7,33 @@ namespace RazorCore.Navigation
     public partial class NavPanel<TMode>
     {
         [Parameter]
-        public RenderFragment? ChildContent { get; set; }
+        public RenderFragment<INavigable<TMode>>? ChildContent { get; set; }
+
         [Parameter]
-        public Func<INavigable<TMode>>? GetContext { get; set; }
+        public required INavigable<TMode> ViewModel { get; set; }
 
-        private INavigable<TMode>? Context;
-        protected Stack<TMode> modeHistory = new Stack<TMode>();
+        private Confirmation.Prompt confirmation;
 
-        private string backButtonClass = "btn btn-outline-secondary";
-
-        protected override void OnInitialized()
+        protected override void OnParametersSet()
         {
-            base.OnInitialized();
             InitNavigation();
-            InitStyles();
-        }
-
-        private void InitStyles()
-        {
-            SetBackButtonClass();
-        }
-
-        protected override void OnAfterRender(bool firstRender)
-        {
-            base.OnAfterRender(firstRender);
-            if (firstRender)
-            {
-                if (GetContext is null) throw new ArgumentNullException(nameof(GetContext));
-
-                Context = GetContext();
-
-                if (Context is null) throw new ArgumentNullException(nameof(Context));
-
-                Context.Navigator.ModeAdvancing += OnModeChange;
-            }
+            ViewModel.Navigator.ModeChanged += OnModeChange;
+            ViewModel.Navigator.ConfirmPrompt += OpenConfirmation;
+            base.OnParametersSet();
         }
 
         protected void OnModeChange(ModeChangeEventArgs<TMode> args)
         {
-            modeHistory.Push(args.oldMode);
-            SetBackButtonClass();
+            StateHasChanged();
         }
 
         protected void OnNavigateBack(MouseEventArgs e)
         {
-            TMode? newMode;
-            if (Context is not null && modeHistory.TryPop(out newMode))
+            
+            if (ViewModel != null)
             {
-                Context.Navigator.OnBack(newMode);
-                SetBackButtonClass();
+                ViewModel.Navigator.NavigateBack();
+                StateHasChanged();
             }
         }
 
@@ -69,6 +47,13 @@ namespace RazorCore.Navigation
             }
         }
 
+        private void OpenConfirmation(object? sender, EventArgs e)
+        {
+            if (confirmation != null)
+            {
+                confirmation.Open();
+            }
+        }
 
         protected void HandleLocationChange(object? sender, LocationChangedEventArgs e)
         {
@@ -77,16 +62,6 @@ namespace RazorCore.Navigation
                 // todo interrupt naviagting away from a dirty page
                 //StateHasChanged();
             }
-        }
-
-        // todo DON'T USE CLASSES LIKE THIS
-        protected void SetBackButtonClass()
-        {
-            if(modeHistory.Any())
-                backButtonClass = "btn btn-outline-primary";
-            else
-                backButtonClass = "btn btn-outline-secondary";
-            StateHasChanged();
         }
     }
 }

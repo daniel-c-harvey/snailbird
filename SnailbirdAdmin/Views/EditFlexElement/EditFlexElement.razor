@@ -1,0 +1,105 @@
+﻿@using NetBlocks.Models;
+@using RazorCore;
+@using RazorCore.Confirmation;
+@using SnailbirdAdmin.ViewModels;
+@using SnailbirdData.Models.Post;
+
+@if (ViewModel != null)
+{   
+    <!-- Popup Section -->
+    @if (ViewModel.ConfirmationViewModel != null)
+    {
+        <Confirmation @ref="changeConfirmation" ViewModel="@ViewModel.ConfirmationViewModel"/>
+    }
+
+    <!-- Element Section -->
+    @if (ViewModel.Element != null)
+    {   
+        <div class="sb-flex-element">
+        
+            <!-- Flex Element Header -->
+            <div class="sb-flex-order">
+                <div class="sb-flex-order-buttons">
+                    <div class="top bi bi-chevron-compact-up" @onclick="@ViewModel.RaiseAscend" />
+                    <div class="bottom bi bi-chevron-compact-down" @onclick="@ViewModel.RaiseDescend" />
+                </div>
+                <select @bind="@ViewModel.SelectedElementName">
+                    @foreach (FlexElement prototype in EditFlexElementViewModel.Prototypes)
+                    {
+                        <option value="@prototype.TypeCaption">@prototype.TypeCaption</option>
+                    }
+                </select>
+                <button type="button" class="btn btn-danger btn-sm" @onclick="@ViewModel.RaiseDeleteClicked">
+                    <span class="bi bi-trash"></span>
+                </button>
+            </div>
+
+            <hr />
+
+            <div class="sb-flex-content">
+                @if (ViewModel.Element is FlexParagraph paragraph)
+                {
+                    <MarkupTextArea Text="@paragraph.Text" PreviewMarkup="true" />
+                } else if (ViewModel.Element is FlexImage image)
+                {
+                    <div>
+                        <img src="@image.ImageURI" alt="@image.AltText" />
+                        <input class="form-control" type="url" @bind="@image.ImageURI" />
+                        <input class="form-control" type="url" @bind="@image.AltText" />
+                        <button type="button" class="btn btn-primary">
+                            <span class="bi bi-folder2"></span>
+                        </button>
+                    </div>
+                } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
+                {
+                    <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />
+                } else if (ViewModel.Element is FlexInstrumentList instrumentList)
+                {
+                    <NewRowTable TModel="Instrument"
+                                 models="instrumentList.Instruments"
+                                 columnMap="InstrumentColumns"
+                                 OnAdd="i => instrumentList.Instruments.Add(i)"
+                                 OnDelete="i => instrumentList.Instruments.Remove(i)" />
+                }
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public EditFlexElementViewModel? ViewModel { get; set; }
+
+    private static IColumnMap<Instrument> InstrumentColumns = new ColumnMap<Instrument>()
+            .AddColumn("Name",
+                new ModelColumn<Instrument>(
+                    inst => inst.Name,
+                    (inst, name) => inst.Name = name)
+                .MakeEditable())
+            .AddColumn("Description",
+                new ModelColumn<Instrument>(
+                    inst => inst.Description,
+                    (inst, desc) => inst.Description = desc)
+                .MakeEditable());
+
+    private Confirmation changeConfirmation = default!;
+
+    protected override void OnInitialized()
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.ConfirmElementChange += ConfirmChange;
+            ViewModel.ElementChanged += ElementChanged;
+        }
+    }
+
+    private void ConfirmChange(object sender, ConfirmEventArgs args)
+    {
+        changeConfirmation.Open();
+    }
+
+    private void ElementChanged(object? sender, EventArgs args)
+    {
+        StateHasChanged();
+    }
+}

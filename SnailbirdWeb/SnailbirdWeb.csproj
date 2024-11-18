@@ -4,19 +4,26 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>bf3fe2b0-a8d6-424f-8ee0-2f2c6e0798fd</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="secrets.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <_WebToolingArtifacts Remove="properties\publishprofiles\dch5-deploy.sh" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include=".secrets\connections.json" />
-  </ItemGroup>
 
   <ItemGroup>
+    <None Include="secrets.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Update="dch5-deploy.sh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
