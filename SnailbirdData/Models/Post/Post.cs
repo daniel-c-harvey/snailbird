@@ -1,5 +1,5 @@
 ﻿using DataAccess;
-using NetBlocks;
+using NetBlocks.Interfaces;
 
 namespace SnailbirdData.Models.Post
 {

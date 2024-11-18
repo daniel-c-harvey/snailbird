@@ -1,6 +1,5 @@
-﻿using Core;
-using NetBlocks;
-using static NetBlocks.Event;
+﻿using NetBlocks.Utilities;
+using static NetBlocks.Models.Event;
 
 namespace RazorCore.Confirmation
 {

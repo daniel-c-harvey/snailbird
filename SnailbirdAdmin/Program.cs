@@ -4,6 +4,7 @@ using SnailbirdData.Models.Post;
 using SnailbirdData.Models.Entities;
 using SnailbirdData.Providers;
 using MongoDB.Driver;
+using NetBlocks.Models;
 
 namespace SnailbirdAdmin
 {
@@ -44,7 +45,7 @@ namespace SnailbirdAdmin
         {
             var dataAccess = new MongoDataAccess
             (
-                Core.ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird-admin").ConnectionString,
+                ConnectionStringTools.LoadFromFile("./.secrets/connections.json", "mongodb-snailbird-admin").ConnectionString,
                 "snailbird-dev"
             );
 

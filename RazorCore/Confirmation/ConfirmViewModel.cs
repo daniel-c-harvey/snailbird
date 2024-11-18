@@ -1,5 +1,5 @@
-﻿using Core;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using NetBlocks.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

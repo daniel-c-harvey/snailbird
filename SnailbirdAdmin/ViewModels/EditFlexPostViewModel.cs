@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using NetBlocks.Utilities;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdmin.ViewModels

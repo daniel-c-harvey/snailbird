@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RazorCore.Confirmation;
 using System.Reflection;
+using NetBlocks.Models;
 
 namespace RazorCore.Navigation
 {
