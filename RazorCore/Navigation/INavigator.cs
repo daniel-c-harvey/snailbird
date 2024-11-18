@@ -1,5 +1,5 @@
-﻿using Core;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using NetBlocks.Models;
 using RazorCore.Confirmation;
 
 namespace RazorCore.Navigation

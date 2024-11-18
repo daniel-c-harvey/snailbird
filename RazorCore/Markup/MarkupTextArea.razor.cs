@@ -1,6 +1,5 @@
-﻿using Core;
-using Microsoft.AspNetCore.Components;
-using NetBlocks;
+﻿using Microsoft.AspNetCore.Components;
+using NetBlocks.Utilities;
 using System.Text;
 
 namespace RazorCore.Markup

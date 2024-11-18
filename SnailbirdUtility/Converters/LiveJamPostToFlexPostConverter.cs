@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using MongoDB.Driver;
+using NetBlocks.Models;
 using SnailbirdData.Adapters;
 using SnailbirdData.Models.Entities;
 using SnailbirdData.Models.Post;
@@ -12,7 +13,7 @@ namespace SnailbirdUtility.Converters
         {
             var dataAccess = new MongoDataAccess
             (
-                Core.ConnectionStringTools.LoadFromFile("../../../.secrets/connections.json", "mongodb-snailbird-admin").ConnectionString,
+                ConnectionStringTools.LoadFromFile("../../../.secrets/connections.json", "mongodb-snailbird-admin").ConnectionString,
                 databaseName
             );
 

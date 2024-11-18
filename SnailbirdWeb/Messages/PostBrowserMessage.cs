@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using NetBlocks.Models;
 using SnailbirdAdmin.Messages;
 using SnailbirdData.Models.Post;
 

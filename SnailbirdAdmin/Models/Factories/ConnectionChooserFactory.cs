@@ -1,5 +1,5 @@
-﻿using Core;
-using DataAccess;
+﻿using DataAccess;
+using NetBlocks.Models;
 
 namespace SnailbirdAdmin
 {

@@ -1,5 +1,5 @@
-﻿using Core;
-using NetBlocks;
+﻿using NetBlocks.Models;
+using NetBlocks.Utilities;
 using RazorCore.Confirmation;
 using SnailbirdData.Models.Post;
 
