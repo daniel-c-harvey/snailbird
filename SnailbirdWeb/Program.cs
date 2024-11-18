@@ -1,24 +1,44 @@
 using Microsoft.AspNetCore.HttpOverrides;
-using SnailbirdData.Providers;
 using SnailbirdWeb.Components;
 using DataAccess;
 using MongoDB.Driver;
-using DataAccess;
 using SnailbirdData.Models.Post;
-using Microsoft.Extensions.DependencyInjection;
 using SnailbirdData.Models.Entities;
+using SnailbirdWeb.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
-(
-    new MongoDataAccess(
-            builder.Configuration[$"Connections:{builder.Configuration["ActiveConnection"]}:ConnectionString"],
-            builder.Configuration[$"Connections:{builder.Configuration["ActiveConnection"]}:Name"]
-        ),
-    new MongoQueryBuilder()
-);
+builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
+ConnectionSecrets? connectionSecrets = builder.Configuration.Get<ConnectionSecrets>();
 
+if (connectionSecrets == null)
+{
+    Console.WriteLine("Unable to load connection secrets");
+    return;
+}
+
+Connection? connection = connectionSecrets.Connections?.FirstOrDefault(c => c.Name.Equals(connectionSecrets.ActiveConnection, StringComparison.OrdinalIgnoreCase));
+
+if (connection == null)
+{
+    Console.WriteLine("Active connection does not point to a valid connection string");
+    return;
+}
+
+DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder> dataResources;
+try
+{ 
+    dataResources = new DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>
+    (
+        new MongoDataAccess(connection.ConnectionString, connection.Name),
+        new MongoQueryBuilder()
+    );
+}
+catch (Exception e)
+{
+    Console.WriteLine($"Error encountered while initializing database connection:\r\n{e.Message}");
+    return;
+}
 
 MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
 MongoAdapter<StudioFeedFlexPost> studioFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
