@@ -11,11 +11,9 @@ namespace SnailbirdMedia.Clients
         public VaultManagerClient(VaultClientConfig config)
         : base(config) { }
 
-        public async Task<SnailbirdImage> UploadImage()
+        public async Task UploadImage()
         {
 
-
-            return new SnailbirdImage(string.Empty, 0);
         }
 
         public async Task<MediaBinary?> GetMedia(string entryKey)
