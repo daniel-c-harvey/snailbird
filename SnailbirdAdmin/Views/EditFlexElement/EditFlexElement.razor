@@ -1,8 +1,10 @@
 ﻿@using NetBlocks.Models;
 @using RazorCore;
 @using RazorCore.Confirmation;
+@using RazorCore.Markup;
 @using SnailbirdAdmin.ViewModels;
 @using SnailbirdData.Models.Post;
+@using SnailbirdMedia; 
 
 @if (ViewModel != null)
 {   
@@ -36,6 +38,7 @@
 
             <hr />
 
+            <!-- Flex Element Content -->
             <div class="sb-flex-content">
                 @if (ViewModel.Element is FlexParagraph paragraph)
                 {
@@ -46,9 +49,9 @@
                         <img src="@image.ImageURI" alt="@image.AltText" />
                         <input class="form-control" type="url" @bind="@image.ImageURI" />
                         <input class="form-control" type="url" @bind="@image.AltText" />
-                        <button type="button" class="btn btn-primary">
-                            <span class="bi bi-folder2"></span>
-                        </button>
+                        <InputFile OnChange="x">
+                            <span class="bg-info bi-folder-2" />
+                        </InputFile>
                     </div>
                 } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
                 {
@@ -102,4 +105,12 @@
     {
         StateHasChanged();
     }
+
+    private async void x(InputFileChangeEventArgs e)
+    {
+        // var x = e.File;
+        // var z = new SnailbirdMediaClient();
+        // var y = await z.GetImage();
+    }
+
 }

@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RazorCore\RazorCore.csproj" />
     <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
+    <ProjectReference Include="..\SnailbirdMedia\SnailbirdMedia.csproj" />
     <ProjectReference Include="C:\lib\DataBlocks\DataBlocks.csproj" />
   </ItemGroup>
 
