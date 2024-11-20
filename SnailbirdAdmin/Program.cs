@@ -18,7 +18,10 @@ namespace SnailbirdAdmin
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            AddGlobalServices(builder);
+            if (!AddGlobalServices(builder))
+            {
+                return; // Abort
+            }
 
             var app = builder.Build();
 
@@ -91,11 +94,12 @@ namespace SnailbirdAdmin
             }
 
             builder.Services
-            .AddSingleton<IDataAccess<IMongoDatabase>,MongoDataAccess>(_ => dataResources.DataAccess)
+            .AddSingleton<IDataAccess<IMongoDatabase>, MongoDataAccess>(_ => dataResources.DataAccess)
             .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>(_ => liveJamPostAdapter)
             .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>(_ => studioFeedFlexPostAdapter)
             .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>(_ => labFeedFlexPostAdapter)
-            .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>(provider => new LiveJamPostMongoProvider(liveJamPostAdapter));
+            .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>(provider => new LiveJamPostMongoProvider(liveJamPostAdapter))
+            .AddSingleton<IEndpoints, Endpoints>(_ => endpoints);
 
             return true;
 
