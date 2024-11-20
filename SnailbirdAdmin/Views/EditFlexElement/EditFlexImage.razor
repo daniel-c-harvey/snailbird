@@ -1,0 +1,45 @@
+﻿@using NetBlocks.Models.Environment
+@using SnailbirdData.Models.Post
+@using SnailbirdMedia
+<div>
+    <div class="image-preview-container">
+        <img class="image-preview"
+             src="@mediaTools.MediaURL(Image.ImageURI)" 
+             alt="@Image.AltText" />
+    </div>
+    <div class="image-details">
+        <div class="image-text">
+            <input class="form-control" 
+                   type="url" 
+                   @bind="@Image.ImageURI" />
+
+            <input class="form-control" 
+                   type="url" 
+                   @bind="@Image.AltText" />
+        </div>
+        <InputFile OnChange="OnImageFileChanged">
+            <span class="bg-info bi-folder-2" />
+        </InputFile>
+    </div>
+</div>
+
+@code 
+{
+    [Inject]
+    public Endpoints Endpoints { get; set; } = default!; // todo I may need this to GET the image binary to display.
+    [Parameter]
+    public FlexImage Image { get; set; } = default!;
+
+    private MediaVaultStuff mediaTools = default!;
+
+    protected override void OnInitialized()
+    {
+        mediaTools = new(Endpoints.MediaApiUrl, "img");
+        base.OnInitialized();
+    }
+
+    private async void OnImageFileChanged(InputFileChangeEventArgs e)
+    {
+        // serialize the image to display before committing.
+    }
+}

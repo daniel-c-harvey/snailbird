@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnailbirdMedia
+namespace SnailbirdMedia.Models
 {
     public class SnailbirdImage
     {
@@ -12,7 +12,7 @@ namespace SnailbirdMedia
         public string Extension { get; }
         public int Size { get; }
 
-        public SnailbirdImage(string ext, int size) 
+        public SnailbirdImage(string ext, int size)
         {
             ImageBinary = new MemoryStream();
             Extension = ext;

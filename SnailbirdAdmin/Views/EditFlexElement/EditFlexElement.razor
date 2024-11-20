@@ -1,4 +1,5 @@
 ﻿@using NetBlocks.Models;
+@using NetBlocks.Models.Environment
 @using RazorCore;
 @using RazorCore.Confirmation;
 @using RazorCore.Markup;
@@ -42,17 +43,10 @@
             <div class="sb-flex-content">
                 @if (ViewModel.Element is FlexParagraph paragraph)
                 {
-                    <MarkupTextArea Text="@paragraph.Text" PreviewMarkup="true" />
+                    <EditFlexParagraph Text="@paragraph.Text" />
                 } else if (ViewModel.Element is FlexImage image)
                 {
-                    <div>
-                        <img src="@image.ImageURI" alt="@image.AltText" />
-                        <input class="form-control" type="url" @bind="@image.ImageURI" />
-                        <input class="form-control" type="url" @bind="@image.AltText" />
-                        <InputFile OnChange="x">
-                            <span class="bg-info bi-folder-2" />
-                        </InputFile>
-                    </div>
+                    <EditFlexImage Image="@image" />
                 } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
                 {
                     <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />
@@ -69,7 +63,8 @@
     }
 }
 
-@code {
+@code 
+{
     [Parameter]
     public EditFlexElementViewModel? ViewModel { get; set; }
 
@@ -105,12 +100,4 @@
     {
         StateHasChanged();
     }
-
-    private async void x(InputFileChangeEventArgs e)
-    {
-        // var x = e.File;
-        // var z = new SnailbirdMediaClient();
-        // var y = await z.GetImage();
-    }
-
 }
