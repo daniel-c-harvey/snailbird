@@ -1,23 +1,28 @@
 ﻿@using NetBlocks.Models.Environment
 @using SnailbirdData.Models.Post
-@using SnailbirdMedia
+@using SnailbirdMedia.Clients
+@using SnailbirdMedia.Configs
+@using SnailbirdMedia.Models
+
 <div>
     <div class="image-preview-container">
         <img class="image-preview"
-             src="@mediaTools.MediaURL(Image.ImageURI)" 
-             alt="@Image.AltText" />
+             src="@vault.DataURL(Image)"
+             alt="@FlexImage.AltText" />
     </div>
     <div class="image-details">
         <div class="image-text">
+            Image URI
             <input class="form-control" 
-                   type="url" 
-                   @bind="@Image.ImageURI" />
-
+                   type="text" 
+                   @bind:get="@FlexImage.ImageURI"
+                   @bind:set="SetImageURI" />
+            Alt Text
             <input class="form-control" 
-                   type="url" 
-                   @bind="@Image.AltText" />
+                   type="text" 
+                   @bind="@FlexImage.AltText" />
         </div>
-        <InputFile OnChange="OnImageFileChanged">
+        <InputFile OnChange="OnImageFileChanged" >
             <span class="bg-info bi-folder-2" />
         </InputFile>
     </div>
@@ -26,20 +31,35 @@
 @code 
 {
     [Inject]
-    public Endpoints Endpoints { get; set; } = default!; // todo I may need this to GET the image binary to display.
+    public IEndpoints Endpoints { get; set; } = default!;
     [Parameter]
-    public FlexImage Image { get; set; } = default!;
+    public FlexImage FlexImage { get; set; } = default!;
+    protected MediaBinary? Image { get; set; }
 
-    private MediaVaultStuff mediaTools = default!;
+    private VaultManagerClient vault = default!;
 
-    protected override void OnInitialized()
+    protected async override void OnInitialized()
     {
-        mediaTools = new(Endpoints.MediaApiUrl, "img");
+        vault = new(new VaultClientConfig(Endpoints.MediaApiUrl, Endpoints.MediaApiKey, "img"));
+        await OnImageURIChanged();
         base.OnInitialized();
     }
 
     private async void OnImageFileChanged(InputFileChangeEventArgs e)
     {
         // serialize the image to display before committing.
+    }
+
+    private async Task SetImageURI(string value)
+    {
+        FlexImage.ImageURI = value;
+        await OnImageURIChanged();
+    }
+
+    private async Task OnImageURIChanged()
+    {
+        if (!string.IsNullOrWhiteSpace(FlexImage.ImageURI)) {
+            Image = await vault.GetMedia(FlexImage.ImageURI);
+        }
     }
 }

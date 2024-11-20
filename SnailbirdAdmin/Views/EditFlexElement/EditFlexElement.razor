@@ -46,7 +46,7 @@
                     <EditFlexParagraph Text="@paragraph.Text" />
                 } else if (ViewModel.Element is FlexImage image)
                 {
-                    <EditFlexImage Image="@image" />
+                    <EditFlexImage FlexImage="@image" />
                 } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
                 {
                     <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />

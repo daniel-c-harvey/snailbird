@@ -8,13 +8,17 @@ namespace SnailbirdMedia.Configs
 {
     public class ClientConfig
     {
-        public string BaseURL { get; }
-        public int Port { get; }
+        public string URL { get; }
 
         public ClientConfig(string baseURL, int port)
         {
-            BaseURL = baseURL;
-            Port = port;
+            URL = $"{baseURL}:{port}";
         }
+
+        public ClientConfig(string url)
+        {
+            URL = url;
+        }
+
     }
 }

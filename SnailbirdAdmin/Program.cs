@@ -84,7 +84,7 @@ namespace SnailbirdAdmin
             MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
             MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("labFeedFlexPost"));
 
-            builder.Configuration.AddJsonFile("environment/endpoints.json");
+            builder.Configuration.AddJsonFile("environment/endpoints.json", optional: false);
             Endpoints? endpoints = builder.Configuration.Get<Endpoints>();
 
             if (endpoints == null)
