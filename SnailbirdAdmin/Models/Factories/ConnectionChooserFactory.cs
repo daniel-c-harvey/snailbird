@@ -1,5 +1,5 @@
 ﻿using DataAccess;
-using NetBlocks.Models;
+using NetBlocks.Models.Environment;
 
 namespace SnailbirdAdmin
 {
@@ -7,7 +7,7 @@ namespace SnailbirdAdmin
     {
         public static ConnectionChooserModel BuildConnectionChooserModel<TDatabase>(IDataAccess<TDatabase> dataAccess)
         {
-            Connections? connections = ConnectionStringTools.LoadFromFile("./.secrets/connections.json");
+            Connections? connections = ConnectionStringTools.LoadFromFile("./environment/connections.json");
 
             IEnumerable<string>? names = null;
             var nameFetchResult = dataAccess.GetDatabaseNames();

@@ -1,6 +1,7 @@
 ﻿@using DataAccess;
 @using System.Collections.ObjectModel;
 @using NetBlocks.Models;
+@using NetBlocks.Models.Environment;
 
 @typeparam TDatabase
 @inject IDataAccess<TDatabase> DataAccess
@@ -21,7 +22,7 @@ else
                 <select @bind="ConnectionID" >
                     @foreach(Connection connection in model.Connections)
                     {
-                        <option value="@connection.ID">@connection.Name</option>
+                        <option value="@connection.ID">@connection.ConnectionName</option>
                     }
                 </select>
             </div>

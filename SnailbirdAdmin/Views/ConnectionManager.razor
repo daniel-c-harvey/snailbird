@@ -1,6 +1,7 @@
 @using NetBlocks.Utilities
 @using NetBlocks.Models;
 @using RazorCore;
+@using NetBlocks.Models.Environment;
 
 <NewRowTable 
     TModel="Connection" 
@@ -24,8 +25,8 @@
             .MakeEditable())
         .AddColumn("Name", 
             new ModelColumn<Connection>(
-                (c) => c.Name, 
-                (c, name) => c.Name = name)
+                (c) => c.ConnectionName, 
+                (c, name) => c.ConnectionName = name)
             .MakeEditable())
         .AddColumn("Connection String", 
             new ModelColumn<Connection>(

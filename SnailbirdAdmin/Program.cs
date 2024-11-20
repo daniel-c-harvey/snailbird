@@ -4,7 +4,7 @@ using SnailbirdData.Models.Post;
 using SnailbirdData.Models.Entities;
 using SnailbirdData.Providers;
 using MongoDB.Driver;
-using SnailbirdWeb.Models;
+using NetBlocks.Models.Environment;
 
 namespace SnailbirdAdmin
 {
@@ -41,25 +41,25 @@ namespace SnailbirdAdmin
             app.Run();
         }
 
-        private static void AddGlobalServices(WebApplicationBuilder builder)
+        private static bool AddGlobalServices(WebApplicationBuilder builder)
         {
-            builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
-            ConnectionSecrets? connectionSecrets = builder.Configuration.Get<ConnectionSecrets>();
+            builder.Configuration.AddJsonFile("environment/connections.json", optional: true, reloadOnChange: true);
+            
+            Connections? connectionSecrets = builder.Configuration.Get<Connections>();
 
             if (connectionSecrets == null)
             {
                 Console.WriteLine("Unable to load connection secrets");
-                return;
+                return false;
             }
 
-            Connection? connection = connectionSecrets.Connections?
-                                     .FirstOrDefault(c => c.ConnectionName.Equals(connectionSecrets.ActiveConnectionName,
-                                                                                  StringComparison.OrdinalIgnoreCase));
+            Connection? connection = connectionSecrets.ConnectionStrings
+                                     .FirstOrDefault(c => c.ID == connectionSecrets.ActiveConnectionID);
 
             if (connection == null)
             {
                 Console.WriteLine("Active connection does not point to a valid connection string");
-                return;
+                return false;
             }
 
             DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder> dataResources;
@@ -74,12 +74,21 @@ namespace SnailbirdAdmin
             catch (Exception e)
             {
                 Console.WriteLine($"Error encountered while initializing database connection:\r\n{e.Message}");
-                return;
+                return false;
             }
 
             MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
             MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
             MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("labFeedFlexPost"));
+
+            builder.Configuration.AddJsonFile("environment/endpoints.json");
+            Endpoints? endpoints = builder.Configuration.Get<Endpoints>();
+
+            if (endpoints == null)
+            {
+                Console.WriteLine("Failed to load endpoints configuration");
+                return false;
+            }
 
             builder.Services
             .AddSingleton<IDataAccess<IMongoDatabase>,MongoDataAccess>(_ => dataResources.DataAccess)
@@ -87,6 +96,8 @@ namespace SnailbirdAdmin
             .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>(_ => studioFeedFlexPostAdapter)
             .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>(_ => labFeedFlexPostAdapter)
             .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>(provider => new LiveJamPostMongoProvider(liveJamPostAdapter));
+
+            return true;
 
         }
     }

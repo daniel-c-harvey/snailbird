@@ -400,3 +400,6 @@ FodyWeavers.xsd
 # Deployment Secrets
 .secrets/
 secrets.json
+
+# Deployment Specific configs
+environment/

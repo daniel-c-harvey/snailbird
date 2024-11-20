@@ -7,10 +7,6 @@
     <UserSecretsId>bf3fe2b0-a8d6-424f-8ee0-2f2c6e0798fd</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include=".secrets\connections.json" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <ProjectReference Include="..\RazorCore\RazorCore.csproj" />
