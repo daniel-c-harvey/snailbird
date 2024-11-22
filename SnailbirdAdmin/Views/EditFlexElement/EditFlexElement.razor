@@ -5,7 +5,8 @@
 @using RazorCore.Markup;
 @using SnailbirdAdmin.ViewModels;
 @using SnailbirdData.Models.Post;
-@using SnailbirdMedia; 
+@using SnailbirdMedia;
+@using SnailbirdAdmin.ViewModels.EditFlex.Element;
 
 @if (ViewModel != null)
 {   
@@ -46,7 +47,8 @@
                     <EditFlexParagraph Text="@paragraph.Text" />
                 } else if (ViewModel.Element is FlexImage image)
                 {
-                    <EditFlexImage FlexImage="@image" />
+                    var vm = new EditFlexImageViewModel(Endpoints, image);
+                    <EditFlexImage ViewModel="@vm" />
                 } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
                 {
                     <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />
@@ -65,6 +67,8 @@
 
 @code 
 {
+    [Inject]
+    public IEndpoints Endpoints { get; set; } = default!;
     [Parameter]
     public EditFlexElementViewModel? ViewModel { get; set; }
 

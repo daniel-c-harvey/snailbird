@@ -1,14 +1,15 @@
 ﻿using NetBlocks.Utilities;
+using SnailbirdAdmin.ViewModels.EditFlex.Element;
 using SnailbirdData.Models.Post;
 
-namespace SnailbirdAdmin.ViewModels
+namespace SnailbirdAdmin.ViewModels.EditFlex
 {
     public class EditFlexPostViewModel<TPost> : EditPostViewModelBase<TPost, EditFlexPostViewModel<TPost>>
     where TPost : FlexPost<TPost>, new()
     {
         private List<EditFlexElementViewModel> _elements = new();
         public IList<EditFlexElementViewModel> Elements => _elements;
-        
+
         public event EventHandler? ElementChanged;
 
         public EditFlexPostViewModel(Action<TPost> onCommitPost) : base(onCommitPost) { }
@@ -26,11 +27,11 @@ namespace SnailbirdAdmin.ViewModels
         public override EditFlexPostViewModel<TPost> LoadPost(TPost post)
         {
             base.LoadPost(post);
-            
+
             if (Post != null)
             {
                 _elements = Post.Elements.Select(e => new EditFlexElementViewModel(e)).ToList();
-            
+
                 // Register reordering & delete events
                 Elements.Apply(vm =>
                 {

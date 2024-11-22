@@ -3,7 +3,7 @@ using NetBlocks.Utilities;
 using RazorCore.Confirmation;
 using SnailbirdData.Models.Post;
 
-namespace SnailbirdAdmin.ViewModels
+namespace SnailbirdAdmin.ViewModels.EditFlex.Element
 {
     public class EditFlexElementViewModel
     {
@@ -42,7 +42,7 @@ namespace SnailbirdAdmin.ViewModels
         {
             Ascend?.Invoke(this, EventArgs.Empty);
         }
-        
+
         public void RaiseDescend()
         {
             Descend?.Invoke(this, EventArgs.Empty);

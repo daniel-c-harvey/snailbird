@@ -34,19 +34,5 @@ namespace SnailbirdMedia.Clients
             // guards? GUARDS!!
             return new Uri($"{config.URL}/{config.VaultKey}/{entryKey}").ToString();
         }
-
-        public string DataURL(MediaBinary? media)
-        {
-            string? mime;
-            if (media != null)
-            {
-                MIME.MIME_TYPES.TryGetValue(media.Extension, out mime);
-                if (mime != null)
-                {
-                    return $"data:{mime};base64,{media.Base64}";
-                }
-            }
-            return string.Empty;
-        }
     }
 }
