@@ -52,7 +52,6 @@ namespace SnailbirdAdmin.ViewModels.EditFlex.Element
 
         public async Task OnImageChanged(IBrowserFile file)
         {
-            //ValueTask<int> peanut;
             if (file.Size > MAXIMUM_FILE_SIZE)
             {
                 // notify too large
@@ -65,16 +64,8 @@ namespace SnailbirdAdmin.ViewModels.EditFlex.Element
                 Stream stream = file.OpenReadStream(MAXIMUM_FILE_SIZE);
 
                 int length = (int)stream.Length;
-                //Memory<byte> buffer = new();
-                //CancellationToken token = new();
                 byte[] bytes = new byte[length];
-                //peanut = stream.ReadAsync(buffer, token);
-                //peanut = stream.ReadAsync(bytes);
-                //await peanut;
-
-
-                //await file2.WriteAsync(buffer);
-
+                
 
                 for (int offset = 0; offset < length; offset += CHUNK_SIZE)
                 {
@@ -96,7 +87,7 @@ namespace SnailbirdAdmin.ViewModels.EditFlex.Element
 
                     //Image = new(buffer.ToArray(), stream.Length, extension);
                     Image = new(bytes, stream.Length, extension);
-                    SetDataURL();
+                    SetDataURL(); // LKESS THA N HALF MEG DATA URL EVEYONE CRAZY GOTTA MAKE THE FILE SIZE WORK
                 }
 
                 stream.Close();
