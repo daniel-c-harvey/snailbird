@@ -4,12 +4,13 @@ using DataAccess;
 using MongoDB.Driver;
 using SnailbirdData.Models.Post;
 using SnailbirdData.Models.Entities;
-using SnailbirdWeb.Models;
+using NetBlocks.Models.Environment;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
-ConnectionSecrets? connectionSecrets = builder.Configuration.Get<ConnectionSecrets>();
+Connections? connectionSecrets = builder.Configuration.Get<Connections>();
 
 if (connectionSecrets == null)
 {
@@ -17,9 +18,8 @@ if (connectionSecrets == null)
     return;
 }
 
-Connection? connection = connectionSecrets.Connections?
-                         .FirstOrDefault(c => c.ConnectionName.Equals(connectionSecrets.ActiveConnectionName, 
-                                                                      StringComparison.OrdinalIgnoreCase));
+Connection? connection = connectionSecrets.ConnectionStrings?
+                         .FirstOrDefault(c => c.ID == connectionSecrets.ActiveConnectionID);
 
 if (connection == null)
 {

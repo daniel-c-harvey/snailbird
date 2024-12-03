@@ -1,6 +1,6 @@
-﻿using DataAccess;
+using DataAccess;
 using MongoDB.Driver;
-using NetBlocks.Models;
+using NetBlocks.Models.Environment;
 using SnailbirdData.Adapters;
 using SnailbirdData.Models.Entities;
 using SnailbirdData.Models.Post;

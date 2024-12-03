@@ -1,0 +1,76 @@
+﻿@using NetBlocks.Models.Environment
+@using RazorCore.Confirmation
+@using SnailbirdData.Models.Post
+@using SnailbirdAdmin.ViewModels.EditFlex.Element;
+@using SnailbirdMedia.Clients
+@using SnailbirdMedia.Configs
+@using SnailbirdMedia.Models
+
+<Prompt @ref="prompt" ViewModel="PromptViewModel" />
+
+<div>
+    <div class="image-preview-container">
+        <img class="image-preview"
+             src="@ViewModel.DataURL"
+             alt="@ViewModel.FlexImage.AltText" />
+    </div>
+    <div class="image-details">
+        <div class="image-text">
+            <label>Image URI</label>
+            <input class="form-control image-uri" 
+                   type="text" 
+                   @bind:get="ViewModel.FlexImage.ImageURI"
+                   @bind:set="ViewModel.SetImageURI" />
+            
+            <label>Alt Text</label>
+            <input class="form-control" 
+                   type="text" 
+                   @bind="ViewModel.FlexImage.AltText" />
+        </div>
+        <InputFile class="image-chooser" OnChange="OnImageFileChanged" />
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public required EditFlexImageViewModel ViewModel { get; set; }
+
+    private PromptViewModel PromptViewModel { get; } = new(Choices);
+    private Prompt prompt = default!;
+
+    private static IEnumerable<PromptChoice> Choices = [
+        new PromptChoice(1, "Okay", "btn-primary-outline")
+    ];
+
+    protected override void OnInitialized()
+    {
+        ViewModel.ImageSizeExceeded += OpenPrompt;
+        PromptViewModel.PromptMessage = new("Image Too Large", "The image exceeds the maximum allowed file size");
+        base.OnInitialized();
+    }
+
+    private async void OnImageFileChanged(InputFileChangeEventArgs e)
+    {
+        if (e.FileCount == 1)
+        {
+            try
+            {
+                await ViewModel.OnImageChanged(e.File);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            StateHasChanged();
+        }
+    }
+
+    private void OpenPrompt(object? sender, EventArgs e)
+    {
+        if (prompt != null)
+        {
+            prompt.Open();
+        }
+    }
+}

@@ -1,3 +1,9 @@
-﻿@using RazorCore;
+@using RazorCore.Markup
 
+<MarkupTextArea Text="@Text" PreviewMarkup="true" />
+
+@code {
+    [Parameter]
+    public string Text { get; set; } = default!;
+}
 

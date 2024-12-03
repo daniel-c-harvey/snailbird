@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -8,16 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include=".secrets\connections.json" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <ProjectReference Include="..\RazorCore\RazorCore.csproj" />
     <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
+    <ProjectReference Include="..\SnailbirdMedia\SnailbirdMedia.csproj" />
     <ProjectReference Include="C:\lib\DataBlocks\DataBlocks.csproj" />
   </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Radzen.Blazor" Version="4.29.8" />
