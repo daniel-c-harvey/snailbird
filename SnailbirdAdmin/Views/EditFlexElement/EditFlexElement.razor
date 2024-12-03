@@ -1,4 +1,4 @@
-﻿@using NetBlocks.Models;
+@using NetBlocks.Models;
 @using NetBlocks.Models.Environment
 @using RazorCore;
 @using RazorCore.Confirmation;
@@ -69,6 +69,7 @@
 {
     [Inject]
     public IEndpoints Endpoints { get; set; } = default!;
+
     [Parameter]
     public EditFlexElementViewModel? ViewModel { get; set; }
 

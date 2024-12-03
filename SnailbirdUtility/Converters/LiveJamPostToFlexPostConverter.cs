@@ -1,4 +1,4 @@
-﻿using DataAccess;
+using DataAccess;
 using MongoDB.Driver;
 using NetBlocks.Models.Environment;
 using SnailbirdData.Adapters;

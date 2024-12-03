@@ -102,7 +102,6 @@ namespace SnailbirdAdmin
             .AddSingleton<IEndpoints, Endpoints>(_ => endpoints);
 
             return true;
-
         }
     }
 }
