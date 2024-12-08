@@ -1,4 +1,4 @@
-﻿namespace SnailbirdAdmin.Messages
+﻿namespace RazorCore.Messages
 {
     public abstract class MessageBase<TAction>
     {

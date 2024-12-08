@@ -1,5 +1,5 @@
 ﻿using NetBlocks.Models;
-using SnailbirdAdmin.Messages;
+using RazorCore.Messages;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdWeb.Messages

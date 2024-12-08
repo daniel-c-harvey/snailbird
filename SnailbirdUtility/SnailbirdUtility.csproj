@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RazorCore\RazorCore.csproj" />
-    <ProjectReference Include="..\SnailbirdAdmin\SnailbirdAdmin.csproj" />
+    <ProjectReference Include="..\SnailbirdAdminWeb\SnailbirdAdminWeb\SnailbirdAdminWeb.csproj" />
     <ProjectReference Include="..\SnailbirdData\SnailbirdData.csproj" />
     <ProjectReference Include="..\SnailbirdWeb\SnailbirdWeb.csproj" />
     <ProjectReference Include="C:\lib\DataBlocks\DataBlocks.csproj" />
