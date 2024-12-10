@@ -1,0 +1,56 @@
+@using DataAccess;
+@using SnailbirdAdminWeb.Client.ViewModels;
+@using SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
+@using SnailbirdAdminWeb.Client.Views.EditFlexElement
+@using SnailbirdData.Models.Post;
+@using RazorCore;
+@using SnailbirdAdminWeb.Client.ViewModels.EditFlex;
+
+
+@typeparam TPost where TPost : FlexPost<TPost>, new()
+
+@if (ViewModel != null)
+{
+    <EditPost ViewModel="ViewModel">
+        @foreach (EditFlexElementViewModel element in ViewModel.Elements)
+        {
+            <EditFlexElement ViewModel="@element" />
+            <br />
+        }
+        <div>
+            <button type="button" class="btn btn-primary" @onclick="AddNewElement">
+                <span class="bi bi-plus-circle"></span>
+            </button>
+        </div>
+    </EditPost>
+}
+else
+{
+    <span>Loading...</span>
+}
+@code {
+    [Parameter]
+    public EditFlexPostViewModel<TPost>? ViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.ElementChanged += OnElementChanged;
+        }
+        base.OnInitialized();
+    }
+
+    private void OnElementChanged(object? sender, EventArgs args)
+    {
+        StateHasChanged();
+    }
+
+    private void AddNewElement()
+    {
+        if (ViewModel != null)
+        {
+            ViewModel.AddNewElement(new EditFlexElementViewModel(new FlexParagraph()));
+        }
+    }
+}

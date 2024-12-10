@@ -1,0 +1,127 @@
+@using DataAccess;
+@using NetBlocks.Models;
+@using NetBlocks.Models.Environment;
+@using SnailbirdAdminWeb.Models;
+@using SnailbirdAdminWeb.Models.Factories;
+@using SnailbirdAdminWeb.Messages;
+@using SnailbirdAdminWeb.Updates;
+
+
+@typeparam TDatabase
+@inject IDataAccess<TDatabase> DataAccess
+
+<div class="connection-chooser">
+    @if (model is null)
+    {
+        <span>Loading...</span>
+    }
+    else if(_error != null)
+    {
+        <span class="text-danger">@_error</span>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <label>Connection: </label>
+                </div>
+                <div class="col">
+                    <select @bind="ConnectionID" >
+                        @foreach(Connection connection in model.Connections)
+                        {
+                            <option value="@connection.ID">@connection.ConnectionName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Database: </label>
+                </div>
+                <div class="col">
+                    <select @bind="DatabaseName">
+                        @foreach (string name in model.DatabaseNames)
+                        {
+                            <option value="@name">@name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    public ConnectionChooserModel? model = null;
+    private string? _error = null;
+
+    private long _connectionID = 0;
+    private long ConnectionID 
+    { 
+        get
+        {
+            return _connectionID;
+        }
+        set
+        {
+            if (_connectionID != value)
+            {
+                _connectionID = value;
+                if (model is not null)
+                {
+                    ConnectionChooserUpdate<TDatabase>.Update
+                    (
+                        model, 
+                        new ConnectionChooserChangeConnectionMessage<TDatabase>
+                        (
+                            DataAccess, 
+                            ConnectionID
+                        )
+                    );
+                }
+            }
+        }
+    }
+    private string _databaseName = String.Empty;
+    private string DatabaseName 
+    { 
+        get
+        {
+            return _databaseName;
+        }
+        set
+        {
+            if (_databaseName != value)
+            {
+                _databaseName = value;
+                if (model is not null)
+                {
+                    ConnectionChooserUpdate<TDatabase>.Update
+                    (
+                        model,
+                        new ConnectionChooserChangeDatabaseMessage<TDatabase>
+                        (
+                            DataAccess,
+                            DatabaseName
+                        )
+                    );
+                }
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        try 
+        {
+            model = model ?? ConnectionChooserFactory.BuildConnectionChooserModel(DataAccess);
+
+            ConnectionID = model.Connection?.ID ?? 0;
+            DatabaseName = model.DatabaseName ?? String.Empty;
+        }
+        catch 
+        {
+            _error = $"There was connection error {_error}";
+        }
+        base.OnInitialized();
+    }
+}

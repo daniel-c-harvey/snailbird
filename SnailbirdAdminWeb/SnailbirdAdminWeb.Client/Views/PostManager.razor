@@ -1,0 +1,31 @@
+﻿@using DataAccess;
+@using RazorCore;
+@using RazorCore.Navigation;
+@using SnailbirdData.Models.Post;
+@using SnailbirdAdminWeb.Client.Models;
+@using SnailbirdAdminWeb.Client.ViewModels;
+
+@typeparam TPost where TPost : Post<TPost>, new()
+@typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
+
+@if (ViewModel != null && AddComponent != null && EditComponent != null)
+{
+    <NavPanel TMode="PostManagerMode" ViewModel="@ViewModel">
+        <PostManagerBase TPost="TPost"
+                         TEdit="TEdit"
+                         TView="PostManagerViewModel<TPost>"
+                         ViewModel="ViewModel"
+                         AddComponent="AddComponent"
+                         AddViewModel="AddViewModel"
+                         EditComponent="EditComponent"
+                         EditViewModel="EditViewModel">
+            <ViewComponent Context="viewModel">
+                <NewRowTable TModel="TPost"
+                             models="viewModel.Model.Posts"
+                             columnMap="viewModel.Columns"
+                             OnAdd="viewModel.AddPost"
+                             OnDelete="viewModel.DeletePost" />
+            </ViewComponent>
+        </PostManagerBase>
+    </NavPanel>
+}

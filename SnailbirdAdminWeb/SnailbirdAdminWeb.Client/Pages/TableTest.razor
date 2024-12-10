@@ -1,0 +1,62 @@
+﻿
+@page "/tabletest"
+@using NetBlocks.Utilities
+
+@rendermode InteractiveServer
+@* @attribute [StreamRendering] *@
+
+<PageTitle>Table Test</PageTitle>
+
+<div>
+    <NewRowTable TModel="Cash" models="@coins" columnMap="@coinMap"/>
+</div>
+
+<input type="button" value="test" @onclick="(args) => Test()"/>
+
+@code{
+    private class Cash
+    {
+        public int Dubloons { get; set; }
+        public int Bones { get; set; }
+        public int Clams { get; set; }
+        public string Currency { get; set; } = default!;
+    }
+
+    private IEnumerable<string> currencies = new string[] { "USD", "CAD" };
+    private IEnumerable<Cash> coins = new[] { new Cash { Dubloons = 1, Bones = 2 }, 
+                                              new Cash { Dubloons = 3, Bones = 4 } };
+    private IColumnMap<Cash> coinMap = new ColumnMap<Cash>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        coinMap
+            .AddColumn($"{nameof(Cash.Dubloons)} Caption",
+                new ModelColumn<Cash>(
+                    m => IntConverter.ToString(m.Dubloons),
+                    (m, s) => m.Dubloons = IntConverter.FromString(s))
+                .MakeClickable(m => m.Dubloons++))
+            .AddColumn($"My Fancy {nameof(Cash.Bones)} Caption",
+                new ModelColumn<Cash>(
+                    m => IntConverter.ToString(m.Bones),
+                    (m, s) => m.Bones = IntConverter.FromString(s)))
+            .AddColumn($"Editable {nameof(Cash.Clams)} Caption",
+                new ModelColumn<Cash>(
+                    m => IntConverter.ToString(m.Clams),
+                    (m, s) => m.Clams = IntConverter.FromString(s))
+                .MakeEditable())
+            .AddColumn("Currency",
+                new ModelColumn<Cash>(
+                    model => model.Currency,
+                    (model, value) => model.Currency = value)
+                .MakeEditable()
+                .MakeChoosable(choices:currencies));
+
+    }
+
+    private void Test()
+    {
+
+    }
+}

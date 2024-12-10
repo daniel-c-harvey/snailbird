@@ -12,4 +12,15 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Factories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RazorCore\RazorCore.csproj" />
+    <ProjectReference Include="..\..\SnailbirdData\SnailbirdData.csproj" />
+    <ProjectReference Include="..\..\SnailbirdMedia\SnailbirdMedia.csproj" />
+    <ProjectReference Include="C:\lib\NetBlocks\NetBlocks.csproj" />
+  </ItemGroup>
+
 </Project>

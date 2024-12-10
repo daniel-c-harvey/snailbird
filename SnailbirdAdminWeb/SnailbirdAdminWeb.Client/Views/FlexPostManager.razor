@@ -1,0 +1,44 @@
+@using DataAccess
+@using SnailbirdAdminWeb.Client.ViewModels.EditFlex
+@using SnailbirdData.Models.Post;
+@using SnailbirdAdminWeb.Client.Models;
+@using SnailbirdAdminWeb.Client.ViewModels;
+@using RazorCore;
+
+@typeparam TPost where TPost : FlexPost<TPost>, new()
+    
+<PostManager TPost="TPost" 
+                TEdit="EditFlexPostViewModel<TPost>" 
+                ViewModel="@ViewModel"
+                AddViewModel="@AddViewModel"
+                EditViewModel="@EditViewModel">
+    <AddComponent Context="viewModel">
+        <EditFlexPost ViewModel="viewModel" />
+    </AddComponent>
+    <EditComponent Context="viewModel">
+        <EditFlexPost ViewModel="viewModel" />
+    </EditComponent>
+</PostManager>
+
+@code
+{
+    [Inject]
+    public IDataAdapter<TPost>? PostAdapter { get; set; }
+
+    public FlexPostManagerViewModel<TPost>? ViewModel { get; set; }
+
+    protected EditFlexPostViewModel<TPost>? EditViewModel { get; set; }
+    protected EditFlexPostViewModel<TPost>? AddViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (PostAdapter is null) throw new ArgumentNullException(nameof(PostAdapter));
+        ViewModel = new(PostAdapter);
+
+        if (ViewModel.Model is null) throw new ArgumentNullException(nameof(ViewModel.Model));
+        EditViewModel = new(ViewModel.SavePost);
+        AddViewModel = new(ViewModel.SaveNewPost);
+    }
+}

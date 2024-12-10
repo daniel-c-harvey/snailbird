@@ -1,0 +1,41 @@
+﻿@using DataAccess;
+@using SnailbirdAdminWeb.Client.ViewModels;
+@using SnailbirdData.Models.Post;
+@using RazorCore;
+
+@typeparam TPost where TPost : Post<TPost>, new()
+@typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
+
+@if (ViewModel?.Post == null)
+{
+    <span>Loading...</span>
+}
+else
+{
+<div class="new-post">
+    <span>ID:</span> <input class="form-control" type="number" @bind="ViewModel.Post.ID" disabled />
+    <br />
+    <span>Title:</span> <input class="form-control" type="text" @bind="ViewModel.Post.Title" />
+    <br />
+    <span>Date:</span> <input class="form-control" type="date" @bind="ViewModel.Post.PostDate" />
+    <br/>
+    @if(ChildContent != null)
+    {
+        @ChildContent
+    }
+    <hr />
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="@(e => ViewModel.CommitPost())">
+            Save <span class="bi bi-floppy"></span>
+        </button>
+    </div>
+</div>
+}
+
+@code{
+    [Parameter]
+    public EditPostViewModelBase<TPost, TEdit>? ViewModel { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; } = null;
+}

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="C:\lib\NetBlocks\NetBlocks.csproj" />
+    <ProjectReference Include="..\..\RazorCore\RazorCore.csproj" />
+    <ProjectReference Include="..\..\SnailbirdData\SnailbirdData.csproj" />
+    <ProjectReference Include="..\..\SnailbirdMedia\SnailbirdMedia.csproj" />
     <ProjectReference Include="..\SnailbirdAdminWeb.Client\SnailbirdAdminWeb.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.11" />
   </ItemGroup>

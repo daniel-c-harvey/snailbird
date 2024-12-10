@@ -1,0 +1,63 @@
+@using NetBlocks.Utilities
+@using NetBlocks.Models;
+@using RazorCore;
+@using NetBlocks.Models.Environment;
+
+
+<NewRowTable 
+    TModel="Connection" 
+    models="Connections" 
+    columnMap="columns" 
+    OnDelete="c => Delete(c)" 
+    OnAdd="c => Add(c)"/> 
+
+<div>
+    <button type="button" class="btn btn-primary" @onclick="@(e => SaveConnections())">
+        <i class="bi bi-floppy"></i>
+    </button>
+</div>
+
+@code {
+    private static IColumnMap<Connection> columns = new ColumnMap<Connection>()
+        .AddColumn("ID",
+            new ModelColumn<Connection>(
+                (c) => LongConverter.ToString(c.ID),
+                (c, id) => c.ID = LongConverter.FromString(id))
+            .MakeEditable())
+        .AddColumn("Name", 
+            new ModelColumn<Connection>(
+                (c) => c.ConnectionName, 
+                (c, name) => c.ConnectionName = name)
+            .MakeEditable())
+        .AddColumn("Connection String", 
+            new ModelColumn<Connection>(
+                (c) => c.ConnectionString, 
+                (c, connctionString) => c.ConnectionString = connctionString)
+            .MakeEditable());
+
+    private IList<Connection> Connections { get; }
+
+    public ConnectionManager()
+    {
+        var connections = ConnectionStringTools.LoadFromFile("./.secrets/connections.json");
+        
+        Connections = connections?.ConnectionStrings.ToList() ?? new List<Connection>();
+    }
+
+    private void Delete(Connection connection)
+    {
+        Connections.Remove(connection);
+    }
+
+    private void Add(Connection connection)
+    {
+        Connections.Add(connection);
+    }
+
+    private void SaveConnections()
+    {
+        Connections connections = new Connections {ConnectionStrings = Connections};
+        ConnectionStringTools.SaveToFile("./.secrets/connections.json", connections);
+    }
+
+}

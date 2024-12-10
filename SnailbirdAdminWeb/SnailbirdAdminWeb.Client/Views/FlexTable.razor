@@ -1,0 +1,115 @@
+﻿@using System.Linq.Expressions;
+@using NetBlocks.Utilities;
+
+@typeparam TModel where TModel : class, new()
+
+@if (models is null)
+{
+    <div>Loading...</div>
+}
+else
+{   
+    @* <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                @foreach(string caption in Captions)
+                {
+                <th scope="col">@caption</th>                
+                }
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Counted<TModel> model in Models)
+            {
+                <tr>
+                    <th scope="row">@model.Ordinal</th>
+                    @foreach (IModelColumn<TModel> column in Columns)
+                    {
+                    <td>
+                        @if (column.ClickAction is not null)
+                        {
+                            <span class="btn-link" @onclick="_ => column.ClickAction(model.Entity)">@column.Getter(model.Entity)</span>
+                        }
+                        else
+                        {
+                            @if(column.Editable)
+                            {
+                                @if(column.Choices is null)
+                                {                                
+                                <input type="text" 
+                                       class="form-control" 
+                                       @bind:get="column.Getter(model.Entity)" 
+                                       @bind:set="(value) => column.Setter(model.Entity, value)">
+                                }
+                                else
+                                {
+                                <select @bind:get="column.Getter(model.Entity)" 
+                                        @bind:set="(value) => column.Setter(model.Entity, value)">
+
+                                    @foreach(string choice in column.Choices)
+                                    {
+                                    <option value="@choice">@choice</option>
+                                    }
+
+                                </select>               
+                                }
+                            }else{
+                            <span>@column.Getter(model.Entity)</span>
+                            }
+                        }
+                    </td>
+                    }
+                    <td>
+                        <button type="button" class="btn btn-primary" @onclick="@(e => Delete(model))">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="@(e => Add())">
+            <i class="bi bi-plus-circle"></i>
+        </button>
+    </div> *@
+}
+
+@code {
+    #region Parameters
+    [Parameter]
+    public IEnumerable<TModel>? models { private get; set; }
+    [Parameter]
+    public Action<TModel>? OnDelete { private get; set; }
+    [Parameter]
+    public Action<TModel>? OnAdd { private get; set; }
+    #endregion
+
+    private IList<Counted<TModel>> _models = new List<Counted<TModel>>();
+    public IEnumerable<Counted<TModel>> Models => _models;
+
+    protected override void OnInitialized()
+    {
+        if (models is null) throw new ArgumentNullException(nameof(models));
+
+        _models = models.ZipCounted().ToList();
+    }
+
+    protected void Add()
+    {
+        var model = new TModel();
+        _models.Add(new Counted<TModel> {Ordinal = _models.Count() + 1, Entity = model});
+        if (OnAdd != null) OnAdd(model);
+    }
+
+    protected void Delete(Counted<TModel> model)
+    {
+        // renumber all the elements after the one being removed
+        _models.Skip(model.Ordinal).Apply(m => --m.Ordinal);
+        _models.Remove(model);
+        
+        if (OnDelete != null) OnDelete(model.Entity);
+    }
+}
