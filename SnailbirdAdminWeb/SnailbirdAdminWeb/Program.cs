@@ -16,6 +16,7 @@ namespace SnailbirdAdminWeb
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
+                .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
             if (!AddGlobalServices(builder))
@@ -43,6 +44,7 @@ namespace SnailbirdAdminWeb
             app.UseAntiforgery();
 
             app.MapRazorComponents<App>()
+                .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
