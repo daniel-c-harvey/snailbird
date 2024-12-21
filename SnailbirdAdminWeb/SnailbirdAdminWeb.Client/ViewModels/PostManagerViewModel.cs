@@ -6,6 +6,7 @@ using SnailbirdAdminWeb.Client.Models;
 using SnailbirdAdminWeb.Client.Updates;
 using SnailbirdData.Models.Post;
 using NetBlocks.Utilities;
+using SnailbirdAdminWeb.Client.API;
 
 namespace SnailbirdAdminWeb.Client.ViewModels
 {
@@ -16,13 +17,13 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         public PostManagerModel<TPost> Model { get; set; }
         private PostManagerUpdate<TPost> Update;
         
-        public PostManagerViewModel(IDataAdapter<TPost> postAdapter)
+        public PostManagerViewModel(IPostManagerClient<TPost> postManager)
         {
             InitColumnMap();
 
             Model = new();
             Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(Model);
-            Update = new(postAdapter, Navigator);
+            Update = new(postManager, Navigator);
             
             Model = Update.Update(Model, new PostManagerGetPostsMessage(1, 25));
         }

@@ -1,40 +1,40 @@
-﻿@using DataAccess
-@using SnailbirdData.Models.Post;
-@using SnailbirdAdminWeb.Client.Models;
-@using SnailbirdAdminWeb.Client.ViewModels;
-@using RazorCore;
+﻿@* @using DataAccess *@
+@* @using SnailbirdData.Models.Post; *@
+@* @using SnailbirdAdminWeb.Client.Models; *@
+@* @using SnailbirdAdminWeb.Client.ViewModels; *@
+@* @using RazorCore; *@
 
-<PostManager TPost="LiveJamPost" 
-             TEdit="EditLiveJamPostViewModel" 
-             ViewModel="@ViewModel"
-             AddViewModel="@AddViewModel"
-             EditViewModel="@EditViewModel">
-    <AddComponent Context="viewModel">
-        <EditLiveJamPost ViewModel="@viewModel"/>
-    </AddComponent>
-    <EditComponent Context="viewModel">
-        <EditLiveJamPost ViewModel="@viewModel"/>
-    </EditComponent>
-</PostManager>
+@* <PostManager TPost="LiveJamPost"  *@
+@*              TEdit="EditLiveJamPostViewModel"  *@
+@*              ViewModel="@ViewModel" *@
+@*              AddViewModel="@AddViewModel" *@
+@*              EditViewModel="@EditViewModel"> *@
+@*     <AddComponent Context="viewModel"> *@
+@*         <EditLiveJamPost ViewModel="@viewModel"/> *@
+@*     </AddComponent> *@
+@*     <EditComponent Context="viewModel"> *@
+@*         <EditLiveJamPost ViewModel="@viewModel"/> *@
+@*     </EditComponent> *@
+@* </PostManager> *@
 
-@code
-{
-    [Inject]
-    public IDataAdapter<LiveJamPost>? PostAdapter { get; set; }
-    public LiveJamPostManagerViewModel? ViewModel { get; set; }
+@* @code *@
+@* { *@
+@*     [Inject] *@
+@*     public IDataAdapter<LiveJamPost>? PostAdapter { get; set; } *@
+@*     public LiveJamPostManagerViewModel? ViewModel { get; set; } *@
 
-    protected EditLiveJamPostViewModel? EditViewModel { get; set; }
-    protected EditLiveJamPostViewModel? AddViewModel { get; set; }
+@*     protected EditLiveJamPostViewModel? EditViewModel { get; set; } *@
+@*     protected EditLiveJamPostViewModel? AddViewModel { get; set; } *@
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
+@*     protected override void OnInitialized() *@
+@*     { *@
+@*         base.OnInitialized(); *@
         
-        if (PostAdapter is null) throw new ArgumentNullException(nameof(PostAdapter));
-        ViewModel = new(PostAdapter);
+@*         if (PostAdapter is null) throw new ArgumentNullException(nameof(PostAdapter)); *@
+@*         ViewModel = new(PostAdapter); *@
 
-        if (ViewModel.Model is null) throw new ArgumentNullException(nameof(ViewModel.Model));
-        EditViewModel = new(ViewModel.SavePost);
-        AddViewModel = new(ViewModel.SaveNewPost);
-    }
-}
+@*         if (ViewModel.Model is null) throw new ArgumentNullException(nameof(ViewModel.Model)); *@
+@*         EditViewModel = new(ViewModel.SavePost); *@
+@*         AddViewModel = new(ViewModel.SaveNewPost); *@
+@*     } *@
+@* } *@

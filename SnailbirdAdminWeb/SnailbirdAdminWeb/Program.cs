@@ -2,6 +2,7 @@ using DataAccess;
 using MongoDB.Driver;
 using NetBlocks.Models.Environment;
 using SnailbirdAdminWeb.Components;
+using SnailbirdAdminWeb.Models;
 using SnailbirdData.Models.Entities;
 using SnailbirdData.Models.Post;
 using SnailbirdData.Providers;
@@ -19,7 +20,7 @@ namespace SnailbirdAdminWeb
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-            if (!AddGlobalServices(builder))
+            if (!AddServerServices(builder))
             {
                 return; // Abort
             }
@@ -48,10 +49,12 @@ namespace SnailbirdAdminWeb
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
+            app.MapControllers();
+
             app.Run();
         }
 
-        private static bool AddGlobalServices(WebApplicationBuilder builder)
+        private static bool AddServerServices(WebApplicationBuilder builder)
         {
             builder.Configuration.AddJsonFile("environment/connections.json", optional: true, reloadOnChange: true);
 
@@ -89,7 +92,12 @@ namespace SnailbirdAdminWeb
 
             MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
             MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
-            MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("labFeedFlexPost"));
+            
+            MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter = new(dataResources.DataAccess, 
+                                                                       dataResources.QueryBuilder, 
+                                                                       new DataSchema("labFeedFlexPost"));
+            API.Managers.PostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter);
+
 
             builder.Configuration.AddJsonFile("environment/endpoints.json", optional: false);
             Endpoints? endpoints = builder.Configuration.Get<Endpoints>();
@@ -105,8 +113,10 @@ namespace SnailbirdAdminWeb
             .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>(_ => liveJamPostAdapter)
             .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>(_ => studioFeedFlexPostAdapter)
             .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>(_ => labFeedFlexPostAdapter)
-            .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>(provider => new LiveJamPostMongoProvider(liveJamPostAdapter))
-            .AddSingleton<IEndpoints, Endpoints>(_ => endpoints);
+            .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>(_ => new LiveJamPostMongoProvider(liveJamPostAdapter))
+            .AddSingleton<IEndpoints, Endpoints>(_ => endpoints)
+            .AddSingleton<API.Managers.IPostManager<LabFeedFlexPost>, API.Managers.PostManager<LabFeedFlexPost>>(_ => labFeedManager)
+            .AddControllers();
 
             return true;
         }

@@ -3,6 +3,7 @@
 @using RazorCore;
 @using RazorCore.Confirmation;
 @using RazorCore.Markup;
+@using SnailbirdAdminWeb.Client.Models
 @using SnailbirdAdminWeb.Client.ViewModels;
 @using SnailbirdData.Models.Post;
 @using SnailbirdMedia;
@@ -47,7 +48,7 @@
                     <EditFlexParagraph Text="@paragraph.Text" />
                 } else if (ViewModel.Element is FlexImage image)
                 {
-                    var vm = new EditFlexImageViewModel(Endpoints, image);
+                    var vm = new EditFlexImageViewModel(image);
                     <EditFlexImage ViewModel="@vm" />
                 } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
                 {
@@ -67,9 +68,6 @@
 
 @code 
 {
-    [Inject]
-    public IEndpoints Endpoints { get; set; } = default!;
-
     [Parameter]
     public EditFlexElementViewModel? ViewModel { get; set; }
 

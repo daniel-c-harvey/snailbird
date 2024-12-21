@@ -10,8 +10,6 @@ namespace SnailbirdAdminWeb.Client.Views
         where TView : PostManagerViewModel<TPost>
         where TEdit : EditPostViewModelBase<TPost, TEdit>
     {
-        [Inject]
-        public IDataAdapter<TPost>? PostAdapter { get; set; }
         [Parameter]
         public RenderFragment<TView>? ViewComponent { get; set; }
         [Parameter]

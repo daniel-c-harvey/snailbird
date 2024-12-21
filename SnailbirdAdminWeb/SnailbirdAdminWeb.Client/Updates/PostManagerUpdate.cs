@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using RazorCore.Navigation;
+using SnailbirdAdminWeb.Client.API;
 using SnailbirdAdminWeb.Client.Messages;
 using SnailbirdAdminWeb.Client.Models;
 using SnailbirdData.Models.Post;
@@ -9,12 +10,13 @@ namespace SnailbirdAdminWeb.Client.Updates
     public class PostManagerUpdate<TPost>
         where TPost : Post<TPost>, new()
     {
-        private IDataAdapter<TPost> PostAdapter { get; }
+        //private IDataAdapter<TPost> PostAdapter { get; }
+        private IPostManagerClient<TPost> PostManager { get; }
         private INavigator<PostManagerMode> Navigator { get; }
 
-        public PostManagerUpdate(IDataAdapter<TPost> postAdapter, INavigator<PostManagerMode> navigator)
+        public PostManagerUpdate(IPostManagerClient<TPost> postManager, INavigator<PostManagerMode> navigator)
         {
-            PostAdapter = postAdapter;
+            PostManager = postManager;
             Navigator = navigator;
         }
 
@@ -23,26 +25,26 @@ namespace SnailbirdAdminWeb.Client.Updates
         {
             switch (message.Action)
             {
-                case PostManagerAction.Add:
-                    var addMessage = message as PostManagerAddMessage<TPost>;
-                    if (addMessage is not null) AddPost(model, addMessage);
-                    break;
+                //case PostManagerAction.Add:
+                //    var addMessage = message as PostManagerAddMessage<TPost>;
+                //    if (addMessage is not null) AddPost(model, addMessage);
+                //    break;
                 case PostManagerAction.Edit:
                     var editMessage = message as PostManagerEditMessage<TPost>;
                     if (editMessage is not null) EditPost(model, editMessage);
                     break;
-                case PostManagerAction.Delete:
-                    var deleteMessage = message as PostManagerDeleteMessage<TPost>;
-                    if (deleteMessage is not null) DeletePost(model, deleteMessage);
-                    break;
-                case PostManagerAction.SaveNew:
-                    var saveNewMessage = message as PostManagerSaveNewMessage<TPost>;
-                    if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage);
-                    break;
-                case PostManagerAction.SaveExisting:
-                    var saveMessage = message as PostManagerSaveExistingMessage<TPost>;
-                    if (saveMessage  is not null) SavePost(model, saveMessage);
-                    break;
+                //case PostManagerAction.Delete:
+                //    var deleteMessage = message as PostManagerDeleteMessage<TPost>;
+                //    if (deleteMessage is not null) DeletePost(model, deleteMessage);
+                //    break;
+                //case PostManagerAction.SaveNew:
+                //    var saveNewMessage = message as PostManagerSaveNewMessage<TPost>;
+                //    if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage);
+                //    break;
+                //case PostManagerAction.SaveExisting:
+                //    var saveMessage = message as PostManagerSaveExistingMessage<TPost>;
+                //    if (saveMessage is not null) SavePost(model, saveMessage);
+                //    break;
                 case PostManagerAction.GetPosts:
                     var getMessage = message as PostManagerGetPostsMessage;
                     if (getMessage is not null) GetPosts(model, getMessage);
@@ -54,24 +56,24 @@ namespace SnailbirdAdminWeb.Client.Updates
             return model;
         }
 
-        private void AddPost(PostManagerModel<TPost> model,
-                             PostManagerAddMessage<TPost> message)
-        {
-            // update model with new post
-            model.Post = message.Post;
-            model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
+        //private void AddPost(PostManagerModel<TPost> model,
+        //                     PostManagerAddMessage<TPost> message)
+        //{
+        //    // update model with new post
+        //    model.Post = message.Post;
+        //    model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
 
-            // set the Save action if there is a dirty nav
-            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
-                () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
-            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
-                () => ResetPost(model);
+        //    // set the Save action if there is a dirty nav
+        //    Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
+        //        () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
+        //    Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
+        //        () => ResetPost(model);
 
-            // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
-            Navigator.NavigateForward(PostManagerMode.Add)
-                     .ConfirmBeforeNavigateAway(message.ConfirmationModel, 
-                                                (_, args) => args.IsConfirmed = model.IsPostModified);
-        }
+        //    // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
+        //    Navigator.NavigateForward(PostManagerMode.Add)
+        //             .ConfirmBeforeNavigateAway(message.ConfirmationModel, 
+        //                                        (_, args) => args.IsConfirmed = model.IsPostModified);
+        //}
 
         private void ResetPost(PostManagerModel<TPost> model)
         {
@@ -85,8 +87,8 @@ namespace SnailbirdAdminWeb.Client.Updates
             model.Post = message.Post.Clone();
 
             // set the Save action if there is a navigation away from this edit
-            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] = 
-                () => Update(model, new PostManagerSaveExistingMessage<TPost>(model.Post));
+            //Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] = 
+            //    () => Update(model, new PostManagerSaveExistingMessage<TPost>(model.Post));
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
                 () => ResetPost(model);
 
@@ -96,43 +98,43 @@ namespace SnailbirdAdminWeb.Client.Updates
                                                 (_, args) => args.IsConfirmed = model.IsPostModified);
         }
 
-        private void DeletePost(PostManagerModel<TPost> model,
-                                PostManagerDeleteMessage<TPost> message)
-        {
-            if (PostAdapter is not null)
-            {
-                PostAdapter.Delete(message.Post);
-            }
-        }
+        //private void DeletePost(PostManagerModel<TPost> model,
+        //                        PostManagerDeleteMessage<TPost> message)
+        //{
+        //    if (PostManager is not null)
+        //    {
+        //        PostManager.Delete(message.Post);
+        //    }
+        //}
 
-        private void SaveNewPost(PostManagerModel<TPost> model,
-                                 PostManagerSaveNewMessage<TPost> message)
-        {
-            if (PostAdapter is not null)
-            {
-                PostAdapter.Insert(message.Post);
-                model.Post = message.Post;
-                Navigator.NavigateBack();
-            }
-        }
+        //private void SaveNewPost(PostManagerModel<TPost> model,
+        //                         PostManagerSaveNewMessage<TPost> message)
+        //{
+        //    if (PostManager is not null)
+        //    {
+        //        PostManager.Insert(message.Post);
+        //        model.Post = message.Post;
+        //        Navigator.NavigateBack();
+        //    }
+        //}
 
-        private void SavePost(PostManagerModel<TPost> model,
-                              PostManagerSaveExistingMessage<TPost> message)
-        {
-            if (PostAdapter is not null)
-            {
-                PostAdapter.Update(message.Post);
-                model.Post = message.Post;
-                Navigator.NavigateBack();
-            }
-        }
+        //private void SavePost(PostManagerModel<TPost> model,
+        //                      PostManagerSaveExistingMessage<TPost> message)
+        //{
+        //    if (PostManager is not null)
+        //    {
+        //        PostManager.Update(message.Post);
+        //        model.Post = message.Post;
+        //        Navigator.NavigateBack();
+        //    }
+        //}
 
-        private void GetPosts(PostManagerModel<TPost> model,
+        private async void GetPosts(PostManagerModel<TPost> model,
                               PostManagerGetPostsMessage message)
         {
-            if (PostAdapter is not null)
+            if (PostManager is not null)
             {
-                var results = PostAdapter.GetPage(message.PageIndex, message.PageSize);
+                var results = await PostManager.GetPage(message.PageIndex, message.PageSize);
                 if (results.Success)
                 {
                     model.Posts = results.Value;

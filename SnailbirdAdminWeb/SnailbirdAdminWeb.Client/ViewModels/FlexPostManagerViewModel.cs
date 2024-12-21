@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using SnailbirdAdminWeb.Client.API;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdminWeb.Client.ViewModels
@@ -6,8 +7,8 @@ namespace SnailbirdAdminWeb.Client.ViewModels
     public class FlexPostManagerViewModel<TPost> : PostManagerViewModel<TPost>
     where TPost : FlexPost<TPost>, new()
     {
-        public FlexPostManagerViewModel(IDataAdapter<TPost> postAdapter) 
-        : base(postAdapter) 
+        public FlexPostManagerViewModel(IPostManagerClient<TPost> postManager) 
+        : base(postManager) 
         { }
     }
 }

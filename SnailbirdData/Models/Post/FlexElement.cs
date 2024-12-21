@@ -1,7 +1,13 @@
 ﻿using NetBlocks.Interfaces;
+using NetBlocks.Utilities;
+using System.Text.Json.Serialization;
 
 namespace SnailbirdData.Models.Post
 {
+    [JsonDerivedType(typeof(FlexParagraph), "paragraph")]
+    [JsonDerivedType(typeof(FlexImage), "image")]
+    [JsonDerivedType(typeof(FlexYouTubeEmbed), "youtube")]
+    [JsonDerivedType(typeof(FlexInstrumentList), "instr")]
     public abstract class FlexElement : ICloneable<FlexElement>
     {
         public abstract string TypeCaption { get; }

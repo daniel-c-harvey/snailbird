@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MongoDB.Driver;
 using NetBlocks.Models;
 using NetBlocks.Models.Environment;
 using RazorCore.Confirmation;
+using SnailbirdAdminWeb.Client.Models;
 using SnailbirdData.Models.Post;
 using SnailbirdMedia.Clients;
 using SnailbirdMedia.Configs;
@@ -12,23 +14,21 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
 {
     public class EditFlexImageViewModel
     {
+        [Inject]
+        public IVaultManagerClient? Vault { get; protected set; }
+
         private const int MAXIMUM_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
         public event EventHandler ImageSizeExceeded;
         public FlexImage FlexImage { get; protected set; }
         protected MediaBinary? Image { get; set; }
-        public VaultManagerClient Vault { get; protected set; }
         public string DataURL { get; protected set; } = default!;
 
 
 
-        public EditFlexImageViewModel(IEndpoints endpoints, 
-                                      FlexImage flexImage)
+        public EditFlexImageViewModel(FlexImage flexImage)
         {
             FlexImage = flexImage;
-            Vault = new(new VaultClientConfig(endpoints.MediaApiUrl,
-                                              endpoints.MediaApiKey,
-                                              "img"));
             OnImageLoaded().Wait();
         }
 

@@ -5,7 +5,7 @@ using NetBlocks.Models;
 
 namespace SnailbirdMedia.Clients
 {
-    public class VaultManagerClient : SnailbirdMediaClient<VaultClientConfig>
+    public class VaultManagerClient : ApiClient<VaultClientConfig>, IVaultManagerClient
     {
 
         public VaultManagerClient(VaultClientConfig config)
