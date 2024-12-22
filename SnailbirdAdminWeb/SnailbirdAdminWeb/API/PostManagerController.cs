@@ -21,13 +21,20 @@ namespace SnailbirdAdminWeb.API
         [HttpGet]
         public ResultContainer<IEnumerable<TPost>> GetPage([FromQuery] int page, [FromQuery] int size)
         {
-            if (page < 1 || size <= 0) 
+            if (page < 0 || size <= 0) 
             { 
                 return ResultContainer<IEnumerable<TPost>>.CreateFailResult(""); 
             }
 
-            return manager.GetPosts(page - 1, size);
+            return manager.GetPosts(page, size);
         }
+
+        [HttpPost("save")]
+        public Result Update([FromBody] TPost post)
+        {
+            return manager.SavePost(post);
+        }
+
 
 
         //// GET api/<ValuesController>/5

@@ -10,11 +10,11 @@ namespace SnailbirdAdminWeb.Client
     {
         public static bool AddClientServices(string address, IServiceCollection services)
         {
-            PostManagerClient<LabFeedFlexPost> manager = new(new NetBlocks.Models.ClientConfig(address));
+            LabPostManagerClient manager = new(new NetBlocks.Models.ClientConfig(address));
             VaultManagerClient imageVaultClient = new(new VaultClientConfig(address, "ABC123", "img")); // todo replace this with a server API call rather than direct media client usage
 
             services
-                .AddSingleton<IPostManagerClient<LabFeedFlexPost>, PostManagerClient<LabFeedFlexPost>>(_ => manager)
+                .AddSingleton<IPostManagerClient<LabFeedFlexPost>, LabPostManagerClient>(_ => manager)
                 .AddSingleton<IVaultManagerClient, VaultManagerClient>(_ => imageVaultClient);
 
             return true;

@@ -25,10 +25,10 @@ namespace SnailbirdAdminWeb.Client.Updates
         {
             switch (message.Action)
             {
-                //case PostManagerAction.Add:
-                //    var addMessage = message as PostManagerAddMessage<TPost>;
-                //    if (addMessage is not null) AddPost(model, addMessage);
-                //    break;
+                case PostManagerAction.Add:
+                    var addMessage = message as PostManagerAddMessage<TPost>;
+                    if (addMessage is not null) AddPost(model, addMessage);
+                    break;
                 case PostManagerAction.Edit:
                     var editMessage = message as PostManagerEditMessage<TPost>;
                     if (editMessage is not null) EditPost(model, editMessage);
@@ -41,10 +41,10 @@ namespace SnailbirdAdminWeb.Client.Updates
                 //    var saveNewMessage = message as PostManagerSaveNewMessage<TPost>;
                 //    if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage);
                 //    break;
-                //case PostManagerAction.SaveExisting:
-                //    var saveMessage = message as PostManagerSaveExistingMessage<TPost>;
-                //    if (saveMessage is not null) SavePost(model, saveMessage);
-                //    break;
+                case PostManagerAction.SaveExisting:
+                    var saveMessage = message as PostManagerSaveExistingMessage<TPost>;
+                    if (saveMessage is not null) SavePost(model, saveMessage);
+                    break;
                 case PostManagerAction.GetPosts:
                     var getMessage = message as PostManagerGetPostsMessage;
                     if (getMessage is not null) GetPosts(model, getMessage);
@@ -56,24 +56,24 @@ namespace SnailbirdAdminWeb.Client.Updates
             return model;
         }
 
-        //private void AddPost(PostManagerModel<TPost> model,
-        //                     PostManagerAddMessage<TPost> message)
-        //{
-        //    // update model with new post
-        //    model.Post = message.Post;
-        //    model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
+        private void AddPost(PostManagerModel<TPost> model,
+                             PostManagerAddMessage<TPost> message)
+        {
+            // update model with new post
+            model.Post = message.Post;
+            model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
 
-        //    // set the Save action if there is a dirty nav
-        //    Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
-        //        () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
-        //    Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
-        //        () => ResetPost(model);
+            // set the Save action if there is a dirty nav
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
+                () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
+                () => ResetPost(model);
 
-        //    // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
-        //    Navigator.NavigateForward(PostManagerMode.Add)
-        //             .ConfirmBeforeNavigateAway(message.ConfirmationModel, 
-        //                                        (_, args) => args.IsConfirmed = model.IsPostModified);
-        //}
+            // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
+            Navigator.NavigateForward(PostManagerMode.Add)
+                     .ConfirmBeforeNavigateAway(message.ConfirmationModel,
+                                                (_, args) => args.IsConfirmed = model.IsPostModified);
+        }
 
         private void ResetPost(PostManagerModel<TPost> model)
         {
@@ -87,8 +87,8 @@ namespace SnailbirdAdminWeb.Client.Updates
             model.Post = message.Post.Clone();
 
             // set the Save action if there is a navigation away from this edit
-            //Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] = 
-            //    () => Update(model, new PostManagerSaveExistingMessage<TPost>(model.Post));
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] =
+                () => Update(model, new PostManagerSaveExistingMessage<TPost>(model.Post));
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
                 () => ResetPost(model);
 
@@ -118,16 +118,16 @@ namespace SnailbirdAdminWeb.Client.Updates
         //    }
         //}
 
-        //private void SavePost(PostManagerModel<TPost> model,
-        //                      PostManagerSaveExistingMessage<TPost> message)
-        //{
-        //    if (PostManager is not null)
-        //    {
-        //        PostManager.Update(message.Post);
-        //        model.Post = message.Post;
-        //        Navigator.NavigateBack();
-        //    }
-        //}
+        private void SavePost(PostManagerModel<TPost> model,
+                              PostManagerSaveExistingMessage<TPost> message)
+        {
+            if (PostManager is not null)
+            {
+                PostManager.Update(message.Post);
+                model.Post = message.Post;
+                Navigator.NavigateBack();
+            }
+        }
 
         private async void GetPosts(PostManagerModel<TPost> model,
                               PostManagerGetPostsMessage message)
@@ -135,7 +135,7 @@ namespace SnailbirdAdminWeb.Client.Updates
             if (PostManager is not null)
             {
                 var results = await PostManager.GetPage(message.PageIndex, message.PageSize);
-                if (results.Success)
+                if (results.Success && results.Value != null)
                 {
                     model.Posts = results.Value;
                     Navigator.NavigateForward(PostManagerMode.View);
