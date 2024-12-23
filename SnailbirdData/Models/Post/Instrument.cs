@@ -20,5 +20,17 @@ namespace SnailbirdData.Models.Post
                 Description = Description
             };
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Instrument instrument &&
+                   Name == instrument.Name &&
+                   Description == instrument.Description;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Description);
+        }
     }
 }

@@ -9,7 +9,7 @@ using NetBlocks.Models.Environment;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
+builder.Configuration.AddJsonFile("environment/connections.json", optional: false, reloadOnChange: true);
 Connections? connectionSecrets = builder.Configuration.Get<Connections>();
 
 if (connectionSecrets == null)
@@ -44,7 +44,7 @@ catch (Exception e)
 
 MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
 MongoAdapter<StudioFeedFlexPost> studioFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
-MongoAdapter<LabFeedFlexPost> labFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
+MongoAdapter<LabFeedFlexPost> labFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("labFeedFlexPost"));
 
 // Add services to the container.
 builder.Services

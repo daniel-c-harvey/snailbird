@@ -3,14 +3,12 @@
 @if (Post != null)
 {
     <div class="post" id="@Post.ID">
-        @if (Post is SnailbirdData.Models.Post.LiveJamPost)
+        @if (Post is SnailbirdData.Models.Post.LiveJamPost liveJamPost)
         {
-            var liveJamPost = Post as SnailbirdData.Models.Post.LiveJamPost;
             <LiveJamPost Post="@liveJamPost" OnSelect="post => OnSelectPost(post as TPostModel)" />
-        } else if (Post is SnailbirdData.Models.Post.FlexPost<TPostModel>)
+        } else if (Post is SnailbirdData.Models.Post.FlexPost<TPostModel> flexPost)
         {
-            var flexPost = Post as SnailbirdData.Models.Post.FlexPost<TPostModel>;
-            <FlexPost TPost="TPostModel" Post="@flexPost" OnSelect="post => OnSelectPost(post as TPostModel)"/>
+            <FlexPost TPost="TPostModel" Post="@flexPost" OnSelect="post => OnSelectPost(post as TPostModel)" />
         }
     </div>
 }
