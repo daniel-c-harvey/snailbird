@@ -7,5 +7,6 @@ namespace SnailbirdAdminWeb.Client.API
     {
         Task<ResultContainer<IEnumerable<TPost>>> GetPage(int page, int size);
         Task<Result> Update(TPost post);
+        Task<Result> Insert(TPost post);
     }
 }

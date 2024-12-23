@@ -9,16 +9,16 @@ namespace SnailbirdData.Models.Entities
         : base()
         { }
 
-        public override LabFeedFlexPost Clone()
-        {
-            return new LabFeedFlexPost()
-            {
-                ID = ID,
-                Title = Title,
-                PostDate = PostDate,
-                Elements = Elements.Select(e => e.Clone()).ToList()
-            };
-        }
+        //public override LabFeedFlexPost Clone()
+        //{
+        //    return new LabFeedFlexPost()
+        //    {
+        //        ID = ID,
+        //        Title = Title,
+        //        PostDate = PostDate,
+        //        Elements = Elements.Select(e => e.Clone()).ToList()
+        //    };
+        //}
 
         public override int GetHashCode()
         {

@@ -34,6 +34,12 @@ namespace SnailbirdAdminWeb.API
         {
             return manager.SavePost(post);
         }
+        
+        [HttpPost("insert")]
+        public Result Insert([FromBody] TPost post)
+        {
+            return manager.InsertPost(post);
+        }
 
 
 

@@ -10,7 +10,6 @@ namespace SnailbirdAdminWeb.Client.Updates
     public class PostManagerUpdate<TPost>
         where TPost : Post<TPost>, new()
     {
-        //private IDataAdapter<TPost> PostAdapter { get; }
         private IPostManagerClient<TPost> PostManager { get; }
         private INavigator<PostManagerMode> Navigator { get; }
 
@@ -25,10 +24,10 @@ namespace SnailbirdAdminWeb.Client.Updates
         {
             switch (message.Action)
             {
-                //case PostManagerAction.Add:
-                //    var addMessage = message as PostManagerAddMessage<TPost>;
-                //    if (addMessage is not null) AddPost(model, addMessage);
-                //    break;
+                case PostManagerAction.Add:
+                    var addMessage = message as PostManagerAddMessage<TPost>;
+                    if (addMessage is not null) AddPost(model, addMessage);
+                    break;
                 case PostManagerAction.Edit:
                     var editMessage = message as PostManagerEditMessage<TPost>;
                     if (editMessage is not null) EditPost(model, editMessage);
@@ -37,10 +36,10 @@ namespace SnailbirdAdminWeb.Client.Updates
                 //    var deleteMessage = message as PostManagerDeleteMessage<TPost>;
                 //    if (deleteMessage is not null) DeletePost(model, deleteMessage);
                 //    break;
-                //case PostManagerAction.SaveNew:
-                //    var saveNewMessage = message as PostManagerSaveNewMessage<TPost>;
-                //    if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage);
-                //    break;
+                case PostManagerAction.SaveNew:
+                    var saveNewMessage = message as PostManagerSaveNewMessage<TPost>;
+                    if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage);
+                    break;
                 case PostManagerAction.SaveExisting:
                     var saveMessage = message as PostManagerSaveExistingMessage<TPost>;
                     if (saveMessage is not null) SavePost(model, saveMessage);
@@ -107,16 +106,16 @@ namespace SnailbirdAdminWeb.Client.Updates
         //    }
         //}
 
-        //private void SaveNewPost(PostManagerModel<TPost> model,
-        //                         PostManagerSaveNewMessage<TPost> message)
-        //{
-        //    if (PostManager is not null)
-        //    {
-        //        PostManager.Insert(message.Post);
-        //        model.Post = message.Post;
-        //        Navigator.NavigateBack();
-        //    }
-        //}
+        private void SaveNewPost(PostManagerModel<TPost> model,
+                                 PostManagerSaveNewMessage<TPost> message)
+        {
+            if (PostManager is not null)
+            {
+                PostManager.Insert(message.Post);
+                model.Post = message.Post;
+                Navigator.NavigateBack();
+            }
+        }
 
         private void SavePost(PostManagerModel<TPost> model,
                               PostManagerSaveExistingMessage<TPost> message)

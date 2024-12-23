@@ -52,5 +52,27 @@ namespace SnailbirdAdminWeb.Client.API
             }
             return result;
         }
+
+
+        public abstract Task<Result> Insert(TPost post);
+        protected async Task<Result> Insert(TPost post, string controller)
+        {
+            Result? result = null;
+            try
+            {
+                HttpResponseMessage response = await http.PostAsJsonAsync($"api/{controller}/insert", post);
+                result = await response.Content.ReadFromJsonAsync<Result>();
+                if (result is null)
+                {
+                    throw new Exception("Failed to deserialize the results");
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new();
+                result.Fail(ex.Message);
+            }
+            return result;
+        }
     }
 }
