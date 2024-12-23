@@ -45,7 +45,8 @@
             <div class="sb-flex-content">
                 @if (ViewModel.Element is FlexParagraph paragraph)
                 {
-                    <EditFlexParagraph Text="@paragraph.Text" />
+                    var vm = new EditFlexParagraphViewModel(paragraph);
+                    <EditFlexParagraph ViewModel="@vm" />
                 } else if (ViewModel.Element is FlexImage image)
                 {
                     var vm = new EditFlexImageViewModel(image);

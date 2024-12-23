@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35521.163 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdAdminWeb", "SnailbirdAdminWeb\SnailbirdAdminWeb.csproj", "{ACF6B75D-9687-49BF-BCB7-A1EF59649897}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdAdminWeb.Client", "SnailbirdAdminWeb.Client\SnailbirdAdminWeb.Client.csproj", "{D0A18E7E-DA67-4BE9-A977-C7CFF67FDCF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdData", "..\SnailbirdData\SnailbirdData.csproj", "{0BD2C69B-366A-429A-9EFF-9D04BB9BB553}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorCore", "..\RazorCore\RazorCore.csproj", "{3BDDAD0E-3C07-41A6-BA30-4EE5B5B43044}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBlocks", "..\..\..\..\..\lib\DataBlocks\DataBlocks.csproj", "{A4DDFAC2-7F58-49BB-82EF-BC4C7586E866}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBlocks", "..\..\..\..\..\lib\NetBlocks\NetBlocks.csproj", "{3EF03D9B-6F4C-45EE-9D29-801B297FCDB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACF6B75D-9687-49BF-BCB7-A1EF59649897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACF6B75D-9687-49BF-BCB7-A1EF59649897}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACF6B75D-9687-49BF-BCB7-A1EF59649897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACF6B75D-9687-49BF-BCB7-A1EF59649897}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A18E7E-DA67-4BE9-A977-C7CFF67FDCF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A18E7E-DA67-4BE9-A977-C7CFF67FDCF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A18E7E-DA67-4BE9-A977-C7CFF67FDCF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A18E7E-DA67-4BE9-A977-C7CFF67FDCF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BD2C69B-366A-429A-9EFF-9D04BB9BB553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BD2C69B-366A-429A-9EFF-9D04BB9BB553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BD2C69B-366A-429A-9EFF-9D04BB9BB553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BD2C69B-366A-429A-9EFF-9D04BB9BB553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BDDAD0E-3C07-41A6-BA30-4EE5B5B43044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BDDAD0E-3C07-41A6-BA30-4EE5B5B43044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BDDAD0E-3C07-41A6-BA30-4EE5B5B43044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BDDAD0E-3C07-41A6-BA30-4EE5B5B43044}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4DDFAC2-7F58-49BB-82EF-BC4C7586E866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4DDFAC2-7F58-49BB-82EF-BC4C7586E866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4DDFAC2-7F58-49BB-82EF-BC4C7586E866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4DDFAC2-7F58-49BB-82EF-BC4C7586E866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF03D9B-6F4C-45EE-9D29-801B297FCDB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF03D9B-6F4C-45EE-9D29-801B297FCDB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF03D9B-6F4C-45EE-9D29-801B297FCDB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF03D9B-6F4C-45EE-9D29-801B297FCDB8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

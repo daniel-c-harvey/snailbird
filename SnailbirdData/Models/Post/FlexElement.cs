@@ -1,5 +1,7 @@
 ﻿using NetBlocks.Interfaces;
 using NetBlocks.Utilities;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace SnailbirdData.Models.Post
@@ -8,9 +10,19 @@ namespace SnailbirdData.Models.Post
     [JsonDerivedType(typeof(FlexImage), "image")]
     [JsonDerivedType(typeof(FlexYouTubeEmbed), "youtube")]
     [JsonDerivedType(typeof(FlexInstrumentList), "instr")]
-    public abstract class FlexElement : ICloneable<FlexElement>
+    public abstract class FlexElement : ICloneable<FlexElement>, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? name = null)
+        {
+            if (name != null)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
         public abstract string TypeCaption { get; }
+
 
         public abstract FlexElement Clone();
 
@@ -27,7 +39,9 @@ namespace SnailbirdData.Models.Post
             }
 
             var other = obj as FlexElement;
-            return other != null && TypeCaption.Equals(other.TypeCaption);
+            bool q = other != null;
+            q &= TypeCaption.Equals(other.TypeCaption);
+            return q;
         }
 
         public override int GetHashCode()
@@ -38,8 +52,21 @@ namespace SnailbirdData.Models.Post
 
     public class FlexParagraph : FlexElement
     {
+        private string text = string.Empty;
+
         public override string TypeCaption => "Paragraph";
-        public string Text { get; set; } = string.Empty;
+        public string Text
+        {
+            get => text; 
+            set
+            {
+                if (text != value)
+                {
+                    text = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public override FlexElement Clone()
         {

@@ -25,10 +25,10 @@ namespace SnailbirdAdminWeb.Client.Updates
         {
             switch (message.Action)
             {
-                case PostManagerAction.Add:
-                    var addMessage = message as PostManagerAddMessage<TPost>;
-                    if (addMessage is not null) AddPost(model, addMessage);
-                    break;
+                //case PostManagerAction.Add:
+                //    var addMessage = message as PostManagerAddMessage<TPost>;
+                //    if (addMessage is not null) AddPost(model, addMessage);
+                //    break;
                 case PostManagerAction.Edit:
                     var editMessage = message as PostManagerEditMessage<TPost>;
                     if (editMessage is not null) EditPost(model, editMessage);

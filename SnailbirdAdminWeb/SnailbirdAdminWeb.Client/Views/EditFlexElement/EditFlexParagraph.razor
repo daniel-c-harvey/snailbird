@@ -1,9 +1,10 @@
 @using RazorCore.Markup
+@using SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
 
-<MarkupTextArea Text="@Text" PreviewMarkup="true" />
+<MarkupTextArea ViewModel="@ViewModel.MarkupViewModel" PreviewMarkup="true" />
 
 @code {
     [Parameter]
-    public string Text { get; set; } = default!;
+    public required EditFlexParagraphViewModel ViewModel { get; set; }
 }
 

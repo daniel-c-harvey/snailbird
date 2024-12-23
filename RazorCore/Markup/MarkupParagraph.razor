@@ -1,25 +1,8 @@
 <p>
-    @((MarkupString)Text)
+    @((MarkupString)(ViewModel.MarkupText))
 </p>
 
 @code {
-    private string _text = string.Empty;
     [Parameter]
-    public string Text
-    {
-        get => _text;
-        set
-        {
-            if (validate(value))
-            {
-                _text = value;
-            }
-        }
-    }
-
-    private static bool validate(string value)
-    {
-        // validate the string for markup safety.
-        return true;
-    }
+    public required MarkupParagraphViewModel ViewModel { get; set; }
 }

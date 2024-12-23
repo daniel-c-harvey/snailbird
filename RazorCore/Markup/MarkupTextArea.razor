@@ -1,9 +1,9 @@
 <div>
-    <textarea class="form-control" type="text" @bind-value="@RawText" @bind-value:event="oninput" />
+    <textarea class="form-control" type="text" @bind-value="@ViewModel.RawText" @bind-value:event="oninput" />
 </div>
 
 @if (PreviewMarkup)
 {
     <hr />
-    <MarkupParagraph Text="@Text" />
+    <MarkupParagraph ViewModel="@ViewModel.ParagraphViewModel" />
 }
