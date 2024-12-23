@@ -5,23 +5,19 @@ using SnailbirdAdminWeb.Client.ViewModels;
 
 namespace SnailbirdAdminWeb.Client.Views
 {
-    public partial class PostManagerBase<TPost, TView, TEdit>
+    public partial class PostManagerBase<TPost, TEdit, TView>
         where TPost : Post<TPost>, new()
-        where TView : PostManagerViewModel<TPost>
         where TEdit : EditPostViewModelBase<TPost, TEdit>
+        where TView : PostManagerViewModel<TPost, TEdit>
     {
-        [Parameter]
-        public RenderFragment<TView>? ViewComponent { get; set; }
         [Parameter]
         public TView? ViewModel { get; set; }
         [Parameter]
+        public RenderFragment<TView>? ViewComponent { get; set; }
+        [Parameter]
         public RenderFragment<TEdit>? AddComponent { get; set; }
         [Parameter]
-        public TEdit? AddViewModel { get; set; }
-        [Parameter]
         public RenderFragment<TEdit>? EditComponent { get; set; }
-        [Parameter]
-        public TEdit? EditViewModel { get; set; }
 
         protected override void OnInitialized()
         {

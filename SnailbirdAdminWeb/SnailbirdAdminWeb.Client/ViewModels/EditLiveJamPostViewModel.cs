@@ -27,12 +27,21 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         public void AddNewInstrument(Instrument instrument)
         {
             _instruments.Add(instrument);
+            InstrumentsModified();
         }
 
+        private void InstrumentsModified()
+        {
+            if (Post != null)
+            {
+                Post.Instruments = _instruments;
+            }
+        }
 
         public void RemoveInstrument(Instrument instrument)
         {
             _instruments.Remove(instrument);
+            InstrumentsModified();
         }
 
         public override EditLiveJamPostViewModel LoadPost(LiveJamPost post)
@@ -45,15 +54,6 @@ namespace SnailbirdAdminWeb.Client.ViewModels
             }
 
             return this;
-        }
-
-        public override void CommitPost()
-        {
-            if (Post != null)
-            {
-                Post.Instruments = _instruments;
-                base.CommitPost();
-            }
         }
     }
 }

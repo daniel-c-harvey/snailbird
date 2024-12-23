@@ -1,13 +1,13 @@
-﻿@using DataAccess;
-@using RazorCore;
-@using RazorCore.Navigation;
-@using SnailbirdData.Models.Post;
-@using SnailbirdAdminWeb.Client.Models;
-@using SnailbirdAdminWeb.Client.ViewModels;
+﻿@using DataAccess
+@using RazorCore
+@using RazorCore.Navigation
+@using SnailbirdData.Models.Post
+@using SnailbirdAdminWeb.Client.Models
+@using SnailbirdAdminWeb.Client.ViewModels
 
 @typeparam TPost where TPost : Post<TPost>, new()
-@typeparam TView where TView : PostManagerViewModel<TPost>
 @typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
+@typeparam TView where TView : PostManagerViewModel<TPost, TEdit>
 
 @if (ViewComponent != null && ViewModel != null)
 {
@@ -15,12 +15,12 @@
     {
         @ViewComponent(ViewModel)
     }
-    else if (ViewModel.CurrentMode == PostManagerMode.Add && AddComponent != null && AddViewModel != null)
+    else if (ViewModel.CurrentMode == PostManagerMode.Add && AddComponent != null && ViewModel.AddViewModel != null)
     {
-        @AddComponent(AddViewModel.LoadPost(ViewModel.Model.Post))
+        @AddComponent(ViewModel.AddViewModel.LoadPost(ViewModel.Model.Post))
     }
-    else if (ViewModel.CurrentMode == PostManagerMode.Edit && EditComponent != null && EditViewModel != null)
+    else if (ViewModel.CurrentMode == PostManagerMode.Edit && EditComponent != null && ViewModel.EditingViewModel != null)
     {
-        @EditComponent(EditViewModel.LoadPost(ViewModel.Model.Post))
+        @EditComponent(ViewModel.EditingViewModel.LoadPost(ViewModel.Model.Post))
     }
 }

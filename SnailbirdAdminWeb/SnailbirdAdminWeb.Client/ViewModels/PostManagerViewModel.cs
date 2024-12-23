@@ -7,16 +7,21 @@ using SnailbirdAdminWeb.Client.Updates;
 using SnailbirdData.Models.Post;
 using NetBlocks.Utilities;
 using SnailbirdAdminWeb.Client.API;
+using SnailbirdAdminWeb.Client.ViewModels.EditFlex;
 
 namespace SnailbirdAdminWeb.Client.ViewModels
 {
-    public class PostManagerViewModel<TPost> : INavigable<PostManagerMode>
+    public class PostManagerViewModel<TPost, TEdit> : INavigable<PostManagerMode>
         where TPost : Post<TPost>, new()
+        where TEdit : EditPostViewModelBase<TPost, TEdit>
     {
         #region "Members"
         public PostManagerModel<TPost> Model { get; set; }
         private PostManagerUpdate<TPost> Update;
-        
+
+        public EditPostViewModelBase<TPost, TEdit>? EditingViewModel { get; set; }
+        public EditPostViewModelBase<TPost, TEdit>? AddViewModel { get; set; }
+
         public PostManagerViewModel(IPostManagerClient<TPost> postManager)
         {
             InitColumnMap();

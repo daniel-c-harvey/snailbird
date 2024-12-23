@@ -20,7 +20,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels
             return (TSelf)this;
         }
 
-        public virtual void CommitPost()
+        public void CommitPost()
         {
             if (OnCommitPost != null && Post != null)
             {

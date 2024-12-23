@@ -17,11 +17,21 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
         public void AddNewElement(EditFlexElementViewModel element)
         {
             _elements.Add(element);
+            ElementsModified();
+        }
+
+        private void ElementsModified()
+        {
+            if (Post != null)
+            {
+                Post.Elements = _elements.Select(e => e.Element).ToList();
+            }
         }
 
         public void RemoveElement(EditFlexElementViewModel element)
         {
             _elements.Remove(element);
+            ElementsModified();
         }
 
         public override EditFlexPostViewModel<TPost> LoadPost(TPost post)
@@ -83,15 +93,6 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
             Elements.Remove(movedElement);
             Elements.Insert(newIndex, movedElement);
             ElementChanged?.Invoke(this, new EventArgs());
-        }
-
-        public override void CommitPost()
-        {
-            if (Post != null)
-            {
-                Post.Elements = _elements.Select(e => e.Element).ToList();
-                base.CommitPost();
-            }
         }
     }
 }

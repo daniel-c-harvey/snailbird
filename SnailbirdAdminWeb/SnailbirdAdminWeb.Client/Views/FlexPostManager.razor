@@ -9,9 +9,7 @@
 
 <PostManager TPost="TPost" 
                 TEdit="EditFlexPostViewModel<TPost>" 
-                ViewModel="@ViewModel"
-                AddViewModel="@AddViewModel"
-                EditViewModel="@EditViewModel">
+                ViewModel="@ViewModel">
     <AddComponent Context="viewModel">
         <EditFlexPost ViewModel="viewModel" />
     </AddComponent>
@@ -25,10 +23,7 @@
     [Inject]
     public IServiceProvider? Services { get; set; }
 
-    public FlexPostManagerViewModel<TPost>? ViewModel { get; set; }
-
-    protected EditFlexPostViewModel<TPost>? EditViewModel { get; set; }
-    protected EditFlexPostViewModel<TPost>? AddViewModel { get; set; }
+    protected FlexPostManagerViewModel<TPost>? ViewModel { get; set; }
 
     protected override void OnInitialized()
     {
@@ -40,8 +35,8 @@
             ViewModel = new(PostManager);
             if (ViewModel.Model != null)
             {
-                EditViewModel = new(ViewModel.SavePost);
-                AddViewModel = new(ViewModel.SaveNewPost);
+                ViewModel.EditingViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SavePost);
+                ViewModel.AddViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SaveNewPost);
             }
 
         }

@@ -13,12 +13,10 @@
     <NavPanel TMode="PostManagerMode" ViewModel="@ViewModel">
         <PostManagerBase TPost="TPost"
                          TEdit="TEdit"
-                         TView="PostManagerViewModel<TPost>"
+                         TView="PostManagerViewModel<TPost, TEdit>"
                          ViewModel="ViewModel"
                          AddComponent="AddComponent"
-                         AddViewModel="AddViewModel"
-                         EditComponent="EditComponent"
-                         EditViewModel="EditViewModel">
+                         EditComponent="EditComponent">
             <ViewComponent Context="viewModel">
                 <NewRowTable TModel="TPost"
                              models="viewModel.Model.Posts"
