@@ -1,6 +1,6 @@
 ﻿@using SnailbirdData.Models.Post
 
-@typeparam TPost where TPost : SnailbirdData.Models.Post.Post<TPost>
+@typeparam TPost where TPost : SnailbirdData.Models.Post.FlexPost<TPost>, new()
 
 <h1 class="pink header clickable" @onclick="OnHeaderClick">@Post.Title</h1>
 <h3 class="aqua date header">@Post.PostDate.ToShortDateString()</h3>

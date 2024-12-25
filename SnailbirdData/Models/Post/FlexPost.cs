@@ -5,7 +5,7 @@ namespace SnailbirdData.Models.Post
     public abstract class FlexPost<TPost> : Post<TPost>
     where TPost : FlexPost<TPost>, new()
     {
-        public IEnumerable<FlexElement> Elements { get; set; }
+        public IList<FlexElement> Elements { get; set; }
 
         public FlexPost()
         { 

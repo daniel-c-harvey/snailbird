@@ -16,7 +16,7 @@ namespace SnailbirdAdminWeb.Client.Models
     public class PostManagerModel<TPost> : IMode<PostManagerMode>
         where TPost : Post<TPost>, new()
     {
-        public IEnumerable<TPost> Posts { get; set; }
+        public IList<TPost> Posts { get; set; }
 
         private TPost _post = default!;
         private TPost _originalPost = default!;
@@ -46,12 +46,6 @@ namespace SnailbirdAdminWeb.Client.Models
         {
             Posts = new List<TPost>();
             Post = new TPost();
-        }
-
-        public PostManagerModel(IEnumerable<TPost> posts, TPost post)
-        {
-            Posts = posts;
-            Post = post;
         }
     }
 }

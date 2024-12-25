@@ -61,6 +61,7 @@ namespace SnailbirdAdminWeb.Client.Updates
             // update model with new post
             model.Post = message.Post;
             model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
+            model.Posts.Add(model.Post);
 
             // set the Save action if there is a dirty nav
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
@@ -136,7 +137,7 @@ namespace SnailbirdAdminWeb.Client.Updates
                 var results = await PostManager.GetPage(message.PageIndex, message.PageSize);
                 if (results.Success && results.Value != null)
                 {
-                    model.Posts = results.Value;
+                    model.Posts = results.Value.ToList();
                     Navigator.NavigateForward(PostManagerMode.View);
                 }
             }

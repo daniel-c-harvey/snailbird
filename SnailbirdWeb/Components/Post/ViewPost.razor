@@ -6,9 +6,11 @@
         @if (Post is SnailbirdData.Models.Post.LiveJamPost liveJamPost)
         {
             <LiveJamPost Post="@liveJamPost" OnSelect="post => OnSelectPost(post as TPostModel)" />
-        } else if (Post is SnailbirdData.Models.Post.FlexPost<TPostModel> flexPost)
+        } else if (Post is SnailbirdData.Models.Post.FlexPost<TPostModel>)
         {
-            <FlexPost TPost="TPostModel" Post="@flexPost" OnSelect="post => OnSelectPost(post as TPostModel)" />
+            @typeparam T where T : SnailbirdData.Models.Post.FlexPost<T>, new()
+            var flexPost = Post as SnailbirdData.Models.Post.FlexPost<T>;
+            <FlexPost TPost="T" Post="@flexPost" OnSelect="post => OnSelectPost(post as T)" />
         }
     </div>
 }
