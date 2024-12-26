@@ -2,18 +2,18 @@
 @using RazorCore.Navigation
 @using SnailbirdWeb.Models;
 @using SnailbirdWeb.ViewModels
-@typeparam TPostModel where TPostModel : SnailbirdData.Models.Post.Post<TPostModel>, new()
+@typeparam TPostModel where TPostModel : SnailbirdData.Models.Post.FlexPost<TPostModel>, new()
 
 @if (ViewModel != null)
 {
     @if (ViewModel.Navigator.CurrentMode == PostBrowserMode.Feed)
     {
-        <PostFeed TModel="TPostModel" Posts="@ViewModel.Model.FeedModel.Posts" OnSelect="@ViewModel.ViewPost" />
+        <FlexPostFeed TModel="TPostModel" Posts="@ViewModel.Model.FeedModel.Posts" OnSelect="@ViewModel.ViewPost" />
     }
     else if (ViewModel.Navigator.CurrentMode == PostBrowserMode.ViewPost)
     {
         <div class="sb-postframe">
-            <ViewPost TPostModel="TPostModel" Post="ViewModel.Model.SelectedPostModel.Post" />
+            <ViewFlexPost TPostModel="TPostModel" Post="ViewModel.Model.SelectedPostModel.Post"/>
         </div>
     }
 }

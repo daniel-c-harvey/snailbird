@@ -47,6 +47,7 @@ namespace SnailbirdWeb.Models
         
         public PostBrowserModel()
         {
+            CurrentMode = PostBrowserMode.Feed;
             SelectedPostModel = new PostBrowserViewPostModel<TPostModel>(new TPostModel());
             FeedModel = new(new Page(0, 0), new List<TPostModel>());
         }

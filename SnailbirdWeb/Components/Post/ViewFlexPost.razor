@@ -1,18 +1,15 @@
-﻿@typeparam TPostModel where TPostModel : SnailbirdData.Models.Post.Post<TPostModel>, new()
+﻿@typeparam TPostModel where TPostModel : SnailbirdData.Models.Post.FlexPost<TPostModel>, new()
 
 @if (Post != null)
 {
     <div class="post" id="@Post.ID">
-        @if (Post is SnailbirdData.Models.Post.LiveJamPost liveJamPost)
-        {
-            <LiveJamPost Post="@liveJamPost" OnSelect="post => OnSelectPost(post as TPostModel)" />
-        } 
+        <FlexPost TPost="TPostModel" Post="@Post" OnSelect="post => OnSelectPost(post as TPostModel)" />
     </div>
 }
 
 @code {
     [Parameter]
-    public required TPostModel? Post { get; set; }
+    public TPostModel? Post { get; set; }
 
     [Parameter]
     public EventCallback<TPostModel> OnSelect { get; set; }

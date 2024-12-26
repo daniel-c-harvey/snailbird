@@ -1,0 +1,35 @@
+﻿@using RazorCore;
+
+@typeparam TModel where TModel : SnailbirdData.Models.Post.FlexPost<TModel>, new()
+
+@if (Posts == null)
+{
+    <span>Loading...</span>
+}
+else
+{
+    <div class="sb-postframe">
+        @foreach (TModel post in Posts)
+        {
+            <Expandable Expanded="@(post.Equals(Posts.FirstOrDefault()))">
+                <ViewFlexPost TPostModel="TModel" Post="@post" OnSelect="OnSelectPost" />
+            </Expandable>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<TModel>? Posts { get; set; }
+
+    [Parameter]
+    public EventCallback<TModel> OnSelect { get; set; }
+
+    private async Task OnSelectPost(TModel post)
+    {
+        if (OnSelect.HasDelegate)
+        {
+            await OnSelect.InvokeAsync(post);
+        }
+    }
+}

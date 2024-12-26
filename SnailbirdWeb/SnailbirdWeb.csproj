@@ -7,8 +7,6 @@
     <UserSecretsId>bf3fe2b0-a8d6-424f-8ee0-2f2c6e0798fd</UserSecretsId>
   </PropertyGroup>
 
-
-
   <ItemGroup>
     <_WebToolingArtifacts Remove="properties\publishprofiles\dch5-deploy.sh" />
   </ItemGroup>

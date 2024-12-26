@@ -64,8 +64,12 @@ namespace SnailbirdAdminWeb.Client.Updates
 
             // set the Save action if there is a dirty nav
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
-                () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
-            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
+                () =>
+                {
+                    Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
+                    model.Posts.Add(model.Post);
+                };
+                    Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
                 () => ResetPost(model);
 
             // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
@@ -136,7 +140,7 @@ namespace SnailbirdAdminWeb.Client.Updates
                 var results = await PostManager.GetPage(message.PageIndex, message.PageSize);
                 if (results.Success && results.Value != null)
                 {
-                    model.Posts = results.Value;
+                    model.Posts = results.Value.ToList();
                     Navigator.NavigateForward(PostManagerMode.View);
                 }
             }
