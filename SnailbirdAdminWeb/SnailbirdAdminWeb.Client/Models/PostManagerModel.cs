@@ -28,12 +28,10 @@ namespace SnailbirdAdminWeb.Client.Models
                 _post = value;
                 _originalPost = _post.Clone();
                 
-                var posts = Posts.ToList();
-                var z = posts.FirstOrDefault(p => p.ID == _post.ID);
+                var z = Posts.FirstOrDefault(p => p.ID == _post.ID);
                 if (z != null)
                 {
-                    posts[posts.IndexOf(z)] = _post;
-                    Posts = posts;
+                    Posts[Posts.IndexOf(z)] = _post;
                 }
             }
         }
@@ -47,11 +45,5 @@ namespace SnailbirdAdminWeb.Client.Models
             Posts = new List<TPost>();
             Post = new TPost();
         }
-
-        //public PostManagerModel(IEnumerable<TPost> posts, TPost post)
-        //{
-        //    Posts = posts.ToList();
-        //    Post = post;
-        //}
     }
 }
