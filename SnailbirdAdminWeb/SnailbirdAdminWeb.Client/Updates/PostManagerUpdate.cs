@@ -32,10 +32,10 @@ namespace SnailbirdAdminWeb.Client.Updates
                     var editMessage = message as PostManagerEditMessage<TPost>;
                     if (editMessage is not null) EditPost(model, editMessage);
                     break;
-                //case PostManagerAction.Delete:
-                //    var deleteMessage = message as PostManagerDeleteMessage<TPost>;
-                //    if (deleteMessage is not null) DeletePost(model, deleteMessage);
-                //    break;
+                case PostManagerAction.Delete:
+                    var deleteMessage = message as PostManagerDeleteMessage<TPost>;
+                    if (deleteMessage is not null) DeletePost(model, deleteMessage);
+                    break;
                 case PostManagerAction.SaveNew:
                     var saveNewMessage = message as PostManagerSaveNewMessage<TPost>;
                     if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage);
@@ -60,16 +60,12 @@ namespace SnailbirdAdminWeb.Client.Updates
         {
             // update model with new post
             model.Post = message.Post;
-            model.Post.ID = (model.Posts?.LongCount() ?? 0) + 1;
+            model.Post.ID = model.Posts.LongCount() + 1;
 
             // set the Save action if there is a dirty nav
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
-                () =>
-                {
-                    Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
-                    model.Posts.Add(model.Post);
-                };
-                    Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
+                () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
+            Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
                 () => ResetPost(model);
 
             // naviagte to the edit page with the new post and configure the dirty away-navigation prompt
@@ -101,14 +97,15 @@ namespace SnailbirdAdminWeb.Client.Updates
                                                 (_, args) => args.IsConfirmed = model.IsPostModified);
         }
 
-        //private void DeletePost(PostManagerModel<TPost> model,
-        //                        PostManagerDeleteMessage<TPost> message)
-        //{
-        //    if (PostManager is not null)
-        //    {
-        //        PostManager.Delete(message.Post);
-        //    }
-        //}
+        private void DeletePost(PostManagerModel<TPost> model,
+                                PostManagerDeleteMessage<TPost> message)
+        {
+            if (PostManager is not null)
+            {
+                PostManager.Delete(message.Post);
+                model.Posts.Remove(message.Post);
+            }
+        }
 
         private void SaveNewPost(PostManagerModel<TPost> model,
                                  PostManagerSaveNewMessage<TPost> message)
@@ -117,6 +114,7 @@ namespace SnailbirdAdminWeb.Client.Updates
             {
                 PostManager.Insert(message.Post);
                 model.Post = message.Post;
+                model.Posts.Add(message.Post);
                 Navigator.NavigateBack();
             }
         }

@@ -41,6 +41,12 @@ namespace SnailbirdAdminWeb.API
             return manager.InsertPost(post);
         }
 
+        [HttpPost("delete")]
+        public Result Delete([FromBody] TPost post)
+        {
+            return manager.DeletePost(post);
+        }
+
 
 
         //// GET api/<ValuesController>/5

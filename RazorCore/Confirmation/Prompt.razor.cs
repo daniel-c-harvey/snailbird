@@ -21,13 +21,15 @@ namespace RazorCore.Confirmation
             IsVisible = false;
             StateHasChanged();
             ViewModel.Choices[choice]?.Invoke();
+            ClearChoiceHandlers();
         }
-        
-        private void Close(Action command)
+
+        private void ClearChoiceHandlers()
         {
-            IsVisible = false;
-            StateHasChanged();
-            command.Invoke();
+            foreach (var choice in ViewModel.Choices.Keys)
+            {
+                ViewModel.Choices[choice] = null;
+            }
         }
     }
 }

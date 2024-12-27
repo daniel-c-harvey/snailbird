@@ -74,5 +74,26 @@ namespace SnailbirdAdminWeb.Client.API
             }
             return result;
         }
+
+        public abstract Task<Result> Delete(TPost post);
+        protected async Task<Result> Delete(TPost post, string controller)
+        {
+            Result? result = null;
+            try
+            {
+                HttpResponseMessage response = await http.PostAsJsonAsync<TPost>($"api/{controller}/delete", post);
+                result = await response.Content.ReadFromJsonAsync<Result>();
+                if (result is null)
+                {
+                    throw new Exception("Failed to deserialize the results");
+                }
+            }
+            catch (Exception ex)
+            {
+                result = new();
+                result.Fail(ex.Message);
+            }
+            return result;
+        }
     }
 }

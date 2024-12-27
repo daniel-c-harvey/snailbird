@@ -22,5 +22,10 @@ namespace SnailbirdAdminWeb.Client.API
         {
             return await Insert(post, CONTROLLER_NAME);
         }
+
+        public async override Task<Result> Delete(LabFeedFlexPost post)
+        {
+            return await Delete(post, CONTROLLER_NAME);
+        }
     }
 }
