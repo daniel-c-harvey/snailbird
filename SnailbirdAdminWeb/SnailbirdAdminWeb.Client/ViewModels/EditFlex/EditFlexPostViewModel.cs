@@ -17,15 +17,8 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
         public void AddNewElement(EditFlexElementViewModel element)
         {
             Elements.Add(element);
+            RegisterElementEvents(element);
             OnElementChanged();
-        }
-
-        private void ElementsModified()
-        {
-            if (Post != null)
-            {
-                Post.Elements = Elements.Select(e => e.Element).ToList();
-            }
         }
 
         public void RemoveElement(EditFlexElementViewModel element)
@@ -43,16 +36,18 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
                 _elements = Post.Elements.Select(e => new EditFlexElementViewModel(e)).ToList();
 
                 // Register reordering & delete events
-                Elements.Apply(vm =>
-                {
-                    vm.Ascend += OnElementAscend;
-                    vm.Descend += OnElementDescend;
-                    vm.DeleteClicked += OnDeleteClicked;
-                    vm.ElementChanged += OnElementChanged;
-                });
+                Elements.Apply(RegisterElementEvents);
             }
 
             return this;
+        }
+
+        private void RegisterElementEvents(EditFlexElementViewModel model)
+        {
+            model.Ascend += OnElementAscend;
+            model.Descend += OnElementDescend;
+            model.DeleteClicked += OnDeleteClicked;
+            model.ElementChanged += OnElementChanged;
         }
 
         private void OnDeleteClicked(object? sender, EventArgs e)
@@ -99,10 +94,19 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
         {
             OnElementChanged();
         }
+
         private void OnElementChanged()
         {
             ElementsModified();
             ElementChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void ElementsModified()
+        {
+            if (Post != null)
+            {
+                Post.Elements = Elements.Select(e => e.Element).ToList();
+            }
         }
     }
 }
