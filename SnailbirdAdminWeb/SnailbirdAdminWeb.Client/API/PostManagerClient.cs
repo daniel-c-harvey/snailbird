@@ -16,8 +16,6 @@ namespace SnailbirdAdminWeb.Client.API
             {
                 HttpResponseMessage get = await http.GetAsync($"api/{controller}?page={page}&size={size}");
                 result = await get.Content.ReadFromJsonAsync<ResultContainer<IEnumerable<TPost>>>();
-                string txt = await get.Content.ReadAsStringAsync();
-
                 if (result == null)
                 {
                     throw new Exception($"Failed to deserialize post page.");
@@ -28,7 +26,6 @@ namespace SnailbirdAdminWeb.Client.API
                 result = new();
                 result.Fail(ex.Message);
             }
-
             return result;
         }
 

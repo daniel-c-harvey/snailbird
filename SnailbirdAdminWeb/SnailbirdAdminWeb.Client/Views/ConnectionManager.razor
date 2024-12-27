@@ -2,62 +2,39 @@
 @using NetBlocks.Models;
 @using RazorCore;
 @using NetBlocks.Models.Environment;
+@using NetBlocks.Utilities.Environment;
+@using SnailbirdAdminWeb.Client.API
+@using SnailbirdAdminWeb.Client.ViewModels
 
+@inject IServiceProvider Services
 
-<NewRowTable 
-    TModel="Connection" 
-    models="Connections" 
-    columnMap="columns" 
-    OnDelete="c => Delete(c)" 
-    OnAdd="c => Add(c)"/> 
+@if (ViewModel != null)
+{
+    <NewRowTable 
+        TModel="Connection" 
+        models="ViewModel.Connections.ConnectionStrings" 
+        columnMap="ConnectionManagerViewModel.ColumnMap" 
+        OnDelete="ViewModel.Delete" 
+        OnAdd="ViewModel.Add" />
 
-<div>
-    <button type="button" class="btn btn-primary" @onclick="@(e => SaveConnections())">
-        <i class="bi bi-floppy"></i>
-    </button>
-</div>
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="ViewModel.SaveConnections">
+            <i class="bi bi-floppy"></i>
+        </button>
+    </div>
+}
 
 @code {
-    private static IColumnMap<Connection> columns = new ColumnMap<Connection>()
-        .AddColumn("ID",
-            new ModelColumn<Connection>(
-                (c) => LongConverter.ToString(c.ID),
-                (c, id) => c.ID = LongConverter.FromString(id))
-            .MakeEditable())
-        .AddColumn("Name", 
-            new ModelColumn<Connection>(
-                (c) => c.ConnectionName, 
-                (c, name) => c.ConnectionName = name)
-            .MakeEditable())
-        .AddColumn("Connection String", 
-            new ModelColumn<Connection>(
-                (c) => c.ConnectionString, 
-                (c, connctionString) => c.ConnectionString = connctionString)
-            .MakeEditable());
+    ConnectionManagerViewModel? ViewModel;
 
-    private IList<Connection> Connections { get; }
-
-    public ConnectionManager()
+    protected override async Task OnInitializedAsync()
     {
-        var connections = ConnectionStringTools.LoadFromFile("./.secrets/connections.json");
-        
-        Connections = connections?.ConnectionStrings.ToList() ?? new List<Connection>();
-    }
+        var client = Services.GetService<IConnectionManagerClient>();
+        if (client != null)
+        {
+            ViewModel = await ConnectionManagerViewModel.Init(client);
+        }
 
-    private void Delete(Connection connection)
-    {
-        Connections.Remove(connection);
+        await base.OnInitializedAsync();
     }
-
-    private void Add(Connection connection)
-    {
-        Connections.Add(connection);
-    }
-
-    private void SaveConnections()
-    {
-        Connections connections = new Connections {ConnectionStrings = Connections};
-        ConnectionStringTools.SaveToFile("./.secrets/connections.json", connections);
-    }
-
 }
