@@ -22,13 +22,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnailbirdMedia", "SnailbirdMedia\SnailbirdMedia.csproj", "{9700D1C7-C469-4C41-81F5-7EC1ADB9354B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdAdminServerApp", "SnailbirdAdminServerApp\SnailbirdAdminServerApp.csproj", "{F38E52DA-B1CB-4FB1-BEE9-7E38D5FFC663}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdAdminWeb", "SnailbirdAdminWeb\SnailbirdAdminWeb\SnailbirdAdminWeb.csproj", "{D90A917F-FF1A-49BC-9BF7-578ADF29E99A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdAdminWeb.Client", "SnailbirdAdminWeb\SnailbirdAdminWeb.Client\SnailbirdAdminWeb.Client.csproj", "{BF64690C-075F-492E-8543-A659A8D34018}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdAdmin", "SnailbirdAdmin\SnailbirdAdmin.csproj", "{8563FA20-7F20-43DE-8FC0-11A42A8C6FFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,10 +60,6 @@ Global
 		{9700D1C7-C469-4C41-81F5-7EC1ADB9354B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9700D1C7-C469-4C41-81F5-7EC1ADB9354B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9700D1C7-C469-4C41-81F5-7EC1ADB9354B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F38E52DA-B1CB-4FB1-BEE9-7E38D5FFC663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F38E52DA-B1CB-4FB1-BEE9-7E38D5FFC663}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F38E52DA-B1CB-4FB1-BEE9-7E38D5FFC663}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F38E52DA-B1CB-4FB1-BEE9-7E38D5FFC663}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D90A917F-FF1A-49BC-9BF7-578ADF29E99A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D90A917F-FF1A-49BC-9BF7-578ADF29E99A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D90A917F-FF1A-49BC-9BF7-578ADF29E99A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,10 +68,6 @@ Global
 		{BF64690C-075F-492E-8543-A659A8D34018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF64690C-075F-492E-8543-A659A8D34018}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF64690C-075F-492E-8543-A659A8D34018}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8563FA20-7F20-43DE-8FC0-11A42A8C6FFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8563FA20-7F20-43DE-8FC0-11A42A8C6FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8563FA20-7F20-43DE-8FC0-11A42A8C6FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8563FA20-7F20-43DE-8FC0-11A42A8C6FFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
