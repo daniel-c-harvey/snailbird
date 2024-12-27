@@ -91,11 +91,14 @@ namespace SnailbirdAdminWeb
             }
 
             MongoAdapter<LiveJamPost> liveJamPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioLiveJamPost"));
-            MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter = new(dataResources.DataAccess, dataResources.QueryBuilder, new DataSchema("studioFeedFlexPost"));
-            
+            MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter = new(dataResources.DataAccess, 
+                                                                             dataResources.QueryBuilder, 
+                                                                             new DataSchema("studioFeedFlexPost"));
             MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter = new(dataResources.DataAccess, 
                                                                        dataResources.QueryBuilder, 
                                                                        new DataSchema("labFeedFlexPost"));
+
+            API.Managers.PostManager<StudioFeedFlexPost> studioFeedManager = new(studioFeedFlexPostAdapter);
             API.Managers.PostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter);
 
 
@@ -116,6 +119,7 @@ namespace SnailbirdAdminWeb
             .AddSingleton<IPostProvider<LiveJamPost>, LiveJamPostMongoProvider>(_ => new LiveJamPostMongoProvider(liveJamPostAdapter))
             .AddSingleton<IEndpoints, Endpoints>(_ => endpoints)
             .AddSingleton<API.Managers.IPostManager<LabFeedFlexPost>, API.Managers.PostManager<LabFeedFlexPost>>(_ => labFeedManager)
+            .AddSingleton<API.Managers.IPostManager<StudioFeedFlexPost>, API.Managers.PostManager<StudioFeedFlexPost>>(_ => studioFeedManager)
             .AddControllers();
 
             return true;
