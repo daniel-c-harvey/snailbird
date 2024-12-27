@@ -31,14 +31,11 @@
 
         if (Services is null) throw new ArgumentNullException(nameof(Services));
         var PostManager = Services.GetService<IPostManagerClient<TPost>>();
-        if (PostManager != null) {
+        if (PostManager != null) 
+        {
             ViewModel = new(PostManager);
-            if (ViewModel.Model != null)
-            {
-                ViewModel.EditingViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SavePost);
-                ViewModel.AddViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SaveNewPost);
-            }
-
+            ViewModel.EditingViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SavePost);
+            ViewModel.AddViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SaveNewPost);
         }
 
     }

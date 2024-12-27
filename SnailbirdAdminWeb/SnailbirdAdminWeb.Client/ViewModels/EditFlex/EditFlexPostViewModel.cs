@@ -16,22 +16,22 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
 
         public void AddNewElement(EditFlexElementViewModel element)
         {
-            _elements.Add(element);
-            ElementsModified();
+            Elements.Add(element);
+            OnElementChanged();
         }
 
         private void ElementsModified()
         {
             if (Post != null)
             {
-                Post.Elements = _elements.Select(e => e.Element).ToList();
+                Post.Elements = Elements.Select(e => e.Element).ToList();
             }
         }
 
         public void RemoveElement(EditFlexElementViewModel element)
         {
-            _elements.Remove(element);
-            ElementsModified();
+            Elements.Remove(element);
+            OnElementChanged();
         }
 
         public override EditFlexPostViewModel<TPost> LoadPost(TPost post)
@@ -48,6 +48,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
                     vm.Ascend += OnElementAscend;
                     vm.Descend += OnElementDescend;
                     vm.DeleteClicked += OnDeleteClicked;
+                    vm.ElementChanged += OnElementChanged;
                 });
             }
 
@@ -59,7 +60,6 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
             if (sender is EditFlexElementViewModel deletedElement)
             {
                 RemoveElement(deletedElement);
-                ElementChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -92,6 +92,16 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex
         {
             Elements.Remove(movedElement);
             Elements.Insert(newIndex, movedElement);
+            OnElementChanged();
+        }
+
+        private void OnElementChanged(object? sender, EventArgs e)
+        {
+            OnElementChanged();
+        }
+        private void OnElementChanged()
+        {
+            ElementsModified();
             ElementChanged?.Invoke(this, new EventArgs());
         }
     }
