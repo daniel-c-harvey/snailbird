@@ -8,6 +8,7 @@
 @using SnailbirdData.Models.Post;
 @using SnailbirdMedia;
 @using SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element;
+@using RazorCore.Table;
 
 @if (ViewModel != null)
 {   
@@ -73,16 +74,18 @@
     public EditFlexElementViewModel? ViewModel { get; set; }
 
     private static IColumnMap<Instrument> InstrumentColumns = new ColumnMap<Instrument>()
-            .AddColumn("Name",
-                new ModelColumn<Instrument>(
-                    inst => inst.Name,
-                    (inst, name) => inst.Name = name)
-                .MakeEditable())
-            .AddColumn("Description",
-                new ModelColumn<Instrument>(
-                    inst => inst.Description,
-                    (inst, desc) => inst.Description = desc)
-                .MakeEditable());
+        .AddColumn(
+            ColumnKey.Init(typeof(Instrument).GetProperty(nameof(Instrument.Name))),
+            ModelColumn<Instrument>.Init(
+                inst => inst.Name,
+                (inst, name) => inst.Name = name)
+            .MakeEditable())
+        .AddColumn(
+            ColumnKey.Init(typeof(Instrument).GetProperty(nameof(Instrument.Description))),
+            ModelColumn<Instrument>.Init(
+                inst => inst.Description,
+                (inst, desc) => inst.Description = desc)
+            .MakeEditable());
 
     private Confirmation changeConfirmation = default!;
 

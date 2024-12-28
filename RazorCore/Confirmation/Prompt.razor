@@ -1,4 +1,6 @@
-﻿@if (ViewModel?.PromptMessage != null)
+﻿@using Microsoft.AspNetCore.Components.Web
+
+@if (ViewModel?.PromptMessage != null)
 {
     var showClass = IsVisible ? "show" : string.Empty;
 

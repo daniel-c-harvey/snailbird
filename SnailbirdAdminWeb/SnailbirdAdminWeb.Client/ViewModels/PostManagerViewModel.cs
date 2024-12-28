@@ -1,13 +1,10 @@
-﻿using DataAccess;
-using RazorCore.Navigation;
-using RazorCore;
+﻿using RazorCore.Navigation;
 using SnailbirdAdminWeb.Client.Messages;
 using SnailbirdAdminWeb.Client.Models;
 using SnailbirdAdminWeb.Client.Updates;
 using SnailbirdData.Models.Post;
-using NetBlocks.Utilities;
 using SnailbirdAdminWeb.Client.API;
-using SnailbirdAdminWeb.Client.ViewModels.EditFlex;
+using RazorCore.Table;
 
 namespace SnailbirdAdminWeb.Client.ViewModels
 {
@@ -37,19 +34,22 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         protected virtual void InitColumnMap()
         {
             Columns = new ColumnMap<TPost>()
-                            .AddColumn("ID",
-                                new ModelColumn<TPost>(
-                                    (p) => LongConverter.ToString(p.ID),
-                                    (p, id) => p.ID = LongConverter.FromString(id)))
-                            .AddColumn("Title",
-                                new ModelColumn<TPost>(
+                            .AddColumn(
+                                ColumnKey.Init(typeof(TPost).GetProperty(nameof(Post<TPost>.ID))),
+                                ModelColumn<TPost>.Init(
+                                    (p) => p.ID,
+                                    (p, id) => p.ID = id))
+                            .AddColumn(
+                                ColumnKey.Init(typeof(TPost).GetProperty(nameof(Post<TPost>.Title))),
+                                ModelColumn<TPost>.Init(
                                     (p) => p.Title,
                                     (p, title) => p.Title = title)
                                 .MakeClickable(EditPost))
-                            .AddColumn("Date",
-                                new ModelColumn<TPost>(
-                                    (p) => DateTimeConverter.ToShortDate(p.PostDate),
-                                    (p, date) => p.PostDate = DateTimeConverter.FromString(date)));
+                            .AddColumn(
+                                ColumnKey.Init("Date", typeof(TPost).GetProperty(nameof(Post<TPost>.PostDate))),
+                                ModelColumn<TPost>.Init(
+                                    (p) => p.PostDate,
+                                    (p, date) => p.PostDate = date));
         }
         #endregion
 

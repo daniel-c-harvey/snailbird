@@ -16,44 +16,44 @@ namespace SnailbirdAdminWeb
         {
             // Load connections and data services
             ResultContainer<Connection> connectionResults = LoadConnections(builder);
-            if (!connectionResults.Success || connectionResults.Value is null) { return false; }
-            Connection connection = connectionResults.Value;
+            if (connectionResults.Success && connectionResults.Value != null) 
+            {
+                Connection connection = connectionResults.Value;
 
-            ResultContainer<DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>> dataResourceResults = LoadDataResources(builder, connection);
-            if (!dataResourceResults.Success || dataResourceResults.Value is null) { return false; }
-            DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder> dataResources = dataResourceResults.Value;
+                ResultContainer<DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder>> dataResourceResults = LoadDataResources(builder, connection);
+                if (!dataResourceResults.Success || dataResourceResults.Value is null) { return false; }
+                DataResources<IMongoDatabase, MongoDataAccess, MongoQueryBuilder> dataResources = dataResourceResults.Value;
 
-            builder.Services
-                .AddSingleton<IDataAccess<IMongoDatabase>, MongoDataAccess>(_ => dataResources.DataAccess);
+                builder.Services
+                    .AddSingleton<IDataAccess<IMongoDatabase>, MongoDataAccess>(_ => dataResources.DataAccess);
+
+                // Load model adapters
+                MongoAdapter<LiveJamPost> liveJamPostAdapter;
+                MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter;
+                MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter;
+                LoadAdapters(dataResources, out liveJamPostAdapter, out studioFeedFlexPostAdapter, out labFeedFlexPostAdapter);
+
+                builder.Services
+                    .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>(_ => liveJamPostAdapter)
+                    .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>(_ => studioFeedFlexPostAdapter)
+                    .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>(_ => labFeedFlexPostAdapter);
+
+                // Load Post API Managers
+                PostManager<StudioFeedFlexPost> studioFeedManager = new(studioFeedFlexPostAdapter);
+                PostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter);
+
+                builder.Services
+                    .AddSingleton<IPostManager<LabFeedFlexPost>, PostManager<LabFeedFlexPost>>(_ => labFeedManager)
+                    .AddSingleton<IPostManager<StudioFeedFlexPost>, PostManager<StudioFeedFlexPost>>(_ => studioFeedManager);
+            }
 
             // Load Connection file loader
             ConnectionStringLoader connectionStringLoader = new ConnectionStringLoader();
-
-            builder.Services
-                .AddSingleton<IConnectionStringLoader, ConnectionStringLoader>(_ => connectionStringLoader);
-
-
-            // Load model adapters
-            MongoAdapter<LiveJamPost> liveJamPostAdapter;
-            MongoAdapter<StudioFeedFlexPost> studioFeedFlexPostAdapter;
-            MongoAdapter<LabFeedFlexPost> labFeedFlexPostAdapter;
-            LoadAdapters(dataResources, out liveJamPostAdapter, out studioFeedFlexPostAdapter, out labFeedFlexPostAdapter);
-
-            builder.Services
-                .AddSingleton<IDataAdapter<LiveJamPost>, MongoAdapter<LiveJamPost>>(_ => liveJamPostAdapter)
-                .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>(_ => studioFeedFlexPostAdapter)
-                .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>(_ => labFeedFlexPostAdapter);
-
-            // Load Post API Managers & Controllers
-            PostManager<StudioFeedFlexPost> studioFeedManager = new(studioFeedFlexPostAdapter);
-            PostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter);
             ConnectionManager connectionManager = new(connectionStringLoader);
 
             builder.Services
-                .AddSingleton<IPostManager<LabFeedFlexPost>, PostManager<LabFeedFlexPost>>(_ => labFeedManager)
-                .AddSingleton<IPostManager<StudioFeedFlexPost>, PostManager<StudioFeedFlexPost>>(_ => studioFeedManager)
-                .AddSingleton<IConnectionManager, ConnectionManager>(_ => connectionManager)
-                .AddControllers();
+                .AddSingleton<IConnectionStringLoader, ConnectionStringLoader>(_ => connectionStringLoader)
+                .AddSingleton<IConnectionManager, ConnectionManager>(_ => connectionManager);
 
             // Load external API endpoint data
             ResultContainer<Endpoints> endpointResults = LoadEndpoints(builder);
@@ -63,6 +63,10 @@ namespace SnailbirdAdminWeb
             builder.Services
                 .AddSingleton<IEndpoints, Endpoints>(_ => endpoints);
             
+            // Load Controllers
+            builder.Services
+                .AddControllers();
+
             // Pass
             return true;
         }

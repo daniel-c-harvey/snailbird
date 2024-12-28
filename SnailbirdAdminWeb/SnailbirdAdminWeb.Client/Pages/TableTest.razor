@@ -1,6 +1,7 @@
-﻿
+﻿@using NetBlocks.Utilities
+@using RazorCore.Table
+
 @page "/tabletest"
-@using NetBlocks.Utilities
 
 @rendermode InteractiveServer
 @* @attribute [StreamRendering] *@
@@ -32,22 +33,30 @@
         base.OnInitialized();
 
         coinMap
-            .AddColumn($"{nameof(Cash.Dubloons)} Caption",
-                new ModelColumn<Cash>(
-                    m => IntConverter.ToString(m.Dubloons),
-                    (m, s) => m.Dubloons = IntConverter.FromString(s))
+            .AddColumn(
+                ColumnKey.Init(typeof(Cash).GetProperty(nameof(Cash.Dubloons))),
+                ModelColumn<Cash>.Init(
+                    m => m.Dubloons,
+                    (m, s) => m.Dubloons = s)
                 .MakeClickable(m => m.Dubloons++))
-            .AddColumn($"My Fancy {nameof(Cash.Bones)} Caption",
-                new ModelColumn<Cash>(
-                    m => IntConverter.ToString(m.Bones),
-                    (m, s) => m.Bones = IntConverter.FromString(s)))
-            .AddColumn($"Editable {nameof(Cash.Clams)} Caption",
-                new ModelColumn<Cash>(
-                    m => IntConverter.ToString(m.Clams),
-                    (m, s) => m.Clams = IntConverter.FromString(s))
+            .AddColumn(
+                ColumnKey.Init(
+                    $"My Fancy {nameof(Cash.Bones)} Caption",
+                    typeof(Cash).GetProperty(nameof(Cash.Bones))),
+                ModelColumn<Cash>.Init(
+                    m => m.Bones,
+                    (m, s) => m.Bones = s))
+            .AddColumn(
+                ColumnKey.Init(
+                    $"Editable {nameof(Cash.Clams)} Caption",
+                    typeof(Cash).GetProperty(nameof(Cash.Clams))),
+                ModelColumn<Cash>.Init(
+                    m => m.Clams,
+                    (m, s) => m.Clams = s)
                 .MakeEditable())
-            .AddColumn("Currency",
-                new ModelColumn<Cash>(
+            .AddColumn(
+                ColumnKey.Init(typeof(Cash).GetProperty(nameof(Cash.Currency))),
+                ModelColumn<Cash>.Init(
                     model => model.Currency,
                     (model, value) => model.Currency = value)
                 .MakeEditable()

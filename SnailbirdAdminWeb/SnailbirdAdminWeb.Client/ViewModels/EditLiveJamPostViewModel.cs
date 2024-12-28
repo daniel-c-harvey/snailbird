@@ -1,4 +1,4 @@
-﻿using RazorCore;
+﻿using RazorCore.Table;
 using SnailbirdData.Models.Post;
 
 namespace SnailbirdAdminWeb.Client.ViewModels
@@ -9,13 +9,15 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         public IEnumerable<Instrument> Instruments => _instruments;
 
         public static IColumnMap<Instrument> InstrumentColumns = new ColumnMap<Instrument>()
-            .AddColumn("Name",
-                new ModelColumn<Instrument>(
+            .AddColumn(
+                ColumnKey.Init(typeof(Instrument).GetProperty(nameof(Instrument.Name))),
+                ModelColumn<Instrument>.Init(
                     inst => inst.Name,
                     (inst, name) => inst.Name = name)
                 .MakeEditable())
-            .AddColumn("Description",
-                new ModelColumn<Instrument>(
+            .AddColumn(
+                ColumnKey.Init(typeof(Instrument).GetProperty(nameof(Instrument.Description))),
+                ModelColumn<Instrument>.Init(
                     inst => inst.Description,
                     (inst, desc) => inst.Description = desc)
                 .MakeEditable());
