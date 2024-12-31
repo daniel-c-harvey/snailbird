@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnailbirdData", "..\Snailbi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorCore", "..\RazorCore\RazorCore.csproj", "{3BDDAD0E-3C07-41A6-BA30-4EE5B5B43044}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBlocks", "..\..\..\..\..\lib\DataBlocks\DataBlocks.csproj", "{A4DDFAC2-7F58-49BB-82EF-BC4C7586E866}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBlocks", "C:\lib\DataBlocks\DataBlocks.csproj", "{A4DDFAC2-7F58-49BB-82EF-BC4C7586E866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBlocks", "..\..\..\..\..\lib\NetBlocks\NetBlocks.csproj", "{3EF03D9B-6F4C-45EE-9D29-801B297FCDB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBlocks", "C:\lib\NetBlocks\NetBlocks.csproj", "{3EF03D9B-6F4C-45EE-9D29-801B297FCDB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
