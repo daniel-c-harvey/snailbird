@@ -36,18 +36,18 @@ namespace SnailbirdAdminWeb.Client.ViewModels
             Columns = new ColumnMap<TPost>()
                             .AddColumn(
                                 ColumnKey.Init(typeof(TPost).GetProperty(nameof(Post<TPost>.ID))),
-                                ModelColumn<TPost>.Init(
+                                new ModelColumn<TPost, long>(
                                     (p) => p.ID,
                                     (p, id) => p.ID = id))
                             .AddColumn(
                                 ColumnKey.Init(typeof(TPost).GetProperty(nameof(Post<TPost>.Title))),
-                                ModelColumn<TPost>.Init(
+                                new ModelColumn<TPost, string>(
                                     (p) => p.Title,
                                     (p, title) => p.Title = title)
-                                .MakeClickable(EditPost))
+                                .WithClickable(EditPost))
                             .AddColumn(
                                 ColumnKey.Init("Date", typeof(TPost).GetProperty(nameof(Post<TPost>.PostDate))),
-                                ModelColumn<TPost>.Init(
+                                new ModelColumn<TPost, DateTime>(
                                     (p) => p.PostDate,
                                     (p, date) => p.PostDate = date));
         }

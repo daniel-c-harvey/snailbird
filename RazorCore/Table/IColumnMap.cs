@@ -5,7 +5,7 @@
         IEnumerable<ColumnKey> Keys { get; }
         IEnumerable<string> Captions { get; }
 
-        IModelColumn<TModel> GetColumn(ColumnKey key);
-        IColumnMap<TModel> AddColumn(ColumnKey key, IModelColumn<TModel> column);
+        ITypedColumn<TModel> GetColumn(ColumnKey key);
+        IColumnMap<TModel> AddColumn<TData>(ColumnKey key, IModelColumn<TModel, TData> column);
     }
 }

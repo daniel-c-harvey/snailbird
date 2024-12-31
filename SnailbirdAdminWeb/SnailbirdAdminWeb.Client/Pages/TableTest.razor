@@ -24,8 +24,8 @@
     }
 
     private IEnumerable<string> currencies = new string[] { "USD", "CAD" };
-    private IEnumerable<Cash> coins = new[] { new Cash { Dubloons = 1, Bones = 2 }, 
-                                              new Cash { Dubloons = 3, Bones = 4 } };
+    private IEnumerable<Cash> coins = new[] { new Cash { Dubloons = 1, Bones = 2, Clams = 3, Currency = "USD" }, 
+                                              new Cash { Dubloons = 4, Bones = 5, Clams = 6, Currency = "CAD" } };
     private IColumnMap<Cash> coinMap = new ColumnMap<Cash>();
 
     protected override void OnInitialized()
@@ -33,34 +33,34 @@
         base.OnInitialized();
 
         coinMap
-            .AddColumn(
+            .AddColumn<int>(
                 ColumnKey.Init(typeof(Cash).GetProperty(nameof(Cash.Dubloons))),
-                ModelColumn<Cash>.Init(
+                new ModelColumn<Cash, int>(
                     m => m.Dubloons,
                     (m, s) => m.Dubloons = s)
-                .MakeClickable(m => m.Dubloons++))
+                .WithClickable(m => m.Dubloons++))
             .AddColumn(
                 ColumnKey.Init(
                     $"My Fancy {nameof(Cash.Bones)} Caption",
                     typeof(Cash).GetProperty(nameof(Cash.Bones))),
-                ModelColumn<Cash>.Init(
+                new ModelColumn<Cash, int>(
                     m => m.Bones,
                     (m, s) => m.Bones = s))
             .AddColumn(
                 ColumnKey.Init(
                     $"Editable {nameof(Cash.Clams)} Caption",
                     typeof(Cash).GetProperty(nameof(Cash.Clams))),
-                ModelColumn<Cash>.Init(
+                new ModelColumn<Cash, int>(
                     m => m.Clams,
                     (m, s) => m.Clams = s)
-                .MakeEditable())
+                .WithEditable())
             .AddColumn(
                 ColumnKey.Init(typeof(Cash).GetProperty(nameof(Cash.Currency))),
-                ModelColumn<Cash>.Init(
+                new ModelColumn<Cash, string>(
                     model => model.Currency,
                     (model, value) => model.Currency = value)
-                .MakeEditable()
-                .MakeChoosable(choices:currencies));
+                .WithEditable()
+                .WithChoosable(choices:currencies));
 
     }
 

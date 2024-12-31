@@ -11,16 +11,16 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         public static IColumnMap<Instrument> InstrumentColumns = new ColumnMap<Instrument>()
             .AddColumn(
                 ColumnKey.Init(typeof(Instrument).GetProperty(nameof(Instrument.Name))),
-                ModelColumn<Instrument>.Init(
+                new ModelColumn<Instrument, string>(
                     inst => inst.Name,
                     (inst, name) => inst.Name = name)
-                .MakeEditable())
+                .WithEditable())
             .AddColumn(
                 ColumnKey.Init(typeof(Instrument).GetProperty(nameof(Instrument.Description))),
-                ModelColumn<Instrument>.Init(
+                new ModelColumn<Instrument, string>(
                     inst => inst.Description,
                     (inst, desc) => inst.Description = desc)
-                .MakeEditable());
+                .WithEditable());
 
         public EditLiveJamPostViewModel(Action<LiveJamPost> onCommitPost) 
         : base(onCommitPost) 

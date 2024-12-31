@@ -27,20 +27,19 @@ else
                     <th scope="row">@model.Ordinal</th>
                     @foreach (ColumnKey key in Keys)
                     {
-                        IModelColumn<TModel> column = Column(key);
+                        var column = _columnMap.GetColumn(key);
                     <td>
                         @if (column.ClickAction is not null)
                         {
                             <span class="btn-link" @onclick="() => column.ClickAction(model.Entity)">
-                                @column.Getter(model.Entity)
+                                @column.GetValue(model.Entity)
                             </span>
                         }
                         else if (column.Checkable)
                         {
                             <input type="checkbox" 
-                                   @bind:get="Convert.ChangeType(column.Getter(model.Entity), key.DataType)" 
-                                   @bind:set="(value) => column.Setter(model.Entity, 
-                                                                   Convert.ChangeType(value, key.DataType))" />
+                                   @bind:get="column.Format(column.GetValue(model.Entity))"
+                                   @bind:set="(value) => column.SetValue(model.Entity, column.Parse(value))" />
                         }
                         else
                         {
@@ -49,16 +48,14 @@ else
                                 @if(column.Choices is null)
                                 {                                
                                 <input type="text" 
-                                       class="form-control" 
-                                       @bind:get="column.Getter(model.Entity)"
-                                       @bind:set="(value) => column.Setter(model.Entity, 
-                                                                           Convert.ChangeType(value, key.DataType))" />
+                                       class="form-control"
+                                       @bind:get="column.Format(column.GetValue(model.Entity))"
+                                       @bind:set="(value) => column.SetValue(model.Entity, column.Parse(value))" />
                                 }
                                 else
                                 {
-                                <select @bind:get="column.Getter(model.Entity)"
-                                        @bind:set="(value) => column.Setter(model.Entity, 
-                                                                            Convert.ChangeType(value, key.DataType))">
+                                <select @bind:get="column.Format(column.GetValue(model.Entity))"
+                                        @bind:set="(value) => column.SetValue(model.Entity, column.Parse(value))">
 
                                     @foreach(object choice in column.Choices)
                                     {
@@ -68,7 +65,7 @@ else
                                 </select>               
                                 }
                             }else{
-                            <span>@column.Getter(model.Entity)</span>
+                            <span>@column.GetValue(model.Entity)</span>
                             }
                         }
                     </td>
@@ -107,7 +104,6 @@ else
     public IEnumerable<Counted<TModel>> Models => _models;
     public IEnumerable<string> Captions => _columnMap.Captions;
     public IEnumerable<ColumnKey> Keys => _columnMap.Keys;
-    public IModelColumn<TModel> Column(ColumnKey key) => _columnMap.GetColumn(key);
 
     protected override void OnInitialized()
     {

@@ -28,35 +28,35 @@ namespace SnailbirdAdminWeb.Client.ViewModels
             ColumnMap = new ColumnMap<Connection>()
             .AddColumn(
                 ColumnKey.Init("Active", typeof(bool)),
-                ModelColumn<Connection>.Init(
+                new ModelColumn<Connection, bool>(
                     (c) => Connections.ActiveConnectionID == c.ID,
                     (c, value) => {
                         if (value) Connections.ActiveConnectionID = c.ID;
                     })
-                .MakeCheckable())
+                .WithCheckable())
             .AddColumn(
                 ColumnKey.Init(
                     typeof(Connection).GetProperty(nameof(Connection.ID))),
-                ModelColumn<Connection>.Init(
+                new ModelColumn<Connection, int>(
                     (c) => c.ID,
                     (c, id) => c.ID = id)
-                .MakeEditable())
+                .WithEditable())
             .AddColumn(
                 ColumnKey.Init(
                     "Name", 
                     typeof(Connection).GetProperty(nameof(Connection.ConnectionName))),
-                ModelColumn<Connection>.Init(
+                new ModelColumn<Connection, string>(
                     (c) => c.ConnectionName,
                     (c, name) => c.ConnectionName = name)
-                .MakeEditable())
+                .WithEditable())
             .AddColumn(
                 ColumnKey.Init(
                     "Connection String", 
                     typeof(Connection).GetProperty(nameof(Connection.ConnectionString))),
-                ModelColumn<Connection>.Init(
+                new ModelColumn<Connection, string>(
                     (c) => c.ConnectionString,
                     (c, connctionString) => c.ConnectionString = connctionString)
-                .MakeEditable());
+                .WithEditable());
         }
 
         public void Delete(Connection connection)

@@ -1,34 +1,30 @@
-﻿namespace RazorCore.Table
+﻿using Newtonsoft.Json.Linq;
+
+namespace RazorCore.Table
 {
-    //public interface IModelColumn<TModel>
-    //{
-    //    Func<TModel, object?> Getter { get; }
-    //    Action<TModel, object?> Setter { get; }
-
-    //    bool Editable { get; }
-    //    IEnumerable<object>? Choices { get; }
-    //    Action<TModel>? ClickAction { get; }
-    //    bool Checkable { get; }
-
-    //    IModelColumn<TModel> MakeEditable();
-    //    IModelColumn<TModel> MakeChoosable(IEnumerable<object> choices);
-    //    IModelColumn<TModel> MakeClickable(Action<TModel> action);
-    //    IModelColumn<TModel> MakeCheckable();
-    //}
-
-    public interface IModelColumn<TModel, TData>
+    public interface ITypedColumn<TModel>
     {
-        Func<TModel, TData> Getter { get; }
-        Action<TModel, TData> Setter { get; }
-
+        Type DataType { get; }
+        object GetValue(TModel entity);
+        void SetValue(TModel entity, object value);
+        string Format(object value);
+        object Parse(string value);
         bool Editable { get; }
-        IEnumerable<TData>? Choices { get; }
+        IEnumerable<object>? Choices { get; }
         Action<TModel>? ClickAction { get; }
         bool Checkable { get; }
+    }
 
-        IModelColumn<TModel, TData> MakeEditable();
-        IModelColumn<TModel, TData> MakeChoosable(IEnumerable<object> choices);
-        IModelColumn<TModel, TData> MakeClickable(Action<TModel> action);
-        IModelColumn<TModel, TData> MakeCheckable();
+    public interface IModelColumn<TModel, TData> : ITypedColumn<TModel>
+    {
+        TData Getter(TModel entity);
+        void Setter(TModel entity, TData value);
+        new IEnumerable<TData>? Choices { get; }
+        string Format(TData value);
+        TData Parse(string value);
+        IModelColumn<TModel, TData> WithEditable();
+        IModelColumn<TModel, TData> WithChoosable(IEnumerable<TData> choices);
+        IModelColumn<TModel, TData> WithClickable(Action<TModel> action);
+        IModelColumn<TModel, TData> WithCheckable();
     }
 }
