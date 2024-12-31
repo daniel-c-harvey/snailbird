@@ -2,28 +2,41 @@
 
 @if (Element != null)
 {
-    @if (Element is FlexParagraph)
+    @if (Element is FlexParagraph postParagraph)
     {
         <p>
-            @this.PostParagraph.Text
+            @postParagraph.Text
         </p>
-    } else if (Element is FlexImage)
+    } else if (Element is FlexImage postImage)
     {
-        <img class="centeredimage" src="@PostImage.ImageURI" alt="@PostImage.AltText" />
-    } else if (Element is FlexYouTubeEmbed)
+        <img class="centeredimage" src="@postImage.ImageURI" alt="@postImage.AltText" />
+    } else if (Element is FlexYouTubeEmbed postYouTubeEmbed)
     {
         <div class="centeredimage">
             <iframe class="youtubeframe"
-                    src="@PostYouTubeEmbed.VideosURL"
+                    src="@postYouTubeEmbed.VideosURL"
                     title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
             </iframe>
         </div>
-    } else if (Element is FlexInstrumentList)
+    } else if (Element is FlexVimeoEmbed postVimeoEmbed)
+    {
+        <div class="centeredimage">
+            <div style="padding:177.78% 0 0 0;position:relative;">
+                <iframe src="@postVimeoEmbed.VideoURL;autopause=0&amp;player_id=0&amp;app_id=58479"
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+                        title="Live Techno 14-12-2024">
+                </iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+    } else if (Element is FlexInstrumentList postInstrumentList)
     {
         <ul class="songdetails">
-            @foreach (Instrument instrument in PostInstrumentList.Instruments)
+            @foreach (Instrument instrument in postInstrumentList.Instruments)
             {
                 <li>
                     <span class="instrument">@instrument.Name:</span> @instrument.Description
@@ -36,10 +49,4 @@
 @code {
     [Parameter]
     public SnailbirdData.Models.Post.FlexElement? Element { get; set; }
-
-    protected FlexParagraph PostParagraph => Element as FlexParagraph ?? throw new ArgumentNullException(nameof(Element));
-    protected FlexImage PostImage => Element as FlexImage ?? throw new ArgumentNullException(nameof(Element));
-    protected FlexYouTubeEmbed PostYouTubeEmbed => Element as FlexYouTubeEmbed ?? throw new ArgumentNullException(nameof(Element));
-    protected FlexInstrumentList PostInstrumentList => Element as FlexInstrumentList ?? throw new ArgumentNullException(nameof(Element));
-
 }

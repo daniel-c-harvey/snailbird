@@ -9,6 +9,7 @@ namespace SnailbirdData.Models.Post
     [JsonDerivedType(typeof(FlexParagraph), "paragraph")]
     [JsonDerivedType(typeof(FlexImage), "image")]
     [JsonDerivedType(typeof(FlexYouTubeEmbed), "youtube")]
+    [JsonDerivedType(typeof(FlexVimeoEmbed), "vimeo")]
     [JsonDerivedType(typeof(FlexInstrumentList), "instr")]
     public abstract class FlexElement : ICloneable<FlexElement>, INotifyPropertyChanged
     {
@@ -40,7 +41,7 @@ namespace SnailbirdData.Models.Post
 
             var other = obj as FlexElement;
             bool q = other != null;
-            q &= TypeCaption.Equals(other.TypeCaption);
+            q &= TypeCaption.Equals(other?.TypeCaption);
             return q;
         }
 
@@ -136,6 +137,29 @@ namespace SnailbirdData.Models.Post
         }
     }
 
+    public class FlexVimeoEmbed : FlexElement
+    {
+        public override string TypeCaption => "Vimeo Embed";
+        public string VideoURL { get; set; } = string.Empty;
+
+        public override FlexElement Clone()
+        {
+            return new FlexVimeoEmbed() { VideoURL = VideoURL };
+        }
+
+        public override bool Equals(object? obj)
+        {
+            var other = obj as FlexVimeoEmbed;
+            return base.Equals(other) && 
+                   VideoURL.Equals(other.VideoURL);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ VideoURL.GetHashCode();
+        }
+    }
+
     public class FlexInstrumentList : FlexElement
     {
         public override string TypeCaption => "Instrument List";
@@ -143,7 +167,7 @@ namespace SnailbirdData.Models.Post
 
         public override FlexElement Clone()
         {
-            return new FlexInstrumentList() { Instruments = Instruments.Select(i => i.Clone()).ToList() };
+            return new FlexInstrumentList { Instruments = Instruments.Select(i => i.Clone()).ToList() };
         }
 
         public override bool Equals(object? obj)

@@ -27,17 +27,20 @@ else
                     <th scope="row">@model.Ordinal</th>
                     @foreach (ColumnKey key in Keys)
                     {
-                        var column = Column(key);
+                        IModelColumn<TModel> column = Column(key);
                     <td>
                         @if (column.ClickAction is not null)
                         {
-                            <span class="btn-link" @onclick="() => column.ClickAction(model.Entity)">@column.Getter(model.Entity)</span>
+                            <span class="btn-link" @onclick="() => column.ClickAction(model.Entity)">
+                                @column.Getter(model.Entity)
+                            </span>
                         }
                         else if (column.Checkable)
                         {
                             <input type="checkbox" 
-                                   bind:get="column.Getter(model.Entity)" 
-                                   bind:set="(value) => column.Setter(model.Entity, value)" />
+                                   @bind:get="Convert.ChangeType(column.Getter(model.Entity), key.DataType)" 
+                                   @bind:set="(value) => column.Setter(model.Entity, 
+                                                                   Convert.ChangeType(value, key.DataType))" />
                         }
                         else
                         {
@@ -47,15 +50,17 @@ else
                                 {                                
                                 <input type="text" 
                                        class="form-control" 
-                                       bind:get="column.Getter(model.Entity)" 
-                                       bind:set="(value) => column.Setter(model.Entity, value)" />
+                                       @bind:get="column.Getter(model.Entity)"
+                                       @bind:set="(value) => column.Setter(model.Entity, 
+                                                                           Convert.ChangeType(value, key.DataType))" />
                                 }
                                 else
                                 {
-                                <select bind:get="column.Getter(model.Entity)" 
-                                        bind:set="(value) => column.Setter(model.Entity, value)">
+                                <select @bind:get="column.Getter(model.Entity)"
+                                        @bind:set="(value) => column.Setter(model.Entity, 
+                                                                            Convert.ChangeType(value, key.DataType))">
 
-                                    @foreach(string choice in column.Choices)
+                                    @foreach(object choice in column.Choices)
                                     {
                                     <option value="@choice">@choice</option>
                                     }
