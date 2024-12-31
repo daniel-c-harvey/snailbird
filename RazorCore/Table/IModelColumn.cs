@@ -21,7 +21,7 @@ namespace RazorCore.Table
         void Setter(TModel entity, TData value);
         new IEnumerable<TData>? Choices { get; }
         string Format(TData value);
-        TData Parse(string value);
+        new TData Parse(string value);
         IModelColumn<TModel, TData> WithEditable();
         IModelColumn<TModel, TData> WithChoosable(IEnumerable<TData> choices);
         IModelColumn<TModel, TData> WithClickable(Action<TModel> action);

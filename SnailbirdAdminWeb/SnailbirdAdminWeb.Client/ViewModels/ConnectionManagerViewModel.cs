@@ -27,7 +27,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels
 
             ColumnMap = new ColumnMap<Connection>()
             .AddColumn(
-                ColumnKey.Init("Active", typeof(bool)),
+                ColumnKey.Init("Active Connection", typeof(bool)),
                 new ModelColumn<Connection, bool>(
                     (c) => Connections.ActiveConnectionID == c.ID,
                     (c, value) => {
@@ -43,7 +43,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels
                 .WithEditable())
             .AddColumn(
                 ColumnKey.Init(
-                    "Name", 
+                    "Connection Name", 
                     typeof(Connection).GetProperty(nameof(Connection.ConnectionName))),
                 new ModelColumn<Connection, string>(
                     (c) => c.ConnectionName,

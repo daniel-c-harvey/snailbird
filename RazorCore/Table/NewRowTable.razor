@@ -38,8 +38,8 @@ else
                         else if (column.Checkable)
                         {
                             <input type="checkbox" 
-                                   @bind:get="column.Format(column.GetValue(model.Entity))"
-                                   @bind:set="(value) => column.SetValue(model.Entity, column.Parse(value))" />
+                                   @bind:get="column.GetValue(model.Entity) is true"
+                                   @bind:set="(value) => column.SetValue(model.Entity, value)" />
                         }
                         else
                         {
