@@ -1,4 +1,5 @@
 ﻿using NetBlocks.Models;
+using RazorCore.CanvasImage;
 using SnailbirdAdminWeb.Client.API;
 using SnailbirdData.Models.Entities;
 using SnailbirdMedia.Clients;
@@ -20,7 +21,8 @@ namespace SnailbirdAdminWeb.Client
                 .AddSingleton<IPostManagerClient<StudioFeedFlexPost>, StudioPostManagerClient>(_ => studioManager)
                 .AddSingleton<IPostManagerClient<LabFeedFlexPost>, LabPostManagerClient>(_ => labManager)
                 .AddSingleton<IConnectionManagerClient, ConnectionManagerClient>(_ => connManager)
-                .AddSingleton<IVaultManagerClient, VaultManagerClient>(_ => imageVaultClient);
+                .AddSingleton<IVaultManagerClient, VaultManagerClient>(_ => imageVaultClient)
+                .AddScoped<ICanvasImageService, CanvasImageService>();
 
             return true;
         }

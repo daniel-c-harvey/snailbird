@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -14,6 +14,7 @@
     <RunAOTCompilation>False</RunAOTCompilation>
     <WarningLevel>8</WarningLevel>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <WasmProfilers>browser;</WasmProfilers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -27,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="API\NewFolder\" />
     <Folder Include="Models\Factories\" />
   </ItemGroup>
 
@@ -36,6 +36,10 @@
     <ProjectReference Include="..\..\SnailbirdData\SnailbirdData.csproj" />
     <ProjectReference Include="..\..\SnailbirdMedia\SnailbirdMedia.csproj" />
     <ProjectReference Include="C:\lib\NetBlocks\NetBlocks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="SnailbirdJsonSerializerContext.cs" />
   </ItemGroup>
 
 </Project>

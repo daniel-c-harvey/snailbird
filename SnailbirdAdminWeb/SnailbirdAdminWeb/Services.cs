@@ -7,6 +7,8 @@ using MongoDB.Driver;
 using DataAccess;
 using SnailbirdAdminWeb.API.Managers;
 using SnailbirdAdminWeb.Models;
+using RazorCore.CanvasImage;
+using Microsoft.JSInterop;
 
 namespace SnailbirdAdminWeb
 {
@@ -62,7 +64,7 @@ namespace SnailbirdAdminWeb
 
             builder.Services
                 .AddSingleton<IEndpoints, Endpoints>(_ => endpoints);
-            
+
             // Load Controllers
             builder.Services
                 .AddControllers();

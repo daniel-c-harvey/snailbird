@@ -1,4 +1,5 @@
 ﻿@using NetBlocks.Models.Environment
+@using RazorCore.CanvasImage
 @using RazorCore.Confirmation
 @using SnailbirdData.Models.Post
 @using SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element;
@@ -10,9 +11,7 @@
 
 <div>
     <div class="image-preview-container">
-        <img class="image-preview"
-             src="@ViewModel.DataURL"
-             alt="@ViewModel.FlexImage.AltText" />
+        <CanvasImage Base64Image="@ViewModel.DataURL" CssClass="image-preview" />
     </div>
     <div class="image-details">
         <div class="image-text">
@@ -35,19 +34,27 @@
 {
     [Parameter]
     public required EditFlexImageViewModel ViewModel { get; set; }
-
+    
     private PromptViewModel PromptViewModel { get; } = new(Choices);
     private Prompt prompt = default!;
 
+    private static PromptChoice okChoice = new PromptChoice(1, "Okay", "btn-outline-primary");
+
     private static IEnumerable<PromptChoice> Choices = [
-        new PromptChoice(1, "Okay", "btn-primary-outline")
+        okChoice
     ];
 
     protected override void OnInitialized()
     {
         ViewModel.ImageSizeExceeded += OpenPrompt;
         PromptViewModel.PromptMessage = new("Image Too Large", "The image exceeds the maximum allowed file size");
+        PromptViewModel.Choices[okChoice] += ResetImage;
         base.OnInitialized();
+    }
+
+    private void ResetImage()
+    {
+        // todo
     }
 
     private async void OnImageFileChanged(InputFileChangeEventArgs e)
@@ -56,7 +63,14 @@
         {
             try
             {
-                await ViewModel.OnImageChanged(e.File);
+                if (await ViewModel.OnImageChanged(e.File))
+                {
+                    
+                }
+                else
+                {
+                    // e.
+                }
             }
             catch (Exception ex)
             {

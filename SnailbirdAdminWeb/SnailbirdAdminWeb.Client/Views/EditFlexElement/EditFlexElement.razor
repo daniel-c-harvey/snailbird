@@ -22,7 +22,7 @@
     @if (ViewModel.Element != null)
     {   
         <div class="sb-flex-element">
-        
+
             <!-- Flex Element Header -->
             <div class="sb-flex-order">
                 <div class="sb-flex-order-buttons">
@@ -50,8 +50,8 @@
                     <EditFlexParagraph ViewModel="@vm" />
                 } else if (ViewModel.Element is FlexImage image)
                 {
-                    var vm = new EditFlexImageViewModel(image);
-                    <EditFlexImage ViewModel="@vm" />
+                    editFlexImageViewModel ??= new EditFlexImageViewModel(image);
+                    <EditFlexImage ViewModel="@editFlexImageViewModel" />
                 } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
                 {
                     <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />
@@ -76,6 +76,8 @@
     [Parameter]
     public EditFlexElementViewModel? ViewModel { get; set; }
 
+    private EditFlexImageViewModel? editFlexImageViewModel = null;
+
     private static IColumnMap<Instrument> InstrumentColumns = new ColumnMap<Instrument>()
         .AddColumn(
             ColumnKey.Init(typeof(Instrument).GetProperty(nameof(Instrument.Name))),
@@ -94,11 +96,10 @@
 
     protected override void OnInitialized()
     {
-        if (ViewModel != null)
-        {
-            ViewModel.ConfirmElementChange += ConfirmChange;
-            ViewModel.ElementChanged += ElementChanged;
-        }
+        if (ViewModel == null) return;
+        
+        ViewModel.ConfirmElementChange += ConfirmChange;
+        ViewModel.ElementChanged += ElementChanged;
     }
 
     private void ConfirmChange(object sender, ConfirmEventArgs args)

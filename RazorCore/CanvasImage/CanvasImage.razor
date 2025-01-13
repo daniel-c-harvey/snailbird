@@ -1,0 +1,49 @@
+
+<canvas @ref="canvasReference"
+width="@Width"
+height="@Height"
+class="@CssClass">
+</canvas>
+
+@code {
+
+    private ElementReference canvasReference;
+    private string? currentImage;
+
+    [Inject]
+    private ICanvasImageService CanvasService { get; set; }
+
+    [Parameter]
+    public required string? Base64Image { get; set; }
+
+    [Parameter]
+    public int Width { get; set; } = 300;
+
+    [Parameter]
+    public int Height { get; set; } = 300;
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CanvasService.InitializeAsync(canvasReference);
+        }
+
+        if (Base64Image != currentImage)
+        {
+            currentImage = Base64Image;
+            if (Base64Image != null)
+            {
+                await CanvasService.DrawImageAsync(Base64Image);
+            }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await CanvasService.DisposeAsync();
+    }
+}
