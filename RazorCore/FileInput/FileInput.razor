@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using NetBlocks.Models
+
+<div class="file-input">
+    <div class="file-input-header">
+        <label for="input-file">Header</label>
+        <div class="file-input-element">
+            <InputFile id="input-file" OnChange="OnFileChanged"/>
+        </div>
+        <div class="file-input-expander">
+            <i class="bi bi-caret-left"></i>
+        </div>
+    </div>
+    <div class="file-input-files">
+        @* @foreach (MediaContainer file in new[] { ViewModel.File }) // todo convert to support multiple files *@
+        @if (ViewModel.File != null)
+        {
+            <span>File: @ViewModel.File.FileName</span><br />
+            <span>URI: @ViewModel.File.FileURI</span><br />
+        }
+    </div>
+</div>

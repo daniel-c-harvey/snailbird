@@ -1,4 +1,4 @@
-﻿using SnailbirdMedia.Models;
+﻿using NetBlocks.Models;
 
 namespace SnailbirdMedia.Clients
 {

@@ -6,6 +6,7 @@
 @using SnailbirdMedia.Clients
 @using SnailbirdMedia.Configs
 @using SnailbirdMedia.Models
+@using RazorCore.FileInput
 
 <Prompt @ref="prompt" ViewModel="PromptViewModel" />
 
@@ -26,7 +27,7 @@
                    type="text" 
                    @bind="ViewModel.FlexImage.AltText" />
         </div>
-        <InputFile class="image-chooser" OnChange="OnImageFileChanged" />
+        <FileInput ViewModel="FileInputViewModel" OnFileSelected="ViewModel.OnImageSelected"/>
     </div>
 </div>
 
@@ -34,19 +35,19 @@
 {
     [Parameter]
     public required EditFlexImageViewModel ViewModel { get; set; }
-    
+
+    private FileInputViewModel FileInputViewModel { get; } = new(10 * 1024 * 1024);
+
     private PromptViewModel PromptViewModel { get; } = new(Choices);
     private Prompt prompt = default!;
-
     private static PromptChoice okChoice = new PromptChoice(1, "Okay", "btn-outline-primary");
-
     private static IEnumerable<PromptChoice> Choices = [
         okChoice
     ];
 
     protected override void OnInitialized()
     {
-        ViewModel.ImageSizeExceeded += OpenPrompt;
+        ViewModel.ImageValidationFailed += OpenPrompt;
         PromptViewModel.PromptMessage = new("Image Too Large", "The image exceeds the maximum allowed file size");
         PromptViewModel.Choices[okChoice] += ResetImage;
         base.OnInitialized();
@@ -57,28 +58,7 @@
         // todo
     }
 
-    private async void OnImageFileChanged(InputFileChangeEventArgs e)
-    {
-        if (e.FileCount == 1)
-        {
-            try
-            {
-                if (await ViewModel.OnImageChanged(e.File))
-                {
-                    
-                }
-                else
-                {
-                    // e.
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            StateHasChanged();
-        }
-    }
+    
 
     private void OpenPrompt(object? sender, EventArgs e)
     {

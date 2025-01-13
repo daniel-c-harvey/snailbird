@@ -1,7 +1,6 @@
-﻿using SnailbirdMedia.Configs;
-using SnailbirdMedia.Models;
+﻿using NetBlocks.Models;
+using SnailbirdMedia.Configs;
 using Newtonsoft.Json;
-using NetBlocks.Models;
 
 namespace SnailbirdMedia.Clients
 {

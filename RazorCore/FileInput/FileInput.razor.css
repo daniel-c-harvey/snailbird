@@ -1,0 +1,30 @@
+﻿.file-input-element {
+    display: none;
+    height: 100px;
+}
+
+.file-input {
+    
+}
+
+.file-input-header {
+    display: flex;
+}
+
+.file-input-expander {
+    clear: right;
+    transition: transform 0.5s;
+}
+
+.file-input-expander .expanded
+{
+    transform: rotate(0);
+}
+
+.file-input-expander .collapsed {
+    transform: rotate(-90deg);
+}
+
+.file-input-files {
+    
+}

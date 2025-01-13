@@ -12,15 +12,15 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
         private const int MAXIMUM_FILE_SIZE = 2 * 1024 * 1024; // 2MB
         private const string IMAGE_UNAVAILABLE_BASE64 = @"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIGZpbGw9IiMwMDAwMDAiIHdpZHRoPSI4MDBweCIgaGVpZ2h0PSI4MDBweCIgdmlld0JveD0iMCAwIDMyIDMyIiBpZD0iaWNvbiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6bm9uZTt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPm5vLWltYWdlPC90aXRsZT48cGF0aCBkPSJNMzAsMy40MTQxLDI4LjU4NTksMiwyLDI4LjU4NTksMy40MTQxLDMwbDItMkgyNmEyLjAwMjcsMi4wMDI3LDAsMCwwLDItMlY1LjQxNDFaTTI2LDI2SDcuNDE0MWw3Ljc5MjktNy43OTMsMi4zNzg4LDIuMzc4N2EyLDIsMCwwLDAsMi44Mjg0LDBMMjIsMTlsNCwzLjk5NzNabTAtNS44MzE4LTIuNTg1OC0yLjU4NTlhMiwyLDAsMCwwLTIuODI4NCwwTDE5LDE5LjE2ODJsLTIuMzc3LTIuMzc3MUwyNiw3LjQxNDFaIi8+PHBhdGggZD0iTTYsMjJWMTlsNS00Ljk5NjYsMS4zNzMzLDEuMzczMywxLjQxNTktMS40MTYtMS4zNzUtMS4zNzVhMiwyLDAsMCwwLTIuODI4NCwwTDYsMTYuMTcxNlY2SDIyVjRINkEyLjAwMiwyLjAwMiwwLDAsMCw0LDZWMjJaIi8+PHJlY3QgaWQ9Il9UcmFuc3BhcmVudF9SZWN0YW5nbGVfIiBkYXRhLW5hbWU9IiZsdDtUcmFuc3BhcmVudCBSZWN0YW5nbGUmZ3Q7IiBjbGFzcz0iY2xzLTEiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIvPjwvc3ZnPg==";
 
-        public event EventHandler? ImageSizeExceeded;
+        public event EventHandler? ImageValidationFailed;
 
         [Inject]
         public IVaultManagerClient? Vault { get; protected set; }
 
-        protected MediaBinary? Image { get; set; }
+        private MediaContainer? Image { get; set; }
         public FlexImage FlexImage { get; protected set; }
         public string DataURL { get; protected set; } = default!;
-        public string Base64 => Image?.Base64 ?? IMAGE_UNAVAILABLE_BASE64;
+        public string Base64 => Image?.Binary.Base64 ?? IMAGE_UNAVAILABLE_BASE64;
 
         public EditFlexImageViewModel(FlexImage flexImage)
         {
@@ -28,11 +28,18 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
             OnImageLoaded().Wait();
         }
 
+        public void OnImageSelected(MediaContainer image)
+        {
+            Image = image;
+            SetDataURL();
+        }
+
         private async Task OnImageLoaded()
         {
             if (!string.IsNullOrWhiteSpace(FlexImage.ImageURI))
             {
-                Image = await Vault.GetMedia(FlexImage.ImageURI);
+                // todo fix this
+                //Image = await Vault.GetMedia(FlexImage.ImageURI);
             }
             SetDataURL();
         }
@@ -44,49 +51,6 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
                 FlexImage.ImageURI = value;
             }
         }
-            
-
-        public async Task<bool> OnImageChanged(IBrowserFile file)
-        {
-            if (file.Size > MAXIMUM_FILE_SIZE)
-            {
-                // notify too large
-                var x = ImageSizeExceeded;
-                Console.WriteLine($"Checking event on ViewModel instance: {GetHashCode()}");
-                Console.WriteLine($"Event is null: {x == null}");
-                x?.Invoke(this, EventArgs.Empty);
-                return false;
-            }
-            try
-            {
-                const int CHUNK_SIZE = 64;// 8 * 1024;
-                Stream stream = file.OpenReadStream(MAXIMUM_FILE_SIZE);
-
-                int length = (int)stream.Length;
-                byte[] bytes = new byte[length];
-                
-                for (int offset = 0; offset < length; offset += CHUNK_SIZE)
-                {
-                    await stream.ReadAsync(bytes, offset, Math.Min(length - offset - 1, CHUNK_SIZE));
-                }
-                
-                MIME.EXTENSIONS.TryGetValue(file.ContentType, out string? extension);
-                if (length > 0 && extension != null)
-                {
-                    Image = new MediaBinary(bytes, stream.Length, extension);
-                    SetDataURL();
-                }
-
-                stream.Close();
-            }
-            catch (Exception ex) 
-            {
-                Console.WriteLine(ex);
-                return false;
-            }
-
-            return true;
-        }
 
         private void SetDataURL()
         {
@@ -94,8 +58,8 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
             string base64;
             if (Image != null)
             {
-                base64 = Image.Base64;
-                MIME.MIME_TYPES.TryGetValue(Image.Extension, out mime);
+                base64 = Image.Binary.Base64;
+                MIME.MIME_TYPES.TryGetValue(Image.Binary.Extension, out mime);
             }
             else
             {
@@ -103,7 +67,6 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
                 mime = "image/svg+xml";
             }
             DataURL = $"data:{mime};base64,{base64}";
-            //ImageChanged?.Invoke(this, EventArgs.Empty);
         }
 
 
