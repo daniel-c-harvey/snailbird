@@ -2,7 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../../../../lib/DataBlocks" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../../../../lib/NetBlocks" vcs="Git" />
+    <mapping directory="C:/lib/DataBlocks" vcs="Git" />
+    <mapping directory="C:/lib/NetBlocks" vcs="Git" />
   </component>
 </project>

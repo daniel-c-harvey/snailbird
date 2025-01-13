@@ -29,7 +29,7 @@ where TPost : FlexPost<TPost>, new()
     {
         foreach (FlexElement element in modelPost.Elements)
         {
-            if (element is FlexImage image && image.Image != null)
+            if (element is FlexImage { Image: not null } image)
             {
                 _mediaClient.PostImage(image.ImageUri, image.Image);
             }

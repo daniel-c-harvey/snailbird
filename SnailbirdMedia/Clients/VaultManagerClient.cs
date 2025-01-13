@@ -1,32 +1,30 @@
-﻿using NetBlocks.Models;
+﻿using System.Net.Http.Json;
+using NetBlocks.Models;
 using SnailbirdMedia.Configs;
-using Newtonsoft.Json;
 
 namespace SnailbirdMedia.Clients
 {
     public class VaultManagerClient : ApiClient<VaultClientConfig>, IVaultManagerClient
     {
-
         public VaultManagerClient(VaultClientConfig config)
         : base(config) { }
 
         public async Task<MediaBinary?> GetMedia(string entryKey)
         {
-            string json = await (await http.GetAsync("img")).Content.ReadAsStringAsync();
-            MediaBinaryDto? imagePackage = JsonConvert.DeserializeObject<MediaBinaryDto>(json);
+            MediaBinaryDto? imagePackage = await http.GetFromJsonAsync<MediaBinaryDto>(MediaUrl(entryKey));
 
-            if (imagePackage != null && imagePackage.Size > 0 && imagePackage.Bytes != null)
-            {
-                return new MediaBinary(imagePackage);
-            }
-
-            return null;
+            return imagePackage is { Size: > 0 } ? new MediaBinary(imagePackage) : null;
         }
 
-        public string MediaURL(string entryKey)
+        public async Task PostImage(string entryKey, MediaBinary model)
+        {
+            await http.PostAsJsonAsync(MediaUrl(entryKey), MediaBinaryDto.From(model));
+        }
+
+        private string MediaUrl(string entryKey)
         {
             // guards? GUARDS!!
-            return new Uri($"{config.URL}/{config.VaultKey}/{entryKey}").ToString();
+            return new Uri($"{config.VaultKey}/{entryKey}").ToString();
         }
     }
 }

@@ -1,11 +1,9 @@
 @using SnailbirdAdminWeb.Client.API
 @using SnailbirdAdminWeb.Client.ViewModels.EditFlex
 @using SnailbirdData.Models.Post;
-@using SnailbirdAdminWeb.Client.Models;
 @using SnailbirdAdminWeb.Client.ViewModels;
 @using SnailbirdAdminWeb.Client.Updates
 @using SnailbirdMedia.Clients
-@using RazorCore;
 
 @typeparam TPost where TPost : FlexPost<TPost>, new()
 
@@ -26,21 +24,19 @@
     [Inject]
     public IServiceProvider? Services { get; set; }
 
-    protected FlexPostManagerViewModel<TPost>? ViewModel { get; set; }
+    private FlexPostManagerViewModel<TPost>? ViewModel { get; set; }
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
-
         if (Services is null) throw new ArgumentNullException(nameof(Services));
         var postManagerClient = Services.GetService<IPostManagerClient<TPost>>();
-        if (postManagerClient is null) throw new Exception(nameof(postManagerClient));
         var mediaClient = Services.GetService<IVaultManagerClient>();
-        if (mediaClient is null) throw new ArgumentNullException(nameof(mediaClient));
+        if (mediaClient is null || postManagerClient is null) return; // Pre-rendering services unavailable abort
         
         ViewModel = new FlexPostManagerViewModelFactory<TPost>(mediaClient).Create(postManagerClient);
         ViewModel.EditingViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SavePost);
         ViewModel.AddViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SaveNewPost);
-
+    
+        base.OnInitialized();
     }
 }

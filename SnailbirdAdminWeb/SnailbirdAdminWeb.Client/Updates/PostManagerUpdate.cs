@@ -115,11 +115,15 @@ namespace SnailbirdAdminWeb.Client.Updates
             Navigator.NavigateBack();
         }
 
-        protected virtual async Task GetPosts(PostManagerModel<TPost> model,
+        protected virtual async void GetPosts(PostManagerModel<TPost> model,
                                               PostManagerGetPostsMessage message)
         {
                 var results = await PostManager.GetPage(message.PageIndex, message.PageSize);
-                if (!results.Success || results.Value == null) return;
+                if (!results.Success || results.Value == null)
+                {
+                    // todo signal error notification
+                    return;
+                }
                 
                 model.Posts = results.Value.ToList();
                 Navigator.NavigateForward(PostManagerMode.View);

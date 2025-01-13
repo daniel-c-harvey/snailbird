@@ -37,9 +37,5 @@
     <ProjectReference Include="..\..\SnailbirdMedia\SnailbirdMedia.csproj" />
     <ProjectReference Include="C:\lib\NetBlocks\NetBlocks.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="SnailbirdJsonSerializerContext.cs" />
-  </ItemGroup>
-
+  
 </Project>

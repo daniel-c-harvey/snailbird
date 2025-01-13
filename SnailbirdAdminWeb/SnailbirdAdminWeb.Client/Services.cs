@@ -7,7 +7,7 @@ using SnailbirdMedia.Configs;
 
 namespace SnailbirdAdminWeb.Client
 {
-    public class Services
+    public static class Services
     {
         public static bool AddClientServices(string baseAddress, IServiceCollection services)
         {

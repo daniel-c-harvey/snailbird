@@ -5,10 +5,10 @@ namespace SnailbirdAdminWeb.Client.API
 {
     public class LabPostManagerClient : PostManagerClient<LabFeedFlexPost>
     {
-        private static string CONTROLLER_NAME = "labpostmanager";
+        private static readonly string CONTROLLER_NAME = "labpostmanager";
         public LabPostManagerClient(ClientConfig config) : base(config) { }
 
-        public async override Task<ResultContainer<IEnumerable<LabFeedFlexPost>>> GetPage(int page, int size)
+        public override async Task<ResultContainer<IEnumerable<LabFeedFlexPost>>> GetPage(int page, int size)
         {
             return await GetPage(page, size, CONTROLLER_NAME);
         }
@@ -18,12 +18,12 @@ namespace SnailbirdAdminWeb.Client.API
             return await Update(post, CONTROLLER_NAME);
         }
 
-        public async override Task<Result> Insert(LabFeedFlexPost post)
+        public override async Task<Result> Insert(LabFeedFlexPost post)
         {
             return await Insert(post, CONTROLLER_NAME);
         }
 
-        public async override Task<Result> Delete(LabFeedFlexPost post)
+        public override async Task<Result> Delete(LabFeedFlexPost post)
         {
             return await Delete(post, CONTROLLER_NAME);
         }

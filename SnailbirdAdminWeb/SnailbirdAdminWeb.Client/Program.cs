@@ -1,9 +1,4 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using SnailbirdAdminWeb.Client.API;
-using SnailbirdAdminWeb.Client.Models;
-using SnailbirdData.Models.Entities;
-using SnailbirdMedia.Clients;
-using SnailbirdMedia.Configs;
 
 namespace SnailbirdAdminWeb.Client
 {
