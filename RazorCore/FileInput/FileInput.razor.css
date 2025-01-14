@@ -1,6 +1,5 @@
 ﻿.file-input-element {
     display: none;
-    height: 100px;
 }
 
 .file-input {
@@ -9,22 +8,39 @@
 
 .file-input-header {
     display: flex;
+    align-items: center;
+    vertical-align: middle;
 }
 
 .file-input-expander {
+    vertical-align: middle;
     clear: right;
+    height: 1em;
+    width: 1em;
+    padding: 0;
     transition: transform 0.5s;
+    transform-origin: center;
 }
 
-.file-input-expander .expanded
+.file-input-expander.expanded
 {
-    transform: rotate(0);
-}
-
-.file-input-expander .collapsed {
     transform: rotate(-90deg);
 }
 
+.file-input-expander.collapsed {
+    transform: rotate(0);
+}
+
 .file-input-files {
-    
+    transition: height 0.5s;
+}
+
+.file-input-files.expanded {
+    height: auto;
+    display: block;
+}
+
+.file-input-files.collapsed {
+    height: 0;
+    display:none;
 }

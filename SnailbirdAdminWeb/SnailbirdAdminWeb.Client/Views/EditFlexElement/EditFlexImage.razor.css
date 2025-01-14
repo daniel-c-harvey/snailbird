@@ -9,12 +9,18 @@
 }
 
 .image-details {
-    
+    margin-top: 16px;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 .image-text {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    grid-auto-flow: column;
+    grid-column-gap: 8px;
+    margin-bottom: 12px;
 }
 
 .image-uri {

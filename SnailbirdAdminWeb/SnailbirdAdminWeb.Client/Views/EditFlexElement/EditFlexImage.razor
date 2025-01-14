@@ -1,30 +1,26 @@
-﻿@using NetBlocks.Models.Environment
+﻿@using NetBlocks.Models
 @using RazorCore.CanvasImage
 @using RazorCore.Confirmation
-@using SnailbirdData.Models.Post
 @using SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element;
-@using SnailbirdMedia.Clients
-@using SnailbirdMedia.Configs
-@using SnailbirdMedia.Models
 @using RazorCore.FileInput
 
-<Prompt @ref="prompt" ViewModel="PromptViewModel" />
+<Prompt @ref="_prompt" ViewModel="_promptViewModel" />
 
 <div>
     <div class="image-preview-container">
-        <CanvasImage Base64Image="@ViewModel.DataURL" CssClass="image-preview" />
+        <CanvasImage Base64Image="@ViewModel.DataUrl" CssClass="image-preview" />
     </div>
     <div class="image-details">
         <div class="image-text">
-            <label>Image URI</label>
-            <input class="form-control image-uri" 
+            <label for="uri">Image URI</label>
+            <input id="uri" class="form-control image-uri" 
                    type="text" 
                    @bind:get="ViewModel.FlexImage.ImageURI"
                    @bind:set="ViewModel.SetImageURI" />
             
             <label>Alt Text</label>
             <input class="form-control" 
-                   type="text" 
+                   type="text"
                    @bind="ViewModel.FlexImage.AltText" />
         </div>
         <FileInput ViewModel="FileInputViewModel" OnFileSelected="ViewModel.OnImageSelected"/>
@@ -38,33 +34,28 @@
 
     private FileInputViewModel FileInputViewModel { get; } = new(10 * 1024 * 1024);
 
-    private PromptViewModel PromptViewModel { get; } = new(Choices);
-    private Prompt prompt = default!;
-    private static PromptChoice okChoice = new PromptChoice(1, "Okay", "btn-outline-primary");
-    private static IEnumerable<PromptChoice> Choices = [
-        okChoice
-    ];
+    private Prompt _prompt = default!;
+    private static PromptChoice _okChoice = new(1, "Okay", "btn-outline-primary");
+    private static IEnumerable<PromptChoice> _choices = [_okChoice];
+    private PromptViewModel _promptViewModel = new(_choices);
 
     protected override void OnInitialized()
     {
-        ViewModel.ImageValidationFailed += OpenPrompt;
-        PromptViewModel.PromptMessage = new("Image Too Large", "The image exceeds the maximum allowed file size");
-        PromptViewModel.Choices[okChoice] += ResetImage;
+        FileInputViewModel.FileValidationFailed += OpenPrompt;
+        _promptViewModel.Choices[_okChoice] += ResetImage;
         base.OnInitialized();
     }
 
     private void ResetImage()
     {
-        // todo
+        FileInputViewModel.Reset();
     }
 
     
 
-    private void OpenPrompt(object? sender, EventArgs e)
+    private void OpenPrompt(object? sender, MessageEventArgs e)
     {
-        if (prompt != null)
-        {
-            prompt.Open();
-        }
+        _promptViewModel.PromptMessage = new PromptMessage("Image Validation Failed", e.Message);
+        _prompt.Open();
     }
 }

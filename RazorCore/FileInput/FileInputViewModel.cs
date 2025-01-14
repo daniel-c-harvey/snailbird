@@ -5,29 +5,32 @@ namespace RazorCore.FileInput;
 
 public class FileInputViewModel
 {
-    public MediaContainer? File { get; set; }
-    public event EventHandler? FileValidationFailed;
-    public long MaximumSize { get; }
+    public MediaContainer? File { get; private set; }
+    public bool Expanded { get; set; }
+    public event MessageEventHandler? FileValidationFailed;
+    private long _maximumSize;
+    
 
     public FileInputViewModel(long maximumSize)
     {
-        MaximumSize = maximumSize;
+        _maximumSize = maximumSize;
     }
+    
     public async Task<bool> OnFileChosen(IBrowserFile file)
     {
         if (!ValidateBrowserFile(file)) return false;
         
         try
         {
-            const int CHUNK_SIZE = 8 * 1024;
-            Stream stream = file.OpenReadStream(MaximumSize);
+            const int chunkSize = 8 * 1024;
+            Stream stream = file.OpenReadStream(_maximumSize);
 
             int length = (int)stream.Length;
             byte[] bytes = new byte[length];
                 
-            for (int offset = 0; offset < length; offset += CHUNK_SIZE)
+            for (int offset = 0; offset < length; offset += chunkSize)
             {
-                await stream.ReadAsync(bytes, offset, Math.Min(length - offset - 1, CHUNK_SIZE));
+                await stream.ReadAsync(bytes, offset, Math.Min(length - offset - 1, chunkSize));
             }
                 
             MIME.EXTENSIONS.TryGetValue(file.ContentType, out string? extension);
@@ -52,19 +55,27 @@ public class FileInputViewModel
         // Test all validations and notify of failure
         if (!ValidateBrowserFileSize(file))
         {
-            FileValidationFailed?.Invoke(this, EventArgs.Empty);
             return false;
         }
 
+        // Add other validations here
+        
         return true;
     }
 
     private bool ValidateBrowserFileSize(IBrowserFile file)
     {
-        if (file.Size <= MaximumSize) return true;
+        if (file.Size <= _maximumSize) return true;
         
-        // notify too large
+        FileValidationFailed?.Invoke(this, new MessageEventArgs($"The image exceeds the maximum allowed file size: {_maximumSize / (1024D * 1024D)} MB"));
         
         return false;
     }
+    
+    public void Reset()
+    {
+        Expanded = false;
+        File = null;
+    }
+
 }
