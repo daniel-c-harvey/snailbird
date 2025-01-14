@@ -28,7 +28,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
         public void OnImageSelected(MediaContainer image)
         {
             Image = image;
-            FlexImage.ImageURI = image.FileURI;
+            FlexImage.ImageURI = image.FileUri;
             SetDataURL();
         }
 

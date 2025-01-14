@@ -23,15 +23,15 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         {
             InitColumnMap();
 
-            Model = new();
+            Model = new PostManagerModel<TPost>();
             Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(Model);
-            Update = new(postManager, Navigator);
+            Update = new PostManagerUpdate<TPost>(postManager, Navigator);
             
             Model = Update.Update(Model, new PostManagerGetPostsMessage(1, 25));
         }
 
         public IColumnMap<TPost> Columns = default!;
-        protected virtual void InitColumnMap()
+        private void InitColumnMap()
         {
             Columns = new ColumnMap<TPost>()
                             .AddColumn(
