@@ -25,28 +25,22 @@ namespace SnailbirdAdminWeb.Client.Updates
             switch (message.Action)
             {
                 case PostManagerAction.Add:
-                    var addMessage = message as PostManagerAddMessage<TPost>;
-                    if (addMessage is not null) AddPost(model, addMessage);
+                    if (message is PostManagerAddMessage<TPost> addMessage) AddPost(model, addMessage);
                     break;
                 case PostManagerAction.Edit:
-                    var editMessage = message as PostManagerEditMessage<TPost>;
-                    if (editMessage is not null) EditPost(model, editMessage);
+                    if (message is PostManagerEditMessage<TPost> editMessage) EditPost(model, editMessage);
                     break;
                 case PostManagerAction.Delete:
-                    var deleteMessage = message as PostManagerDeleteMessage<TPost>;
-                    if (deleteMessage is not null) DeletePost(model, deleteMessage);
+                    if (message is PostManagerDeleteMessage<TPost> deleteMessage) DeletePost(model, deleteMessage);
                     break;
                 case PostManagerAction.SaveNew:
-                    var saveNewMessage = message as PostManagerSaveNewMessage<TPost>;
-                    if (saveNewMessage is not null) SaveNewPost(model, saveNewMessage);
+                    if (message is PostManagerSaveNewMessage<TPost> saveNewMessage) SaveNewPost(model, saveNewMessage);
                     break;
                 case PostManagerAction.SaveExisting:
-                    var saveMessage = message as PostManagerSaveExistingMessage<TPost>;
-                    if (saveMessage is not null) SavePost(model, saveMessage);
+                    if (message is PostManagerSaveExistingMessage<TPost> saveMessage) SavePost(model, saveMessage);
                     break;
                 case PostManagerAction.GetPosts:
-                    var getMessage = message as PostManagerGetPostsMessage;
-                    if (getMessage is not null) GetPosts(model, getMessage);
+                    if (message is PostManagerGetPostsMessage getMessage) GetPosts(model, getMessage);
                     break;
                 default:
                     throw new NotImplementedException();

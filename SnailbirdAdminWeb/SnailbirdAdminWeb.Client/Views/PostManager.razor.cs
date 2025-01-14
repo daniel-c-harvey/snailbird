@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SnailbirdAdminWeb.Client.Updates;
 using SnailbirdData.Models.Post;
 using SnailbirdAdminWeb.Client.ViewModels;
 
 namespace SnailbirdAdminWeb.Client.Views
 {
-    public partial class PostManager<TPost, TEdit>
+    public partial class PostManager<TPost, TEdit, TUpdate>
         where TPost : Post<TPost>, new()
         where TEdit : EditPostViewModelBase<TPost, TEdit>
+        where TUpdate : PostManagerUpdate<TPost>
     {
         [Parameter]
-        public PostManagerViewModel<TPost, TEdit>? ViewModel { get; set; }
+        public PostManagerViewModel<TPost, TEdit, TUpdate>? ViewModel { get; set; }
         [Parameter]
         public RenderFragment<TEdit>? AddComponent { get; set; }
         [Parameter]
@@ -21,7 +23,7 @@ namespace SnailbirdAdminWeb.Client.Views
             if (ViewModel != null) ViewModel.Navigator.ModeChanged += (_) => ModeChanged();
         }
 
-        public void ModeChanged()
+        private void ModeChanged()
         {
             StateHasChanged();
         }

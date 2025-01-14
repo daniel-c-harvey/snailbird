@@ -1,13 +1,12 @@
-﻿@using DataAccess
-@using RazorCore
-@using RazorCore.Navigation
-@using SnailbirdData.Models.Post
+﻿@using SnailbirdData.Models.Post
 @using SnailbirdAdminWeb.Client.Models
+@using SnailbirdAdminWeb.Client.Updates
 @using SnailbirdAdminWeb.Client.ViewModels
 
 @typeparam TPost where TPost : Post<TPost>, new()
 @typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
-@typeparam TView where TView : PostManagerViewModel<TPost, TEdit>
+@typeparam TUpdate where TUpdate : PostManagerUpdate<TPost>
+@typeparam TView where TView : PostManagerViewModel<TPost, TEdit, TUpdate>
 
 @if (ViewComponent != null && ViewModel != null)
 {

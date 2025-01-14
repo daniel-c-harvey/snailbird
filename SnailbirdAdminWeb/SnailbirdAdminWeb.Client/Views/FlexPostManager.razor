@@ -3,13 +3,15 @@
 @using SnailbirdData.Models.Post;
 @using SnailbirdAdminWeb.Client.Models;
 @using SnailbirdAdminWeb.Client.ViewModels;
+@using SnailbirdAdminWeb.Client.Updates
 @using RazorCore;
 
 @typeparam TPost where TPost : FlexPost<TPost>, new()
 
 <PostManager TPost="TPost" 
-                TEdit="EditFlexPostViewModel<TPost>" 
-                ViewModel="@ViewModel">
+             TEdit="EditFlexPostViewModel<TPost>"
+             TUpdate="FlexPostManagerUpdate<TPost>"
+             ViewModel="@ViewModel">
     <AddComponent Context="viewModel">
         <EditFlexPost ViewModel="viewModel" />
     </AddComponent>
@@ -30,10 +32,10 @@
         base.OnInitialized();
 
         if (Services is null) throw new ArgumentNullException(nameof(Services));
-        var PostManager = Services.GetService<IPostManagerClient<TPost>>();
-        if (PostManager != null) 
+        var postClient = Services.GetService<IPostManagerClient<TPost>>();
+        if (postClient != null) 
         {
-            ViewModel = new(PostManager);
+            ViewModel = new FlexPostManagerViewModelFactory<TPost>().Create(postClient);
             ViewModel.EditingViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SavePost);
             ViewModel.AddViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SaveNewPost);
         }

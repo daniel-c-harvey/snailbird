@@ -4,17 +4,20 @@
 @using RazorCore.Table
 @using SnailbirdData.Models.Post;
 @using SnailbirdAdminWeb.Client.Models;
+@using SnailbirdAdminWeb.Client.Updates;
 @using SnailbirdAdminWeb.Client.ViewModels;
 
 @typeparam TPost where TPost : Post<TPost>, new()
 @typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
+@typeparam TUpdate where TUpdate : PostManagerUpdate<TPost>
 
 @if (ViewModel != null && AddComponent != null && EditComponent != null)
 {
     <NavPanel TMode="PostManagerMode" ViewModel="@ViewModel">
         <PostManagerBase TPost="TPost"
                          TEdit="TEdit"
-                         TView="PostManagerViewModel<TPost, TEdit>"
+                         TUpdate="TUpdate"
+                         TView="PostManagerViewModel<TPost, TEdit, TUpdate>"
                          ViewModel="ViewModel"
                          AddComponent="AddComponent"
                          EditComponent="EditComponent">

@@ -3,95 +3,79 @@ using SnailbirdAdminWeb.Client.Messages;
 using SnailbirdAdminWeb.Client.Models;
 using SnailbirdAdminWeb.Client.Updates;
 using SnailbirdData.Models.Post;
-using SnailbirdAdminWeb.Client.API;
 using RazorCore.Table;
 
 namespace SnailbirdAdminWeb.Client.ViewModels
 {
-    public class PostManagerViewModel<TPost, TEdit> : INavigable<PostManagerMode>
+    public class PostManagerViewModel<TPost, TEdit, TUpdate> : INavigable<PostManagerMode>
         where TPost : Post<TPost>, new()
         where TEdit : EditPostViewModelBase<TPost, TEdit>
+        where TUpdate : PostManagerUpdate<TPost>
     {
         #region "Members"
-        public PostManagerModel<TPost> Model { get; set; }
-        private PostManagerUpdate<TPost> Update;
+        public IColumnMap<TPost>? Columns { get; private set; }
+        public PostManagerModel<TPost> Model { get; }
+        private readonly PostManagerUpdate<TPost> _update;
 
         public EditPostViewModelBase<TPost, TEdit>? EditingViewModel { get; set; }
         public EditPostViewModelBase<TPost, TEdit>? AddViewModel { get; set; }
 
-        public PostManagerViewModel(IPostManagerClient<TPost> postManager)
+        public PostManagerViewModel(PostManagerModel<TPost> model,
+                                    Navigator<PostManagerMode, PostManagerModel<TPost>> navigator,
+                                    TUpdate update)
         {
-            InitColumnMap();
-
-            Model = new PostManagerModel<TPost>();
-            Navigator = new Navigator<PostManagerMode, PostManagerModel<TPost>>(Model);
-            Update = new PostManagerUpdate<TPost>(postManager, Navigator);
-            
-            Model = Update.Update(Model, new PostManagerGetPostsMessage(1, 25));
+            _update = update;
+            Navigator = navigator;
+            Model = _update.Update(model, new PostManagerGetPostsMessage(1, 25));
         }
 
-        public IColumnMap<TPost> Columns = default!;
-        private void InitColumnMap()
+        public virtual void InitColumnMap()
         {
             Columns = new ColumnMap<TPost>()
-                            .AddColumn(
-                                ColumnKey.Init(typeof(TPost).GetProperty(nameof(Post<TPost>.ID))),
-                                new ModelColumn<TPost, long>(
-                                    (p) => p.ID,
-                                    (p, id) => p.ID = id))
-                            .AddColumn(
-                                ColumnKey.Init(typeof(TPost).GetProperty(nameof(Post<TPost>.Title))),
-                                new ModelColumn<TPost, string>(
-                                    (p) => p.Title,
-                                    (p, title) => p.Title = title)
-                                .WithClickable(EditPost))
-                            .AddColumn(
-                                ColumnKey.Init("Date", typeof(TPost).GetProperty(nameof(Post<TPost>.PostDate))),
-                                new ModelColumn<TPost, DateTime>(
-                                    (p) => p.PostDate,
-                                    (p, date) => p.PostDate = date));
+                .AddColumn(
+                    ColumnKey.Init(typeof(TPost).GetProperty(nameof(Post<TPost>.ID))),
+                    new ModelColumn<TPost, long>(
+                        (p) => p.ID,
+                        (p, id) => p.ID = id))
+                .AddColumn(
+                    ColumnKey.Init(typeof(TPost).GetProperty(nameof(Post<TPost>.Title))),
+                    new ModelColumn<TPost, string>(
+                            (p) => p.Title,
+                            (p, title) => p.Title = title)
+                        .WithClickable(EditPost))
+                .AddColumn(
+                    ColumnKey.Init("Date", typeof(TPost).GetProperty(nameof(Post<TPost>.PostDate))),
+                    new ModelColumn<TPost, DateTime>(
+                        (p) => p.PostDate,
+                        (p, date) => p.PostDate = date));
         }
+        
         #endregion
 
         #region "Event Handlers"
         public void AddPost(TPost post)
         {
-            if (Update != null && Model != null)
-            {
-                Update.Update(Model, new PostManagerAddMessage<TPost>(post));
-            }
+            _update.Update(Model, new PostManagerAddMessage<TPost>(post));
         }
 
         public void EditPost(TPost post)
         {
-            if (Update != null && Model != null)
-            {
-                Update.Update(Model, new PostManagerEditMessage<TPost>(post));
-            }
+            _update.Update(Model, new PostManagerEditMessage<TPost>(post));
         }
 
         public void DeletePost(TPost post)
         {
-            if (Update != null && Model != null)
-            {
-                Update.Update(Model, new PostManagerDeleteMessage<TPost>(post));
-            }
+            _update.Update(Model, new PostManagerDeleteMessage<TPost>(post));
         }
 
         public void SaveNewPost(TPost post)
         {
-            if (Update != null && Model != null)
-            {
-                Update.Update(Model, new PostManagerSaveNewMessage<TPost>(post));
-            }
+            _update.Update(Model, new PostManagerSaveNewMessage<TPost>(post));
         }
 
         public void SavePost(TPost post)
         {
-            if (Update != null && Model != null)
-            {
-                Update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post));
-            }
+            _update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post));
         }
         #endregion
 
