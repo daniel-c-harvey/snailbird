@@ -4,6 +4,7 @@
 @using SnailbirdAdminWeb.Client.Models;
 @using SnailbirdAdminWeb.Client.ViewModels;
 @using SnailbirdAdminWeb.Client.Updates
+@using SnailbirdMedia.Clients
 @using RazorCore;
 
 @typeparam TPost where TPost : FlexPost<TPost>, new()
@@ -32,13 +33,14 @@
         base.OnInitialized();
 
         if (Services is null) throw new ArgumentNullException(nameof(Services));
-        var postClient = Services.GetService<IPostManagerClient<TPost>>();
-        if (postClient != null) 
-        {
-            ViewModel = new FlexPostManagerViewModelFactory<TPost>().Create(postClient);
-            ViewModel.EditingViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SavePost);
-            ViewModel.AddViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SaveNewPost);
-        }
+        var postManagerClient = Services.GetService<IPostManagerClient<TPost>>();
+        if (postManagerClient is null) throw new Exception(nameof(postManagerClient));
+        var mediaClient = Services.GetService<IVaultManagerClient>();
+        if (mediaClient is null) throw new ArgumentNullException(nameof(mediaClient));
+        
+        ViewModel = new FlexPostManagerViewModelFactory<TPost>(mediaClient).Create(postManagerClient);
+        ViewModel.EditingViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SavePost);
+        ViewModel.AddViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SaveNewPost);
 
     }
 }

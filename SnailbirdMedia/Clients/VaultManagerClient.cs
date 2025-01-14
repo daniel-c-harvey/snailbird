@@ -10,11 +10,6 @@ namespace SnailbirdMedia.Clients
         public VaultManagerClient(VaultClientConfig config)
         : base(config) { }
 
-        public async Task UploadImage()
-        {
-
-        }
-
         public async Task<MediaBinary?> GetMedia(string entryKey)
         {
             string json = await (await http.GetAsync("img")).Content.ReadAsStringAsync();

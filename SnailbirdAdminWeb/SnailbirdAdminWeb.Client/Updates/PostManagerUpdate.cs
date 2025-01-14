@@ -49,8 +49,8 @@ namespace SnailbirdAdminWeb.Client.Updates
             return model;
         }
 
-        private void AddPost(PostManagerModel<TPost> model,
-                             PostManagerAddMessage<TPost> message)
+        protected virtual void AddPost(PostManagerModel<TPost> model,
+                                       PostManagerAddMessage<TPost> message)
         {
             // update model with new post
             model.Post = message.Post;
@@ -68,13 +68,13 @@ namespace SnailbirdAdminWeb.Client.Updates
                                                 (_, args) => args.IsConfirmed = model.IsPostModified);
         }
 
-        private void ResetPost(PostManagerModel<TPost> model)
+        protected virtual void ResetPost(PostManagerModel<TPost> model)
         {
             model.Post = model.OriginalPost;
         }
 
-        private void EditPost(PostManagerModel<TPost> model,
-                              PostManagerEditMessage<TPost> message)
+        protected virtual void EditPost(PostManagerModel<TPost> model,
+                                        PostManagerEditMessage<TPost> message)
         {
             // update the post to be edited
             model.Post = message.Post.Clone();
@@ -91,51 +91,38 @@ namespace SnailbirdAdminWeb.Client.Updates
                                                 (_, args) => args.IsConfirmed = model.IsPostModified);
         }
 
-        private void DeletePost(PostManagerModel<TPost> model,
-                                PostManagerDeleteMessage<TPost> message)
+        protected virtual void DeletePost(PostManagerModel<TPost> model,
+                                          PostManagerDeleteMessage<TPost> message)
         {
-            if (PostManager is not null)
-            {
-                PostManager.Delete(message.Post);
-                model.Posts.Remove(message.Post);
-            }
+            PostManager.Delete(message.Post);
+            model.Posts.Remove(message.Post);
         }
 
-        private void SaveNewPost(PostManagerModel<TPost> model,
-                                 PostManagerSaveNewMessage<TPost> message)
+        protected virtual void SaveNewPost(PostManagerModel<TPost> model,
+                                           PostManagerSaveNewMessage<TPost> message)
         {
-            if (PostManager is not null)
-            {
-                PostManager.Insert(message.Post);
-                model.Post = message.Post;
-                model.Posts.Add(message.Post);
-                Navigator.NavigateBack();
-            }
+            PostManager.Insert(message.Post);
+            model.Post = message.Post;
+            model.Posts.Add(message.Post);
+            Navigator.NavigateBack();
         }
 
-        private void SavePost(PostManagerModel<TPost> model,
-                              PostManagerSaveExistingMessage<TPost> message)
+        protected virtual void SavePost(PostManagerModel<TPost> model,
+                                        PostManagerSaveExistingMessage<TPost> message)
         {
-            if (PostManager is not null)
-            {
-                PostManager.Update(message.Post);
-                model.Post = message.Post;
-                Navigator.NavigateBack();
-            }
+            PostManager.Update(message.Post);
+            model.Post = message.Post;
+            Navigator.NavigateBack();
         }
 
-        private async void GetPosts(PostManagerModel<TPost> model,
-                              PostManagerGetPostsMessage message)
+        protected virtual async Task GetPosts(PostManagerModel<TPost> model,
+                                              PostManagerGetPostsMessage message)
         {
-            if (PostManager is not null)
-            {
                 var results = await PostManager.GetPage(message.PageIndex, message.PageSize);
-                if (results.Success && results.Value != null)
-                {
-                    model.Posts = results.Value.ToList();
-                    Navigator.NavigateForward(PostManagerMode.View);
-                }
-            }
+                if (!results.Success || results.Value == null) return;
+                
+                model.Posts = results.Value.ToList();
+                Navigator.NavigateForward(PostManagerMode.View);
         }
     }
 }

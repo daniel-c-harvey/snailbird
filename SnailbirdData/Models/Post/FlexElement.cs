@@ -3,6 +3,7 @@ using NetBlocks.Utilities;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using NetBlocks.Models;
 
 namespace SnailbirdData.Models.Post
 {
@@ -89,27 +90,29 @@ namespace SnailbirdData.Models.Post
     public class FlexImage : FlexElement
     {
         public override string TypeCaption => "Image";
-        public string ImageURI { get; set; } = string.Empty;
+        public string ImageUri { get; set; } = string.Empty;
         public string AltText { get; set; } = string.Empty;
-
+        public MediaBinary? Image { get; set; }
+        
         public override FlexElement Clone()
         {
-            return new FlexImage() { ImageURI = ImageURI, 
-                                     AltText = AltText };
+            return new FlexImage() { ImageUri = ImageUri, 
+                                     AltText = AltText,
+                                     Image = Image };
         }
 
         public override bool Equals(object? obj)
         {
             var other = obj as FlexImage;
             return base.Equals(other) && 
-                   ImageURI.Equals(other.ImageURI) && 
+                   ImageUri.Equals(other.ImageUri) && 
                    AltText.Equals(other.AltText);
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode() ^ 
-                   ImageURI.GetHashCode() ^ 
+                   ImageUri.GetHashCode() ^ 
                    AltText.GetHashCode();
         }
     }

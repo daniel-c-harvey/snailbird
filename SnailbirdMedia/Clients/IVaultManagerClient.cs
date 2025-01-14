@@ -4,8 +4,8 @@ namespace SnailbirdMedia.Clients
 {
     public interface IVaultManagerClient
     {
-        Task<MediaBinary?> GetMedia(string entryKey);
         string MediaURL(string entryKey);
-        Task UploadImage();
+        Task<MediaBinary?> GetMedia(string entryKey);
+        Task PostImage(string entryKey, MediaBinary model);
     }
 }

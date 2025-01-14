@@ -14,11 +14,11 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
 
         [Inject]
         public IVaultManagerClient? Vault { get; protected set; }
-
-        private MediaContainer? Image { get; set; }
+        
         public FlexImage FlexImage { get; protected set; }
         public string DataUrl { get; protected set; } = default!;
 
+        private string GetDataUrl(string mime, string base64) => $"data:{mime};base64,{base64}";
         public EditFlexImageViewModel(FlexImage flexImage)
         {
             FlexImage = flexImage;
@@ -27,45 +27,48 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
 
         public void OnImageSelected(MediaContainer image)
         {
-            Image = image;
-            FlexImage.ImageURI = image.FileUri;
-            SetDataURL();
+            FlexImage.Image = image.Binary;
+            FlexImage.ImageUri = image.FileUri;
+            SetDataUrl();
         }
 
         private async Task OnEditFlexImageLoaded()
         {
             // If there is already a URI, try to load the resource.
-            if (!string.IsNullOrWhiteSpace(FlexImage.ImageURI))
+            if (!string.IsNullOrWhiteSpace(FlexImage.ImageUri))
             {
-                // todo fix this
-                //Image = await Vault.GetMedia(FlexImage.ImageURI);
+                // todo move the loading of this data to the Update that loads the elements
+                // FlexImage = await Vault.GetMedia(FlexImage.ImageURI);
             }
-            SetDataURL();
+            SetDataUrl();
         }
 
-        public void SetImageURI(string? value)
+        public void SetImageUri(string? value)
         {
             if (value != null)
             {
-                FlexImage.ImageURI = value;
+                FlexImage.ImageUri = value;
             }
         }
 
-        private void SetDataURL()
+        private void SetDataUrl()
         {
-            string? mime;
-            string base64;
-            if (Image != null)
+            string? mime = null;
+            string base64 = string.Empty;
+            
+            if (FlexImage.Image != null)
             {
-                base64 = Image.Binary.Base64;
-                MIME.MIME_TYPES.TryGetValue(Image.Binary.Extension, out mime);
+                base64 = FlexImage.Image.Base64;
+                MIME.MIME_TYPES.TryGetValue(FlexImage.Image.Extension, out mime);
             }
-            else
+            
+            if (string.IsNullOrEmpty(mime))
             {
                 base64 = IMAGE_UNAVAILABLE_BASE64;
                 mime = "image/svg+xml";
             }
-            DataUrl = $"data:{mime};base64,{base64}";
+            
+            DataUrl = GetDataUrl(mime, base64);
         }
 
 
