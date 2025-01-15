@@ -3,8 +3,6 @@ using NetBlocks.Models;
 using SnailbirdAdminWeb.API.Managers;
 using SnailbirdData.Models.Post;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace SnailbirdAdminWeb.API
 {
     [ApiController]

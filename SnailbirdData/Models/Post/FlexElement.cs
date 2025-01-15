@@ -92,6 +92,8 @@ namespace SnailbirdData.Models.Post
         public override string TypeCaption => "Image";
         public string ImageUri { get; set; } = string.Empty;
         public string AltText { get; set; } = string.Empty;
+        
+        [MediaStorage]
         public MediaBinary? Image { get; set; }
         
         public override FlexElement Clone()
