@@ -16,6 +16,8 @@ namespace RazorCore.Navigation
 
         protected override void OnParametersSet()
         {
+            if (ViewModel is null) return;
+            
             InitNavigation();
             ViewModel.Navigator.ModeChanged += OnModeChange;
             ViewModel.Navigator.ConfirmPrompt += OpenConfirmation;

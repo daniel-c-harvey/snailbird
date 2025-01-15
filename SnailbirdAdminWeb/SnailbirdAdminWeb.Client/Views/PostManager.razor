@@ -6,6 +6,7 @@
 @using SnailbirdAdminWeb.Client.Models;
 @using SnailbirdAdminWeb.Client.Updates;
 @using SnailbirdAdminWeb.Client.ViewModels;
+@using RazorCore.Confirmation
 
 @typeparam TPost where TPost : Post<TPost>, new()
 @typeparam TEdit where TEdit : EditPostViewModelBase<TPost, TEdit>
@@ -13,6 +14,8 @@
 
 @if (ViewModel != null && AddComponent != null && EditComponent != null)
 {
+    <Prompt @ref="Prompt" ViewModel="_promptViewModel" />
+    
     <NavPanel TMode="PostManagerMode" ViewModel="@ViewModel">
         <PostManagerBase TPost="TPost"
                          TEdit="TEdit"

@@ -1,5 +1,4 @@
-﻿using DataAccess;
-using RazorCore.Navigation;
+﻿using RazorCore.Navigation;
 using SnailbirdAdminWeb.Client.API;
 using SnailbirdAdminWeb.Client.Messages;
 using SnailbirdAdminWeb.Client.Models;
@@ -119,13 +118,14 @@ namespace SnailbirdAdminWeb.Client.Updates
                                               PostManagerGetPostsMessage message)
         {
                 var results = await PostManager.GetPage(message.PageIndex, message.PageSize);
-                if (!results.Success || results.Value == null)
+                if (!results.Success)
                 {
-                    // todo signal error notification
+                    message.RaiseNotifyError(results.FailureReasons.Aggregate("", (current, next) => current + Environment.NewLine + next.Message));
+                    // todo navigate to error mode with refresh button instead of the back button
                     return;
                 }
                 
-                model.Posts = results.Value.ToList();
+                model.Posts = results.Value?.ToList() ?? [];
                 Navigator.NavigateForward(PostManagerMode.View);
         }
     }

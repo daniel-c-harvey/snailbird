@@ -1,4 +1,5 @@
-﻿using RazorCore.Navigation;
+﻿using NetBlocks.Models;
+using RazorCore.Navigation;
 using SnailbirdAdminWeb.Client.Messages;
 using SnailbirdAdminWeb.Client.Models;
 using SnailbirdAdminWeb.Client.Updates;
@@ -15,6 +16,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         #region "Members"
         public IColumnMap<TPost>? Columns { get; private set; }
         public PostManagerModel<TPost> Model { get; }
+        public event MessageEventHandler? NotifyError;
         private readonly PostManagerUpdate<TPost> _update;
 
         public EditPostViewModelBase<TPost, TEdit>? EditingViewModel { get; set; }
@@ -26,7 +28,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         {
             _update = update;
             Navigator = navigator;
-            Model = _update.Update(model, new PostManagerGetPostsMessage(1, 25));
+            Model = _update.Update(model, new PostManagerGetPostsMessage(1, 25, RaiseNotifyError));
         }
 
         public virtual void InitColumnMap()
@@ -90,5 +92,10 @@ namespace SnailbirdAdminWeb.Client.ViewModels
             }
         }
         #endregion
+        
+        private void RaiseNotifyError(object sender, MessageEventArgs e)
+        {
+            NotifyError?.Invoke(this, new MessageEventArgs(e.Message));
+        }
     }
 }

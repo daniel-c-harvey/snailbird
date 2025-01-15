@@ -23,7 +23,7 @@ namespace SnailbirdAdminWeb.Client.API
             }
             catch (Exception ex)
             {
-                result = new();
+                result = new ResultContainer<IEnumerable<TPost>>();
                 result.Fail(ex.Message);
             }
             return result;

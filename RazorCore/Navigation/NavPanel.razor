@@ -3,18 +3,13 @@
 
 @typeparam TMode
 
-@{
-    bool backButtonEnabled = ViewModel.Navigator.CanNavigateBack;
-    string backButtonClass = backButtonEnabled ? "btn btn-outline-primary" : "btn btn-outline-secondary";
-}
+
 
 @if (ViewModel != null && ViewModel.Navigator != null )
 {
+    bool backButtonEnabled = ViewModel.Navigator.CanNavigateBack;
+    string backButtonClass = backButtonEnabled ? "btn btn-outline-primary" : "btn btn-outline-secondary";
     <Prompt @ref="confirmation" ViewModel="@ViewModel.Navigator.NavigateConfirmationViewModel" />
-}
-
-@if (ViewModel != null)
-{
 
     <div class="nav-panel">
         <div class="nav-bar">
@@ -26,7 +21,7 @@
             </button>
         </div>
         <div class="nav-body">
-            @if (ChildContent is null || ViewModel is null)
+            @if (ChildContent is null)
             {
                 <span>Loading...</span>
             }

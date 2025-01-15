@@ -23,29 +23,9 @@ where TViewModel : PostManagerViewModel<TPost, TEdit, TUpdate>
     }
 
     protected abstract TUpdate CreateUpdate(IPostManagerClient<TPost> client,
-                                            Navigator<PostManagerMode, 
-                                            PostManagerModel<TPost>> navigator);
+                                            Navigator<PostManagerMode, PostManagerModel<TPost>> navigator);
     
     protected abstract TViewModel CreateViewModel(PostManagerModel<TPost> model,
                                                   Navigator<PostManagerMode, PostManagerModel<TPost>> navigator,
                                                   TUpdate update);
 }
-
-// public class PostManagerViewModelFactory<TPost, TEdit> 
-// : PostManagerViewModelFactory<TPost, 
-//                               TEdit, 
-//                               PostManagerUpdate<TPost>, 
-//                               PostManagerViewModel<TPost, TEdit, PostManagerUpdate<TPost>>>
-// where TPost : Post<TPost>, new()
-// where TEdit : EditPostViewModelBase<TPost, TEdit>
-// {
-//     protected override PostManagerUpdate<TPost> CreateUpdate(IPostManagerClient<TPost> client, Navigator<PostManagerMode, PostManagerModel<TPost>> navigator)
-//     {
-//         return new PostManagerUpdate<TPost>(client, navigator);
-//     }
-//
-//     protected override PostManagerViewModel<TPost, TEdit, PostManagerUpdate<TPost>> CreateViewModel(PostManagerModel<TPost> model, Navigator<PostManagerMode, PostManagerModel<TPost>> navigator, PostManagerUpdate<TPost> update)
-//     {
-//         return new PostManagerViewModel<TPost, TEdit, PostManagerUpdate<TPost>>(model, navigator, update);
-//     }
-// }

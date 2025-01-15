@@ -1,4 +1,5 @@
-﻿using RazorCore.Navigation;
+﻿using NetBlocks.Models;
+using RazorCore.Navigation;
 using SnailbirdAdminWeb.Client.API;
 using SnailbirdAdminWeb.Client.Models;
 using SnailbirdAdminWeb.Client.Updates;
@@ -24,8 +25,7 @@ where TPost : FlexPost<TPost>, new()
     }
     
     protected override FlexPostManagerUpdate<TPost> CreateUpdate(IPostManagerClient<TPost> client, 
-                                                                 Navigator<PostManagerMode, 
-                                                                 PostManagerModel<TPost>> navigator)
+                                                                 Navigator<PostManagerMode, PostManagerModel<TPost>> navigator)
     {
         
         return new FlexPostManagerUpdate<TPost>(client, navigator, _mediaClient);

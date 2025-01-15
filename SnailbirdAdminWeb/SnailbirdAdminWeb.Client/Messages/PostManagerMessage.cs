@@ -1,4 +1,5 @@
-﻿using RazorCore.Confirmation;
+﻿using NetBlocks.Models;
+using RazorCore.Confirmation;
 using RazorCore.Messages;
 using SnailbirdData.Models.Post;
 
@@ -87,11 +88,19 @@ namespace SnailbirdAdminWeb.Client.Messages
         public int PageIndex => Page - 1;
         public int PageSize { get; set; }
 
-        public PostManagerGetPostsMessage(int page, int pageSize)
+        public event MessageEventHandler? NotifyError;
+
+        public PostManagerGetPostsMessage(int page, int pageSize, MessageEventHandler notifyError)
         : base(PostManagerAction.GetPosts)
         {
             Page = page;
             PageSize = pageSize;
+            NotifyError += notifyError;
+        }
+
+        public void RaiseNotifyError(string message)
+        {
+            NotifyError?.Invoke(this, new MessageEventArgs(message));
         }
     }
 

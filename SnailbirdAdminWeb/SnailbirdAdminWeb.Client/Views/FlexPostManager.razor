@@ -31,7 +31,7 @@
         if (Services is null) throw new ArgumentNullException(nameof(Services));
         var postManagerClient = Services.GetService<IPostManagerClient<TPost>>();
         var mediaClient = Services.GetService<IVaultManagerClient>();
-        if (mediaClient is null || postManagerClient is null) return; // Pre-rendering services unavailable abort
+        if (mediaClient is null || postManagerClient is null) return; // Pre-rendering services unavailable; abort
         
         ViewModel = new FlexPostManagerViewModelFactory<TPost>(mediaClient).Create(postManagerClient);
         ViewModel.EditingViewModel = new EditFlexPostViewModel<TPost>(ViewModel.SavePost);

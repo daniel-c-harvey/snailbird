@@ -13,62 +13,57 @@
 @if (ViewModel != null)
 {   
     <!-- Popup Section -->
-    @if (ViewModel.ConfirmationViewModel != null)
-    {
-        <Confirmation @ref="changeConfirmation" ViewModel="@ViewModel.ConfirmationViewModel"/>
-    }
+    <Confirmation @ref="changeConfirmation" ViewModel="@ViewModel.ConfirmationViewModel"/>
 
     <!-- Element Section -->
-    @if (ViewModel.Element != null)
-    {   
-        <div class="sb-flex-element">
+  
+    <div class="sb-flex-element">
 
-            <!-- Flex Element Header -->
-            <div class="sb-flex-order">
-                <div class="sb-flex-order-buttons">
-                    <div class="top bi bi-chevron-compact-up" @onclick="@ViewModel.RaiseAscend" />
-                    <div class="bottom bi bi-chevron-compact-down" @onclick="@ViewModel.RaiseDescend" />
-                </div>
-                <select @bind="@ViewModel.SelectedElementName">
-                    @foreach (FlexElement prototype in EditFlexElementViewModel.Prototypes)
-                    {
-                        <option value="@prototype.TypeCaption">@prototype.TypeCaption</option>
-                    }
-                </select>
-                <button type="button" class="btn btn-danger btn-sm" @onclick="@ViewModel.RaiseDeleteClicked">
-                    <span class="bi bi-trash"></span>
-                </button>
+        <!-- Flex Element Header -->
+        <div class="sb-flex-order">
+            <div class="sb-flex-order-buttons">
+                <div class="top bi bi-chevron-compact-up" @onclick="@ViewModel.RaiseAscend" />
+                <div class="bottom bi bi-chevron-compact-down" @onclick="@ViewModel.RaiseDescend" />
             </div>
-
-            <hr />
-
-            <!-- Flex Element Content -->
-            <div class="sb-flex-content">
-                @if (ViewModel.Element is FlexParagraph paragraph)
+            <select @bind="@ViewModel.SelectedElementName">
+                @foreach (FlexElement prototype in EditFlexElementViewModel.Prototypes)
                 {
-                    var vm = new EditFlexParagraphViewModel(paragraph);
-                    <EditFlexParagraph ViewModel="@vm" />
-                } else if (ViewModel.Element is FlexImage image)
-                {
-                    editFlexImageViewModel ??= new EditFlexImageViewModel(image);
-                    <EditFlexImage ViewModel="@editFlexImageViewModel" />
-                } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
-                {
-                    <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />
-                } else if (ViewModel.Element is FlexVimeoEmbed vimeoEmbed)
-                {
-                    <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="vimeoEmbed.VideoURL" />
-                } else if (ViewModel.Element is FlexInstrumentList instrumentList)
-                {
-                    <NewRowTable TModel="Instrument"
-                                 models="instrumentList.Instruments"
-                                 columnMap="InstrumentColumns"
-                                 OnAdd="i => instrumentList.Instruments.Add(i)"
-                                 OnDelete="i => instrumentList.Instruments.Remove(i)" />
+                    <option value="@prototype.TypeCaption">@prototype.TypeCaption</option>
                 }
-            </div>
+            </select>
+            <button type="button" class="btn btn-danger btn-sm" @onclick="@ViewModel.RaiseDeleteClicked">
+                <span class="bi bi-trash"></span>
+            </button>
         </div>
-    }
+
+        <hr />
+
+        <!-- Flex Element Content -->
+        <div class="sb-flex-content">
+            @if (ViewModel.Element is FlexParagraph paragraph)
+            {
+                var vm = new EditFlexParagraphViewModel(paragraph);
+                <EditFlexParagraph ViewModel="@vm" />
+            } else if (ViewModel.Element is FlexImage image)
+            {
+                editFlexImageViewModel ??= new EditFlexImageViewModel(image);
+                <EditFlexImage ViewModel="@editFlexImageViewModel" />
+            } else if (ViewModel.Element is FlexYouTubeEmbed youtubeEmbed)
+            {
+                <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="youtubeEmbed.VideosURL" />
+            } else if (ViewModel.Element is FlexVimeoEmbed vimeoEmbed)
+            {
+                <span>Video Embed Link:</span> <input class="form-control" type="url" @bind="vimeoEmbed.VideoURL" />
+            } else if (ViewModel.Element is FlexInstrumentList instrumentList)
+            {
+                <NewRowTable TModel="Instrument"
+                             models="instrumentList.Instruments"
+                             columnMap="InstrumentColumns"
+                             OnAdd="i => instrumentList.Instruments.Add(i)"
+                             OnDelete="i => instrumentList.Instruments.Remove(i)" />
+            }
+        </div>
+    </div>
 }
 
 @code 
