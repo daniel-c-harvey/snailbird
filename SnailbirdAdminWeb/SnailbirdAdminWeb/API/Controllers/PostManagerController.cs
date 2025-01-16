@@ -3,7 +3,7 @@ using NetBlocks.Models;
 using SnailbirdAdminWeb.API.Managers;
 using SnailbirdData.Models.Post;
 
-namespace SnailbirdAdminWeb.API
+namespace SnailbirdAdminWeb.API.Controllers
 {
     [ApiController]
     public class PostManagerController<TPost> : ControllerBase

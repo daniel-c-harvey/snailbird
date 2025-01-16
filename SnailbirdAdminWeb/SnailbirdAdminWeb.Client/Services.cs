@@ -12,6 +12,7 @@ namespace SnailbirdAdminWeb.Client
         public static bool AddClientServices(string baseAddress, IServiceCollection services)
         {
             ClientConfig baseConfig = new(baseAddress);
+            
             StudioPostManagerClient studioManager = new(baseConfig);
             LabPostManagerClient labManager = new(baseConfig);
             ConnectionManagerClient connManager = new(baseConfig);

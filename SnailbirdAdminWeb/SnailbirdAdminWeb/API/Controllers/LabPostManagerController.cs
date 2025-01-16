@@ -2,7 +2,7 @@
 using SnailbirdAdminWeb.API.Managers;
 using SnailbirdData.Models.Entities;
 
-namespace SnailbirdAdminWeb.API
+namespace SnailbirdAdminWeb.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

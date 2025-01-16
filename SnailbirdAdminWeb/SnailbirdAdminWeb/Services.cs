@@ -7,8 +7,6 @@ using MongoDB.Driver;
 using DataAccess;
 using SnailbirdAdminWeb.API.Managers;
 using SnailbirdAdminWeb.Models;
-using RazorCore.CanvasImage;
-using Microsoft.JSInterop;
 using SnailbirdMedia.Clients;
 using SnailbirdMedia.Configs;
 
@@ -16,6 +14,8 @@ namespace SnailbirdAdminWeb
 {
     internal static class Services
     {
+        private static readonly string SnailbirdContentName = "snailbird-content";
+        
         internal static bool AddServerServices(WebApplicationBuilder builder)
         {
             // Load connections and data services
@@ -44,16 +44,25 @@ namespace SnailbirdAdminWeb
 
                 // Load external API endpoint data
                 ResultContainer<ApiEndpoints> endpointResults = LoadEndpoints(builder);
-                if (!endpointResults.Success || endpointResults.Value is null) { return false; }
+                if (!endpointResults.Success || endpointResults.Value is null)
+                {
+                    Console.Error.WriteLine("Failed to load API endpoints config: environment/endpoints.json");
+                    Console.Error.WriteLine(endpointResults.FailureMessage);
+                    return false;
+                }
                 ApiEndpoints apiEndpoints = endpointResults.Value;
 
-                builder.Services
-                    .AddSingleton<IApiEndpoints, ApiEndpoints>(_ => apiEndpoints);
+                if (apiEndpoints.Endpoints.FirstOrDefault(e => e.Name == SnailbirdContentName) is not ApiEndpoint contentEndpoint)
+                {
+                    Console.Error.WriteLine($"Failed to load API endpoint for {SnailbirdContentName}");
+                    Console.Error.WriteLine("Please configure this endpoint in environment/endpoints.json");
+                    return false;
+                }
                 
                 // Load Post API Managers
-                VaultManagerClient imageVaultClient = new(new VaultClientConfig(, "ABC123", "img"));
-                FlexPostManager<StudioFeedFlexPost> studioFeedManager = new(studioFeedFlexPostAdapter);
-                FlexPostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter);
+                ImageVaultManagerClient imageVaultClient = new(new VaultClientConfig(contentEndpoint.ApiUrl, "", "img"));
+                FlexPostManager<StudioFeedFlexPost> studioFeedManager = new(studioFeedFlexPostAdapter, imageVaultClient);
+                FlexPostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter, imageVaultClient);
 
                 builder.Services
                     .AddSingleton<IPostManager<LabFeedFlexPost>, FlexPostManager<LabFeedFlexPost>>(_ => labFeedManager)

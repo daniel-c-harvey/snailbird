@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NetBlocks.Models;
 using NetBlocks.Models.Environment;
 using SnailbirdAdminWeb.API.Managers;
 
-namespace SnailbirdAdminWeb.API
+namespace SnailbirdAdminWeb.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

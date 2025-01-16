@@ -25,7 +25,7 @@ public class FlexPostManager<TPost> : PostManager<TPost>
         {
             foreach (FlexElement element in post.Elements)
             {
-                if (element is FlexImage image && image.Image != null && !string.IsNullOrEmpty(image.ImageUri))
+                if (element is FlexImage image && !string.IsNullOrEmpty(image.ImageUri))
                 {
                     var media = await VaultManagerClient.GetMedia(image.ImageUri);
                     if (media is null)
@@ -51,7 +51,7 @@ public class FlexPostManager<TPost> : PostManager<TPost>
         {
             if (element is FlexImage image && image.Image != null && !string.IsNullOrEmpty(image.ImageUri))
             {
-                saveTasks.Push(VaultManagerClient.PostImage(image.ImageUri, image.Image));
+                saveTasks.Push(VaultManagerClient.PostMedia(image.ImageUri, image.Image));
             }
         }
         Task<Result> saveTask = base.SavePost(post);
