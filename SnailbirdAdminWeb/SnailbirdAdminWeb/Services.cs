@@ -9,6 +9,8 @@ using SnailbirdAdminWeb.API.Managers;
 using SnailbirdAdminWeb.Models;
 using RazorCore.CanvasImage;
 using Microsoft.JSInterop;
+using SnailbirdMedia.Clients;
+using SnailbirdMedia.Configs;
 
 namespace SnailbirdAdminWeb
 {
@@ -40,13 +42,22 @@ namespace SnailbirdAdminWeb
                     .AddSingleton<IDataAdapter<StudioFeedFlexPost>, MongoAdapter<StudioFeedFlexPost>>(_ => studioFeedFlexPostAdapter)
                     .AddSingleton<IDataAdapter<LabFeedFlexPost>, MongoAdapter<LabFeedFlexPost>>(_ => labFeedFlexPostAdapter);
 
-                // Load Post API Managers
-                PostManager<StudioFeedFlexPost> studioFeedManager = new(studioFeedFlexPostAdapter);
-                PostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter);
+                // Load external API endpoint data
+                ResultContainer<ApiEndpoints> endpointResults = LoadEndpoints(builder);
+                if (!endpointResults.Success || endpointResults.Value is null) { return false; }
+                ApiEndpoints apiEndpoints = endpointResults.Value;
 
                 builder.Services
-                    .AddSingleton<IPostManager<LabFeedFlexPost>, PostManager<LabFeedFlexPost>>(_ => labFeedManager)
-                    .AddSingleton<IPostManager<StudioFeedFlexPost>, PostManager<StudioFeedFlexPost>>(_ => studioFeedManager);
+                    .AddSingleton<IApiEndpoints, ApiEndpoints>(_ => apiEndpoints);
+                
+                // Load Post API Managers
+                VaultManagerClient imageVaultClient = new(new VaultClientConfig(, "ABC123", "img"));
+                FlexPostManager<StudioFeedFlexPost> studioFeedManager = new(studioFeedFlexPostAdapter);
+                FlexPostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter);
+
+                builder.Services
+                    .AddSingleton<IPostManager<LabFeedFlexPost>, FlexPostManager<LabFeedFlexPost>>(_ => labFeedManager)
+                    .AddSingleton<IPostManager<StudioFeedFlexPost>, FlexPostManager<StudioFeedFlexPost>>(_ => studioFeedManager);
             }
 
             // Load Connection file loader
@@ -57,14 +68,6 @@ namespace SnailbirdAdminWeb
                 .AddSingleton<IConnectionStringLoader, ConnectionStringLoader>(_ => connectionStringLoader)
                 .AddSingleton<IConnectionManager, ConnectionManager>(_ => connectionManager);
 
-            // Load external API endpoint data
-            ResultContainer<Endpoints> endpointResults = LoadEndpoints(builder);
-            if (!endpointResults.Success || endpointResults.Value is null) { return false; }
-            Endpoints endpoints = endpointResults.Value;
-
-            builder.Services
-                .AddSingleton<IEndpoints, Endpoints>(_ => endpoints);
-
             // Load Controllers
             builder.Services
                 .AddControllers();
@@ -73,17 +76,17 @@ namespace SnailbirdAdminWeb
             return true;
         }
 
-        private static ResultContainer<Endpoints> LoadEndpoints(WebApplicationBuilder builder)
+        private static ResultContainer<ApiEndpoints> LoadEndpoints(WebApplicationBuilder builder)
         {
             builder.Configuration.AddJsonFile("environment/endpoints.json", optional: false);
-            Endpoints? endpoints = builder.Configuration.Get<Endpoints>();
+            ApiEndpoints? endpoints = builder.Configuration.Get<ApiEndpoints>();
 
             if (endpoints == null)
             {
-                return ResultContainer<Endpoints>.CreateFailResult("Failed to load endpoints configuration");
+                return ResultContainer<ApiEndpoints>.CreateFailResult("Failed to load endpoints configuration");
             }
 
-            return new ResultContainer<Endpoints>(endpoints);
+            return new ResultContainer<ApiEndpoints>(endpoints);
         }
 
         private static ResultContainer<Connection> LoadConnections(WebApplicationBuilder builder)

@@ -17,32 +17,32 @@ namespace SnailbirdAdminWeb.API
         }
 
         [HttpGet]
-        public ResultContainer<IEnumerable<TPost>> GetPage([FromQuery] int page, [FromQuery] int size)
+        public async Task<ResultContainer<IEnumerable<TPost>>> GetPage([FromQuery] int page, [FromQuery] int size)
         {
             if (page < 0 || size <= 0) 
             { 
                 return ResultContainer<IEnumerable<TPost>>.CreateFailResult(""); 
             }
 
-            return manager.GetPosts(page, size);
+            return await manager.GetPosts(page, size);
         }
 
         [HttpPost("save")]
-        public Result Update([FromBody] TPost post)
+        public async Task<Result> Update([FromBody] TPost post)
         {
-            return manager.SavePost(post);
+            return await manager.SavePost(post);
         }
         
         [HttpPost("insert")]
-        public Result Insert([FromBody] TPost post)
+        public async Task<Result> Insert([FromBody] TPost post)
         {
-            return manager.InsertPost(post);
+            return await manager.InsertPost(post);
         }
 
         [HttpPost("delete")]
-        public Result Delete([FromBody] TPost post)
+        public async Task<Result> Delete([FromBody] TPost post)
         {
-            return manager.DeletePost(post);
+            return await manager.DeletePost(post);
         }
 
 

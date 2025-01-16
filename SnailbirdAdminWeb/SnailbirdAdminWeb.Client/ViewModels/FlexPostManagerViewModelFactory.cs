@@ -17,18 +17,10 @@ public class FlexPostManagerViewModelFactory<TPost>
                               FlexPostManagerViewModel<TPost>>
 where TPost : FlexPost<TPost>, new()
 {
-    private readonly IVaultManagerClient _mediaClient;
-
-    public FlexPostManagerViewModelFactory(IVaultManagerClient mediaClient)
-    {
-        _mediaClient = mediaClient;
-    }
-    
     protected override FlexPostManagerUpdate<TPost> CreateUpdate(IPostManagerClient<TPost> client, 
                                                                  Navigator<PostManagerMode, PostManagerModel<TPost>> navigator)
     {
-        
-        return new FlexPostManagerUpdate<TPost>(client, navigator, _mediaClient);
+        return new FlexPostManagerUpdate<TPost>(client, navigator);
     }
 
     protected override FlexPostManagerViewModel<TPost> CreateViewModel(PostManagerModel<TPost> model,

@@ -15,13 +15,11 @@ namespace SnailbirdAdminWeb.Client
             StudioPostManagerClient studioManager = new(baseConfig);
             LabPostManagerClient labManager = new(baseConfig);
             ConnectionManagerClient connManager = new(baseConfig);
-            VaultManagerClient imageVaultClient = new(new VaultClientConfig(baseAddress, "ABC123", "img")); // todo replace this with a server API call rather than direct media client usage
 
             services
                 .AddSingleton<IPostManagerClient<StudioFeedFlexPost>, StudioPostManagerClient>(_ => studioManager)
                 .AddSingleton<IPostManagerClient<LabFeedFlexPost>, LabPostManagerClient>(_ => labManager)
                 .AddSingleton<IConnectionManagerClient, ConnectionManagerClient>(_ => connManager)
-                .AddSingleton<IVaultManagerClient, VaultManagerClient>(_ => imageVaultClient)
                 .AddScoped<ICanvasImageService, CanvasImageService>();
 
             return true;

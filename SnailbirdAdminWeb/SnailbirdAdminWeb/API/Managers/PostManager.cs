@@ -13,22 +13,22 @@ namespace SnailbirdAdminWeb.API.Managers
             PostAdapter = postAdapter;
         }
 
-        public ResultContainer<IEnumerable<TPost>> GetPosts(int pageIndex, int pageSize)
+        public virtual async Task<ResultContainer<IEnumerable<TPost>>> GetPosts(int pageIndex, int pageSize)
         {
             return PostAdapter.GetPage(pageIndex, pageSize);
         }
 
-        public Result InsertPost(TPost post)
+        public virtual async Task<Result> InsertPost(TPost post)
         {
             return PostAdapter.Insert(post);
         }
 
-        public Result SavePost(TPost post)
+        public virtual async Task<Result> SavePost(TPost post)
         {
             return PostAdapter.Update(post);
         }
 
-        public Result DeletePost(TPost post)
+        public virtual async Task<Result> DeletePost(TPost post)
         {
             return PostAdapter.Delete(post);
         }

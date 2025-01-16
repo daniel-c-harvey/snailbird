@@ -17,29 +17,18 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
         
         public FlexImage FlexImage { get; protected set; }
         public string DataUrl { get; protected set; } = default!;
-
-        private string GetDataUrl(string mime, string base64) => $"data:{mime};base64,{base64}";
+        private static string GetDataUrl(string mime, string base64) => $"data:{mime};base64,{base64}";
+        
         public EditFlexImageViewModel(FlexImage flexImage)
         {
             FlexImage = flexImage;
-            OnEditFlexImageLoaded().Wait();
+            SetDataUrl();
         }
 
         public void OnImageSelected(MediaContainer image)
         {
             FlexImage.Image = image.Binary;
             FlexImage.ImageUri = image.FileUri;
-            SetDataUrl();
-        }
-
-        private async Task OnEditFlexImageLoaded()
-        {
-            // If there is already a URI, try to load the resource.
-            if (!string.IsNullOrWhiteSpace(FlexImage.ImageUri))
-            {
-                // todo move the loading of this data to the Update that loads the elements
-                // FlexImage = await Vault.GetMedia(FlexImage.ImageURI);
-            }
             SetDataUrl();
         }
 
