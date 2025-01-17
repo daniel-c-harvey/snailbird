@@ -7,41 +7,51 @@ namespace SnailbirdMedia.Clients
     public interface IVaultManagerClient
     {
         public string VaultKey { get; }
-        Task<MediaBinary?> GetMedia(string entryKey);
-        Task PostMedia(string entryKey, MediaBinary model);
+        Task<ResultContainer<MediaBinary>> GetMedia(string entryKey);
+        Task<Result> PostMedia(string entryKey, MediaBinary model);
     }
     
     public abstract class VaultManagerClient : ApiClient<VaultClientConfig>, IVaultManagerClient
     {
-        public VaultManagerClient(VaultClientConfig config)
-        : base(config) { }
-
+        public VaultManagerClient(VaultClientConfig config) : base(config) { }
+        
         public abstract string VaultKey { get; } 
         
-        public async Task<MediaBinary?> GetMedia(string entryKey)
+        public async Task<ResultContainer<MediaBinary>> GetMedia(string entryKey)
         {
             try
             {
                 MediaBinaryDto? imagePackage = await http.GetFromJsonAsync<MediaBinaryDto>(MediaUrl(entryKey));
-
-                return imagePackage is { Size: > 0 } ? new MediaBinary(imagePackage) : null;
+                if (imagePackage == null) return ResultContainer<MediaBinary>.CreateFailResult($"No resource found for key {entryKey}");
+                
+                return new ResultContainer<MediaBinary>
+                {
+                    Value = new MediaBinary(imagePackage)
+                };                
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                return null;
+                return ResultContainer<MediaBinary>.CreateFailResult(e.Message);
             }
         }
 
-        public async Task PostMedia(string entryKey, MediaBinary model)
+        public async Task<Result> PostMedia(string entryKey, MediaBinary model)
         {
             try
             {
-                await http.PostAsJsonAsync(MediaUrl(entryKey), MediaBinaryDto.From(model));
+                var response = await http.PostAsJsonAsync(MediaUrl(entryKey), MediaBinaryDto.From(model));
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Result.CreateFailResult($"Failed to create media for key {entryKey}")
+                        .Fail(await response.Content.ReadAsStringAsync());
+                }
+
+                return Result.CreatePassResult();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                return Result.CreateFailResult(e.Message);
             }
         }
 

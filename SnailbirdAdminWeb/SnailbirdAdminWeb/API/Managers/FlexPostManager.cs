@@ -25,17 +25,16 @@ public class FlexPostManager<TPost> : PostManager<TPost>
         {
             foreach (FlexElement element in post.Elements)
             {
-                if (element is FlexImage image && !string.IsNullOrEmpty(image.ImageUri))
+                if (element is not FlexImage image || string.IsNullOrEmpty(image.ImageUri)) continue;
+                
+                var media = await VaultManagerClient.GetMedia(image.ImageUri);
+                if (media is null)
                 {
-                    var media = await VaultManagerClient.GetMedia(image.ImageUri);
-                    if (media is null)
-                    {
-                        getResults.Fail($"Failed to load image media for {image.ImageUri}");
-                    }
-                    else
-                    {
-                        image.Image = media;
-                    }
+                    getResults.Fail($"Failed to load image media for {image.ImageUri}");
+                }
+                else
+                {
+                    image.Image = media;
                 }
             }
         }
@@ -45,7 +44,7 @@ public class FlexPostManager<TPost> : PostManager<TPost>
     public override async Task<Result> SavePost(TPost post)
     {
         Stack<Task> saveTasks = new();
-        
+        // TODO aggregate failes results and pass up
         // Dispatch save tasks
         foreach (FlexElement element in post.Elements)
         {
