@@ -1,4 +1,5 @@
-﻿using RazorCore.Navigation;
+﻿using NetBlocks.Models;
+using RazorCore.Navigation;
 using SnailbirdAdminWeb.Client.API;
 using SnailbirdAdminWeb.Client.Messages;
 using SnailbirdAdminWeb.Client.Models;
@@ -57,7 +58,7 @@ namespace SnailbirdAdminWeb.Client.Updates
 
             // set the Save action if there is a dirty nav
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] +=
-                () => Update(model, new PostManagerSaveNewMessage<TPost>(model.Post));
+                () => Update(model, message.SaveNewMessage);
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
                 () => ResetPost(model);
 
@@ -80,7 +81,7 @@ namespace SnailbirdAdminWeb.Client.Updates
 
             // set the Save action if there is a navigation away from this edit
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Save.Choice] =
-                () => Update(model, new PostManagerSaveExistingMessage<TPost>(model.Post));
+                () => Update(model, message.SaveExistingMessage);
             Navigator.NavigateConfirmationViewModel.Choices[NavigatePromptChoices.Discard.Choice] +=
                 () => ResetPost(model);
 
@@ -97,19 +98,23 @@ namespace SnailbirdAdminWeb.Client.Updates
             model.Posts.Remove(message.Post);
         }
 
-        protected virtual void SaveNewPost(PostManagerModel<TPost> model,
+        protected virtual async void SaveNewPost(PostManagerModel<TPost> model,
                                            PostManagerSaveNewMessage<TPost> message)
         {
-            PostManager.Insert(message.Post);
+            var result = await PostManager.Insert(message.Post);
+            if (NotifyIfError(message, result)) return;
+            
             model.Post = message.Post;
             model.Posts.Add(message.Post);
             Navigator.NavigateBack();
         }
 
-        protected virtual void SavePost(PostManagerModel<TPost> model,
-                                        PostManagerSaveExistingMessage<TPost> message)
+        protected virtual async void SavePost(PostManagerModel<TPost> model,
+                                              PostManagerSaveExistingMessage<TPost> message)
         {
-            PostManager.Update(message.Post);
+            var result = await PostManager.Update(message.Post);
+            if (NotifyIfError(message, result)) return;
+            
             model.Post = message.Post;
             Navigator.NavigateBack();
         }
@@ -118,15 +123,19 @@ namespace SnailbirdAdminWeb.Client.Updates
                                               PostManagerGetPostsMessage message)
         {
                 var results = await PostManager.GetPage(message.PageIndex, message.PageSize);
-                if (!results.Success)
-                {
-                    message.RaiseNotifyError(results.FailureReasons.Aggregate("", (current, next) => current + Environment.NewLine + next.Message));
-                    // todo navigate to error mode with refresh button instead of the back button
-                    return;
-                }
+                if (NotifyIfError(message, results)) return; // todo navigate to error mode with refresh button instead of the back button
                 
                 model.Posts = results.Value?.ToList() ?? [];
                 Navigator.NavigateForward(PostManagerMode.View);
+        }
+
+        private static bool NotifyIfError<TResult>(PostManagerNotifyMessage message, ResultBase<TResult> results) where TResult : ResultBase<TResult>, new()
+        {
+            if (results.Success) return false;
+            
+            message.RaiseNotifyError(results.GetFailureMessage());
+            return true;
+
         }
     }
 }

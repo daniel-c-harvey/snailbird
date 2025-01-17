@@ -57,12 +57,14 @@ namespace SnailbirdAdminWeb.Client.ViewModels
         #region "Event Handlers"
         public void AddPost(TPost post)
         {
-            _update.Update(Model, new PostManagerAddMessage<TPost>(post));
+            _update.Update(Model, new PostManagerAddMessage<TPost>(post, 
+                new PostManagerSaveNewMessage<TPost>(post, RaiseNotifyError)));
         }
 
         public void EditPost(TPost post)
         {
-            _update.Update(Model, new PostManagerEditMessage<TPost>(post));
+            _update.Update(Model, new PostManagerEditMessage<TPost>(post, 
+                new PostManagerSaveExistingMessage<TPost>(post, RaiseNotifyError)));
         }
 
         public void DeletePost(TPost post)
@@ -72,12 +74,12 @@ namespace SnailbirdAdminWeb.Client.ViewModels
 
         public void SaveNewPost(TPost post)
         {
-            _update.Update(Model, new PostManagerSaveNewMessage<TPost>(post));
+            _update.Update(Model, new PostManagerSaveNewMessage<TPost>(post, RaiseNotifyError));
         }
 
         public void SavePost(TPost post)
         {
-            _update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post));
+            _update.Update(Model, new PostManagerSaveExistingMessage<TPost>(post, RaiseNotifyError));
         }
         #endregion
 

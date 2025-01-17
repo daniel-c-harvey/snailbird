@@ -27,14 +27,14 @@ public class FlexPostManager<TPost> : PostManager<TPost>
             {
                 if (element is not FlexImage image || string.IsNullOrEmpty(image.ImageUri)) continue;
                 
-                var media = await VaultManagerClient.GetMedia(image.ImageUri);
-                if (media is null)
+                var mediaResults = await VaultManagerClient.GetMedia(image.ImageUri);
+                if (!mediaResults.Success || mediaResults.Value is null)
                 {
                     getResults.Fail($"Failed to load image media for {image.ImageUri}");
                 }
                 else
                 {
-                    image.Image = media;
+                    image.Image = mediaResults.Value;
                 }
             }
         }
@@ -43,20 +43,26 @@ public class FlexPostManager<TPost> : PostManager<TPost>
 
     public override async Task<Result> SavePost(TPost post)
     {
-        Stack<Task> saveTasks = new();
-        // TODO aggregate failes results and pass up
+        Result result = new();
+        Queue<Task<Result>> saveTasks = new();
+        
         // Dispatch save tasks
         foreach (FlexElement element in post.Elements)
         {
-            if (element is FlexImage image && image.Image != null && !string.IsNullOrEmpty(image.ImageUri))
+            if (element is FlexImage { Image: not null } image && !string.IsNullOrEmpty(image.ImageUri))
             {
-                saveTasks.Push(VaultManagerClient.PostMedia(image.ImageUri, image.Image));
+                saveTasks.Enqueue(VaultManagerClient.PostMedia(image.ImageUri, image.Image));
             }
         }
-        Task<Result> saveTask = base.SavePost(post);
+        saveTasks.Enqueue(base.SavePost(post));
 
-        // await all saves
-        while (saveTasks.Pop() is Task save) await save;
-        return await saveTask;
+        // await all saves and gather results
+        while (saveTasks.Any())
+        {
+            Task<Result> save = saveTasks.Dequeue();
+            result.Merge((await save));
+        }
+        
+        return result;
     }
 }

@@ -13,7 +13,7 @@ namespace SnailbirdMedia.Clients
     
     public abstract class VaultManagerClient : ApiClient<VaultClientConfig>, IVaultManagerClient
     {
-        public VaultManagerClient(VaultClientConfig config) : base(config) { }
+        protected VaultManagerClient(VaultClientConfig config) : base(config) { }
         
         public abstract string VaultKey { get; } 
         
@@ -58,7 +58,7 @@ namespace SnailbirdMedia.Clients
         private string MediaUrl(string entryKey)
         {
             // guards? GUARDS!!
-            return new Uri($"{config.VaultKey}/{entryKey}").ToString();
+            return $"{config.VaultKey}/{entryKey}";
         }
     }
 }

@@ -47,7 +47,7 @@ namespace SnailbirdAdminWeb
                 if (!endpointResults.Success || endpointResults.Value is null)
                 {
                     Console.Error.WriteLine("Failed to load API endpoints config: environment/endpoints.json");
-                    Console.Error.WriteLine(endpointResults.FailureMessage);
+                    Console.Error.WriteLine(endpointResults.GetFailureMessage());
                     return false;
                 }
                 ApiEndpoints apiEndpoints = endpointResults.Value;

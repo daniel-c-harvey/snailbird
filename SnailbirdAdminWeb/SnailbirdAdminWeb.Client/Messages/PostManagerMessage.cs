@@ -21,6 +21,20 @@ namespace SnailbirdAdminWeb.Client.Messages
         protected PostManagerMessage(PostManagerAction action) : base(action) { }
     }
 
+    public abstract class PostManagerNotifyMessage : PostManagerMessage
+    {
+        public event MessageEventHandler NotifyError;
+        protected PostManagerNotifyMessage(PostManagerAction action, MessageEventHandler notifyError) : base(action)
+        {
+            NotifyError += notifyError;
+        }
+        
+        public void RaiseNotifyError(string message)
+        {
+            NotifyError.Invoke(this, new MessageEventArgs(message));
+        }
+    }
+
     public abstract class PostManagerPostMessage<TPost> : PostManagerMessage
         where TPost : Post<TPost>
     {
@@ -32,16 +46,30 @@ namespace SnailbirdAdminWeb.Client.Messages
             Post = post;
         }
     }
+    
+    public abstract class PostManagerNotifyPostMessage<TPost> : PostManagerNotifyMessage
+        where TPost : Post<TPost>
+    {
+        public TPost Post { get; }
+
+        public PostManagerNotifyPostMessage(PostManagerAction action, TPost post, MessageEventHandler notifyError)
+        : base(action, notifyError)
+        {
+            Post = post;
+        }
+    }
 
     public class PostManagerAddMessage<TPost> : PostManagerPostMessage<TPost>
         where TPost : Post<TPost>
     {
         public PromptMessage ConfirmationModel { get; }
+        public PostManagerSaveNewMessage<TPost> SaveNewMessage { get; }
 
-        public PostManagerAddMessage(TPost post)
+        public PostManagerAddMessage(TPost post, PostManagerSaveNewMessage<TPost> saveNewMessage)
         : base(PostManagerAction.Add, post) 
         {
-            ConfirmationModel = new("Adding Post", 
+            SaveNewMessage = saveNewMessage;
+            ConfirmationModel = new PromptMessage("Adding Post", 
                                     "The post being added has unsaved changes.  " +
                                     "How to proceed?");
         }
@@ -51,10 +79,12 @@ namespace SnailbirdAdminWeb.Client.Messages
         where TPost : Post<TPost>
     {
         public PromptMessage ConfirmationModel { get; }
+        public PostManagerSaveExistingMessage<TPost> SaveExistingMessage { get; }
 
-        public PostManagerEditMessage(TPost post)
+        public PostManagerEditMessage(TPost post, PostManagerSaveExistingMessage<TPost> saveExistingMessage)
         : base(PostManagerAction.Edit, post)
         {
+            SaveExistingMessage = saveExistingMessage;
             ConfirmationModel = new("Editing Post", 
                                     "The post being edited has unsaved changes.  " +
                                     "How to proceed?");
@@ -68,39 +98,31 @@ namespace SnailbirdAdminWeb.Client.Messages
         : base(PostManagerAction.Delete, post) { }
     }
 
-    public class PostManagerSaveNewMessage<TPost> : PostManagerPostMessage<TPost>
+    public class PostManagerSaveNewMessage<TPost> : PostManagerNotifyPostMessage<TPost>
         where TPost : Post<TPost>
     {
-        public PostManagerSaveNewMessage(TPost post)
-        : base(PostManagerAction.SaveNew, post) { }
+        public PostManagerSaveNewMessage(TPost post, MessageEventHandler notifyError)
+        : base(PostManagerAction.SaveNew, post, notifyError) { }
     }
 
-    public class PostManagerSaveExistingMessage<TPost> : PostManagerPostMessage<TPost>
+    public class PostManagerSaveExistingMessage<TPost> : PostManagerNotifyPostMessage<TPost>
         where TPost : Post<TPost>
     {
-        public PostManagerSaveExistingMessage(TPost post)
-        : base(PostManagerAction.SaveExisting, post) { }
+        public PostManagerSaveExistingMessage(TPost post, MessageEventHandler notifyError)
+        : base(PostManagerAction.SaveExisting, post, notifyError) { }
     }
 
-    public class PostManagerGetPostsMessage : PostManagerMessage
+    public class PostManagerGetPostsMessage : PostManagerNotifyMessage
     {
         public int Page { get; set; }
         public int PageIndex => Page - 1;
         public int PageSize { get; set; }
 
-        public event MessageEventHandler? NotifyError;
-
         public PostManagerGetPostsMessage(int page, int pageSize, MessageEventHandler notifyError)
-        : base(PostManagerAction.GetPosts)
+        : base(PostManagerAction.GetPosts, notifyError)
         {
             Page = page;
             PageSize = pageSize;
-            NotifyError += notifyError;
-        }
-
-        public void RaiseNotifyError(string message)
-        {
-            NotifyError?.Invoke(this, new MessageEventArgs(message));
         }
     }
 
