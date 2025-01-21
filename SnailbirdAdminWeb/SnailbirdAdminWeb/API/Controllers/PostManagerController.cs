@@ -17,59 +17,35 @@ namespace SnailbirdAdminWeb.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ResultContainer<IEnumerable<TPost>>> GetPage([FromQuery] int page, [FromQuery] int size)
+        public async Task<ResultContainer<IEnumerable<TPost>>.ResultContainerDto<IEnumerable<TPost>>> 
+            GetPage([FromQuery] int page, [FromQuery] int size)
         {
             if (page < 0 || size <= 0) 
             { 
-                return ResultContainer<IEnumerable<TPost>>.CreateFailResult(""); 
+                return new ResultContainer<IEnumerable<TPost>>.ResultContainerDto<IEnumerable<TPost>>(
+                    ResultContainer<IEnumerable<TPost>>.CreateFailResult(
+                        "Invalid page arguments; page must be greater than or equal to 0; size must be greater than 0.")); 
             }
 
-            return await manager.GetPosts(page, size);
+            return new (await manager.GetPosts(page, size));
         }
 
         [HttpPost("save")]
-        public async Task<ResultDto> Update([FromBody] TPost post)
+        public async Task<Result.ResultDto> Update([FromBody] TPost post)
         {
-            return new ResultDto(await manager.SavePost(post));
+            return new Result.ResultDto(await manager.SavePost(post));
         }
         
         [HttpPost("insert")]
-        public async Task<Result> Insert([FromBody] TPost post) // todo return DTO
+        public async Task<Result.ResultDto> Insert([FromBody] TPost post) // todo return DTO
         {
-            return await manager.InsertPost(post);
+            return new Result.ResultDto(await manager.InsertPost(post));
         }
 
         [HttpPost("delete")]
-        public async Task<Result> Delete([FromBody] TPost post) // todo return DTO
+        public async Task<Result.ResultDto> Delete([FromBody] TPost post) // todo return DTO
         {
-            return await manager.DeletePost(post);
+            return new Result.ResultDto(await manager.DeletePost(post));
         }
-
-
-
-        //// GET api/<ValuesController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/<ValuesController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        //// PUT api/<ValuesController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<ValuesController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

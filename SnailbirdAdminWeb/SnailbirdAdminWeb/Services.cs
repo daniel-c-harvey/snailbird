@@ -47,7 +47,7 @@ namespace SnailbirdAdminWeb
                 if (!endpointResults.Success || endpointResults.Value is null)
                 {
                     Console.Error.WriteLine("Failed to load API endpoints config: environment/endpoints.json");
-                    Console.Error.WriteLine(endpointResults.GetFailureMessage());
+                    Console.Error.WriteLine(endpointResults.GetMessage());
                     return false;
                 }
                 ApiEndpoints apiEndpoints = endpointResults.Value;
@@ -60,7 +60,7 @@ namespace SnailbirdAdminWeb
                 }
                 
                 // Load Post API Managers
-                ImageVaultManagerClient imageVaultClient = new(new VaultClientConfig(contentEndpoint.ApiUrl, "", "img"));
+                ImageVaultManagerClient imageVaultClient = new(new VaultClientConfig(contentEndpoint.ApiUrl, contentEndpoint.ApiKey, "img"));
                 FlexPostManager<StudioFeedFlexPost> studioFeedManager = new(studioFeedFlexPostAdapter, imageVaultClient);
                 FlexPostManager<LabFeedFlexPost> labFeedManager = new(labFeedFlexPostAdapter, imageVaultClient);
 

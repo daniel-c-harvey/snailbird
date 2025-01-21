@@ -30,7 +30,7 @@ public class FlexPostManager<TPost> : PostManager<TPost>
                 var mediaResults = await VaultManagerClient.GetMedia(image.ImageUri);
                 if (!mediaResults.Success || mediaResults.Value is null)
                 {
-                    getResults.Fail($"Failed to load image media for {image.ImageUri}");
+                    getResults.Warn($"Failed to load image media for {image.ImageUri}");
                 }
                 else
                 {

@@ -15,7 +15,7 @@ namespace SnailbirdAdminWeb.Client.API
             try
             {
                 HttpResponseMessage get = await http.GetAsync($"api/{controller}?page={page}&size={size}");
-                result = await get.Content.ReadFromJsonAsync<ResultContainer<IEnumerable<TPost>>>();
+                result = (await get.Content.ReadFromJsonAsync<ResultContainer<IEnumerable<TPost>>.ResultContainerDto<IEnumerable<TPost>>>())?.From();
                 if (result?.Value is null)
                 {
                     throw new Exception($"Failed to deserialize post page data.");
@@ -37,7 +37,7 @@ namespace SnailbirdAdminWeb.Client.API
             {
                 HttpResponseMessage response = await http.PostAsJsonAsync($"api/{controller}/save", post);
                 var sresult = await response.Content.ReadAsStringAsync();
-                result = (await response.Content.ReadFromJsonAsync<ResultDto>())?.From();
+                result = (await response.Content.ReadFromJsonAsync<Result.ResultDto>())?.From();
                 if (result is null)
                 {
                     throw new Exception("Failed to deserialize the results");
@@ -59,7 +59,7 @@ namespace SnailbirdAdminWeb.Client.API
             try
             {
                 HttpResponseMessage response = await http.PostAsJsonAsync($"api/{controller}/insert", post);
-                result = await response.Content.ReadFromJsonAsync<Result>();
+                result = (await response.Content.ReadFromJsonAsync<Result.ResultDto>())?.From();
                 if (result is null)
                 {
                     throw new Exception("Failed to deserialize the results");
@@ -80,7 +80,7 @@ namespace SnailbirdAdminWeb.Client.API
             try
             {
                 HttpResponseMessage response = await http.PostAsJsonAsync<TPost>($"api/{controller}/delete", post);
-                result = await response.Content.ReadFromJsonAsync<Result>();
+                result = (await response.Content.ReadFromJsonAsync<Result.ResultDto>())?.From();
                 if (result is null)
                 {
                     throw new Exception("Failed to deserialize the results");

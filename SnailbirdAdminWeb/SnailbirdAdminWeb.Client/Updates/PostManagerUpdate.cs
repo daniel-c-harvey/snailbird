@@ -131,10 +131,11 @@ namespace SnailbirdAdminWeb.Client.Updates
 
         private static bool NotifyIfError<TResult>(PostManagerNotifyMessage message, ResultBase<TResult> results) where TResult : ResultBase<TResult>, new()
         {
-            if (results.Success) return false;
+            if (results.State == ResultState.Pass) return false;
             
-            message.RaiseNotifyError(results.GetFailureMessage());
-            return true;
+            message.RaiseNotifyError(results.GetMessage());
+            
+            return !results.Success;
 
         }
     }

@@ -13,7 +13,10 @@ namespace SnailbirdMedia.Clients
     
     public abstract class VaultManagerClient : ApiClient<VaultClientConfig>, IVaultManagerClient
     {
-        protected VaultManagerClient(VaultClientConfig config) : base(config) { }
+        protected VaultManagerClient(VaultClientConfig config) : base(config)
+        {
+            http.DefaultRequestHeaders.Add("ApiKey", config.ApiKey);
+        }
         
         public abstract string VaultKey { get; } 
         
@@ -21,6 +24,7 @@ namespace SnailbirdMedia.Clients
         {
             try
             {
+                string? ip = await http.GetStringAsync(MediaUrl(entryKey));
                 MediaBinaryDto? imagePackage = await http.GetFromJsonAsync<MediaBinaryDto>(MediaUrl(entryKey));
                 if (imagePackage == null) return ResultContainer<MediaBinary>.CreateFailResult($"No resource found for key {entryKey}");
                 
@@ -58,7 +62,7 @@ namespace SnailbirdMedia.Clients
         private string MediaUrl(string entryKey)
         {
             // guards? GUARDS!!
-            return $"{config.VaultKey}/{entryKey}";
+            return $"manage/{config.VaultKey}/{entryKey}";
         }
     }
 }
