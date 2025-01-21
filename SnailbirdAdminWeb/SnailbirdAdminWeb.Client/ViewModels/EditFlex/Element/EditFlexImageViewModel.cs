@@ -48,7 +48,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
             if (FlexImage.Image != null)
             {
                 base64 = FlexImage.Image.Base64;
-                MIME.MIME_TYPES.TryGetValue(FlexImage.Image.Extension, out mime);
+                MIME.MimeTypes.TryGetValue(FlexImage.Image.Extension, out mime);
             }
             
             if (string.IsNullOrEmpty(mime))

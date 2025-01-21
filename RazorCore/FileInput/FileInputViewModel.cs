@@ -33,7 +33,7 @@ public class FileInputViewModel
                 await stream.ReadAsync(bytes, offset, Math.Min(length - offset - 1, chunkSize));
             }
                 
-            MIME.EXTENSIONS.TryGetValue(file.ContentType, out string? extension);
+            MIME.Extensions.TryGetValue(file.ContentType, out string? extension);
             if (length > 0 && extension != null)
             {
                 File = new MediaContainer(file.Name, new MediaBinary(bytes, stream.Length, extension));
