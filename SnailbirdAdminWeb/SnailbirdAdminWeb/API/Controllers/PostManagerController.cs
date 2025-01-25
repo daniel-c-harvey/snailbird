@@ -37,13 +37,13 @@ namespace SnailbirdAdminWeb.API.Controllers
         }
         
         [HttpPost("insert")]
-        public async Task<Result.ResultDto> Insert([FromBody] TPost post) // todo return DTO
+        public async Task<Result.ResultDto> Insert([FromBody] TPost post)
         {
             return new Result.ResultDto(await manager.InsertPost(post));
         }
 
         [HttpPost("delete")]
-        public async Task<Result.ResultDto> Delete([FromBody] TPost post) // todo return DTO
+        public async Task<Result.ResultDto> Delete([FromBody] TPost post)
         {
             return new Result.ResultDto(await manager.DeletePost(post));
         }
