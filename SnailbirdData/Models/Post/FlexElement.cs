@@ -1,9 +1,8 @@
 ﻿using NetBlocks.Interfaces;
-using NetBlocks.Utilities;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using NetBlocks.Models;
+using NetBlocks.Models.FileBinary;
 
 namespace SnailbirdData.Models.Post
 {
@@ -94,7 +93,7 @@ namespace SnailbirdData.Models.Post
         public string AltText { get; set; } = string.Empty;
         
         [MediaStorage]
-        public MediaBinary? Image { get; set; }
+        public ImageBinary? Image { get; set; }
         
         public override FlexElement Clone()
         {

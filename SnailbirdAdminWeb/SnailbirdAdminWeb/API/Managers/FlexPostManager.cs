@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using NetBlocks.Models;
+using NetBlocks.Models.FileBinary;
 using SnailbirdData.Models.Post;
 using SnailbirdMedia.Clients;
 
@@ -8,12 +9,12 @@ namespace SnailbirdAdminWeb.API.Managers;
 public class FlexPostManager<TPost> : PostManager<TPost>
     where TPost : FlexPost<TPost>, new()
 {
-    private IVaultManagerClient VaultManagerClient { get; }
+    private IVaultManagerClient<ImageBinary, ImageBinaryDto, ImageBinaryParams> ImageVaultManagerClient { get; }
 
-    public FlexPostManager(IDataAdapter<TPost> postAdapter, IVaultManagerClient vaultManagerClient)
-        : base(postAdapter)
+    public FlexPostManager(IDataAdapter<TPost> postAdapter, IVaultManagerClient<ImageBinary, ImageBinaryDto, ImageBinaryParams> imageVaultManagerClient)
+    : base(postAdapter)
     {
-        VaultManagerClient = vaultManagerClient;
+        ImageVaultManagerClient = imageVaultManagerClient;
     }
 
     public override async Task<ResultContainer<IEnumerable<TPost>>> GetPosts(int pageIndex, int pageSize)
@@ -27,7 +28,7 @@ public class FlexPostManager<TPost> : PostManager<TPost>
             {
                 if (element is not FlexImage image || string.IsNullOrEmpty(image.ImageUri)) continue;
                 
-                var mediaResults = await VaultManagerClient.GetMedia(image.ImageUri);
+                var mediaResults = await ImageVaultManagerClient.GetMedia(image.ImageUri);
                 if (!mediaResults.Success || mediaResults.Value is null)
                 {
                     getResults.Warn($"Failed to load image media for {image.ImageUri}");
@@ -51,7 +52,7 @@ public class FlexPostManager<TPost> : PostManager<TPost>
         {
             if (element is FlexImage { Image: not null } image && !string.IsNullOrEmpty(image.ImageUri))
             {
-                saveTasks.Enqueue(VaultManagerClient.PostMedia(image.ImageUri, image.Image));
+                saveTasks.Enqueue(ImageVaultManagerClient.PostMedia(image.ImageUri, image.Image));
             }
         }
         saveTasks.Enqueue(base.SavePost(post));

@@ -23,7 +23,7 @@
                    type="text"
                    @bind="ViewModel.FlexImage.AltText" />
         </div>
-        <FileInput ViewModel="FileInputViewModel" OnFileSelected="ViewModel.OnImageSelected"/>
+        <ImageFileInput ViewModel="FileInputViewModel" OnFileSelected="ViewModel.OnImageSelected"/>
     </div>
 </div>
 
@@ -32,7 +32,7 @@
     [Parameter]
     public required EditFlexImageViewModel ViewModel { get; set; }
 
-    private FileInputViewModel FileInputViewModel { get; } = new(10 * 1024 * 1024);
+    private ImageFileInputViewModel FileInputViewModel { get; } = new(10 * 1024 * 1024);
 
     private Prompt _prompt = default!;
     private static PromptChoice _okChoice = new(1, "Okay", "btn-outline-primary");

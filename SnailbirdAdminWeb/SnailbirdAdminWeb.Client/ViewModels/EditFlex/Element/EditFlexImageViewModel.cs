@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using NetBlocks.Models;
+﻿using System.Net.Mime;
+using Microsoft.AspNetCore.Components;
+using NetBlocks.Models.FileBinary;
 using SnailbirdData.Models.Post;
 using SnailbirdMedia.Clients;
-using SnailbirdMedia.Models;
 
 namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
 {
@@ -14,7 +13,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
         private const string IMAGE_UNAVAILABLE_MIME = "image/svg+xml";
 
         [Inject]
-        public IVaultManagerClient? Vault { get; protected set; }
+        public IVaultManagerClient<ImageBinary, ImageBinaryDto, ImageBinaryParams>? Vault { get; protected set; }
         
         public FlexImage FlexImage { get; protected set; }
         public string DataUrl { get; protected set; } = default!;
@@ -26,7 +25,7 @@ namespace SnailbirdAdminWeb.Client.ViewModels.EditFlex.Element
             SetDataUrl();
         }
 
-        public void OnImageSelected(MediaContainer image)
+        public void OnImageSelected(MediaContainer<ImageBinary, ImageBinaryDto, ImageBinaryParams> image)
         {
             FlexImage.Image = image.Binary;
             FlexImage.ImageUri = image.FileUri;

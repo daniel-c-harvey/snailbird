@@ -1,28 +1,7 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web
-@using NetBlocks.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using NetBlocks.Models.FileBinary
 
-<div class="file-input">
-    <div class="file-input-header">
-        <label for="input-file" class="btn btn-outline-primary">
-            Load
-        </label>
-        <div class="file-input-element">
-            <InputFile id="input-file" OnChange="OnFileChanged"/>
-        </div>
-        <div class="file-input-expander @FileExpanderCss" @onclick="Expand">
-            <i for="expander" class="bi bi-caret-left" ></i>
-        </div>
-    </div>
-    <div class="file-input-files @FileExpanderCss">
-        @* @foreach (MediaContainer file in new[] { ViewModel.File }) // todo convert to support multiple files *@
-        @if (ViewModel.File != null)
-        {
-            <span>File: @ViewModel.File.FileName</span><br />
-            @if (ShowFileUri)
-            {
-            <span>URI: @ViewModel.File.FileUri</span><br />
-            }
-        }
-    </div>
-</div>
+@typeparam TMedia where TMedia : MediaBinary<TMedia, TDto, TParams>, new()
+@typeparam TDto where TDto : MediaBinaryDto<TMedia, TDto, TParams>
+@typeparam TParams where TParams : MediaBinaryParams
+@typeparam TViewModel where TViewModel : FileInputViewModel<TMedia, TDto, TParams>

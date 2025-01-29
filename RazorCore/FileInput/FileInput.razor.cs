@@ -1,28 +1,32 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using NetBlocks.Models;
+using NetBlocks.Models.FileBinary;
 
 namespace RazorCore.FileInput;
 
-public partial class FileInput
+public abstract partial class FileInput<TMedia, TDto, TParams, TViewModel>
+where TMedia : MediaBinary<TMedia, TDto, TParams>, new()
+where TDto : MediaBinaryDto<TMedia, TDto, TParams>
+where TParams : MediaBinaryParams
+where TViewModel : FileInputViewModel<TMedia, TDto, TParams>
 {
     [Parameter]
-    public required FileInputViewModel ViewModel { get; set; }
+    public required TViewModel ViewModel { get; set; }
     [Parameter]
-    public EventCallback<MediaContainer> OnFileSelected { get; set; }
+    public EventCallback<MediaContainer<TMedia, TDto, TParams>> OnFileSelected { get; set; }
     [Parameter]
     public bool ShowFileUri { get; set; } = false;
     
-    private string FileExpanderCss => (ViewModel.Expanded && ViewModel.File != null) ? "expanded" : "collapsed";
+    protected string FileExpanderCss => (ViewModel.Expanded && ViewModel.File != null) ? "expanded" : "collapsed";
 
-    private void Expand()
+    protected void Expand()
     {
         if (ViewModel.File == null) return;
         
         ViewModel.Expanded = !ViewModel.Expanded;
         StateHasChanged();
     }
-    private async Task OnFileChanged(InputFileChangeEventArgs e)
+    protected async Task OnFileChanged(InputFileChangeEventArgs e)
     {
         if (e.FileCount == 1) // only one file for now
         {

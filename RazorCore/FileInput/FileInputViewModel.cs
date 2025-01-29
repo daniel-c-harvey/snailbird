@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using NetBlocks.Models;
+using NetBlocks.Models.FileBinary;
+using NetBlocks.Models.FileBinary.Factory;
 
 namespace RazorCore.FileInput;
 
-public class FileInputViewModel
+public abstract class FileInputViewModel<TMedia, TDto, TParams>
+where TMedia : MediaBinary<TMedia, TDto, TParams>, new()
+where TDto : MediaBinaryDto<TMedia, TDto, TParams>
+where TParams : MediaBinaryParams
 {
-    public MediaContainer? File { get; private set; }
+    public MediaContainer<TMedia, TDto, TParams>? File { get; private set; }
     public bool Expanded { get; set; }
     public event MessageEventHandler? FileValidationFailed;
     private long _maximumSize;
@@ -33,12 +38,12 @@ public class FileInputViewModel
                 await stream.ReadAsync(bytes, offset, Math.Min(length - offset - 1, chunkSize));
             }
                 
-            MIME.Extensions.TryGetValue(file.ContentType, out string? extension);
-            if (length > 0 && extension != null)
+            TParams parameters = CreateParams(file, bytes);
+            
+            if (parameters.Size > 0 && !string.IsNullOrWhiteSpace(parameters.Extension))
             {
-                File = new MediaContainer(file.Name, new MediaBinary(bytes, stream.Length, extension));
+                File = new MediaContainer<TMedia, TDto, TParams>(file.Name, MediaFactory.CreateFromParams<TMedia, TDto, TParams>(parameters));
             }
-
             stream.Close();
         }
         catch (Exception ex) 
@@ -50,6 +55,8 @@ public class FileInputViewModel
         return true;
     }
     
+    protected abstract TParams CreateParams(IBrowserFile file, byte[] bytes);
+
     private bool ValidateBrowserFile(IBrowserFile file)
     {
         // Test all validations and notify of failure
@@ -77,5 +84,4 @@ public class FileInputViewModel
         Expanded = false;
         File = null;
     }
-
 }

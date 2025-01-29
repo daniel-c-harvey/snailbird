@@ -1,0 +1,29 @@
+@using Microsoft.AspNetCore.Components.Forms;
+@using Microsoft.AspNetCore.Components.Web;
+@using NetBlocks.Models.FileBinary;
+
+@inherits FileInput<ImageBinary, ImageBinaryDto, ImageBinaryParams, ImageFileInputViewModel>
+
+<div class="file-input">
+    <div class="file-input-header">
+        <label for="input-file" class="btn btn-outline-primary">
+            Load
+        </label>
+        <div class="file-input-element">
+            <InputFile id="input-file" OnChange="OnFileChanged"/>
+        </div>
+        <div class="file-input-expander @FileExpanderCss" @onclick="Expand">
+            <i for="expander" class="bi bi-caret-left" ></i>
+        </div>
+    </div>
+    <div class="file-input-files @FileExpanderCss">
+        @if (ViewModel.File != null)
+        {
+            <span>File: @ViewModel.File.FileName</span><br />
+            @if (ShowFileUri)
+            {
+                <span>URI: @ViewModel.File.FileUri</span><br />
+            }
+        }
+    </div>
+</div>
